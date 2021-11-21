@@ -19,7 +19,6 @@ def registerPage(request):
     user = CreateUserForm()
     if request.method == 'POST':
         user = CreateUserForm(request.POST)
-        user.username = request.POST
         if user.is_valid():
             user.save()
             return redirect('login')
