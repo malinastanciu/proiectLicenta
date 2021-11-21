@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.forms import UserCreationForm
@@ -5,7 +6,7 @@ from accounts.forms import CreateUserForm
 
 
 def home(request):
-    return HttpResponse('Hello world!')
+    return HttpResponse('home')
 
 
 def loginPage(request):
@@ -16,7 +17,9 @@ def loginPage(request):
         if user is not None:
             login(request, user)
             return redirect('home')
-    context = {'page_name': 'Login'}
+        else:
+            messages.info(request, 'Username or password is incorrect')
+    context = {}
     return render(request, 'accounts/login.html', context)
 
 
