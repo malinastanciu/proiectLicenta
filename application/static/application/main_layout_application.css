@@ -8,9 +8,28 @@ body {
 }
 header{
   overflow: hidden;
-  background-color: #525252;
-  height: 10%;
+  background-color: #484848;
+  height: 1.5cm;
   width: 100%;
+}
+.topnav {
+  width: 70%;
+  height: 1.5cm;
+  position: absolute;
+}
+
+.user-class{
+  width: 20%;
+  left: 70%;
+  height: 1.5cm;
+  color: white;
+  position: absolute;
+}
+.user-class p{
+  margin-top:0.5cm;
+  text-align: center;
+  position: center;
+
 }
 
 .topnav a {
@@ -24,12 +43,22 @@ header{
 
 .topnav a:hover {
   background-color: #ddd;
+  height: 1.5cm;
   color: black;
 }
 .logout-button{
-  margin-left: 92%;
-  margin-top:0.5%;
+  width: 10%;
+  height: 1.5cm;
+  left: 90%;
   position: absolute;
+}
+.logout-button button{
+  position: absolute;
+  top: 20%;
+  left: 25%;
+  width: 80px;
+  height: 30px;
+  font-size: 13px;
 }
 
 
