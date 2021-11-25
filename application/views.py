@@ -9,3 +9,9 @@ from application.functions import create_context
 def dashboard(request):
     context = create_context(request)
     return render(request, 'application/dashboard.html', context)
+
+# Create your views here.
+@login_required(login_url='login')
+def account(request):
+    context = create_context(request)
+    return render(request, 'application/account.html', context)
