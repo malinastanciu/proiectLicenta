@@ -5,7 +5,8 @@
     Account
 {% endblock %}
 {% block article %}
-   Aici voi pune informatiile despre cont
+    <link rel="stylesheet" href="{% static 'application/account.css' %}">
+  <p>Welcome, {{ user_type }} {{ user.username }}!</p>
     Do you want to change the password?
         {% block change_password %}
         {% endblock %}
