@@ -4,25 +4,14 @@
 {% block header %}
     <link rel="stylesheet" href="{% static 'application/main_layout_application.css' %}">
 
-    <div class="topnav">
-        <a href="{% url 'dashboard' %}">Home</a>
-        <a href="{% url 'account' %}">Account</a>
-    </div>
 
-    <div class="user-class">
-       <p>Welcome, {{ user_type }} {{ user.username }}!</p>
-    </div>
-
-    <div class="logout-button">
-        <form action="{% url 'logout' %}" method="GET">
-                <button class="btn btn-danger btn-md" type="submit">Logout</button>
-        </form>
-    </div>
+        <ul class="topnav">
+            <li><a href="{% url 'dashboard' %}">Home</a></li>
+            <li><a href="{% url 'account' %}">Account</a>
+            <li class="right"><a class="logout" href="{% url 'logout' %}">Logout</a></li>
+        </ul>
 
 {% endblock %}
 
 {% block article %}
-
-
-
 {% endblock %}
