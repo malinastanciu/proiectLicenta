@@ -6,8 +6,19 @@
 {% endblock %}
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/account.css' %}">
-  <p>Welcome, {{ user_type }} {{ user.username }}!</p>
-    Do you want to change the password?
-        {% block change_password %}
-        {% endblock %}
+    <div class="username">
+        <p>Welcome, {{ user_type }} {{ user.username }}!</p>
+    </div>
+    <div class="user_information">
+        <b>Username:</b> {{ request.user.username }}<br>
+        <b>Email:</b> {{ request.user.email }}<br>
+        <b>First name:</b> {{ request.user.first_name }}<br>
+        <b>Last name:</b> {{ request.user.last_name }}<br>
+        <b>Account type:</b> {{ user_type }}<br>
+
+    </div>
+    <div class="change_password">
+        Do you want to change the password?<br>
+            <a href="{% url 'change_password' %}">Click here</a>
+    </div>
 {% endblock %}

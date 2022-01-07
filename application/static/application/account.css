@@ -1,4 +1,30 @@
-p{
+p {
     font-size: 20px;
     font-weight: bold;
+}
+
+.username {
+    background-color: lightgrey;
+    border-radius: 10px;
+    width: 500px;
+    border: 15px;
+    padding: 30px;
+    margin: 15px;
+}
+
+.change_password {
+    background-color: lightgrey;
+    width: 500px;
+    border: 15px;
+    border-radius: 10px;
+    padding: 60px;
+    margin: 15px;
+}
+.user_information {
+    background-color: lightgrey;
+    width: 500px;
+    border: 15px;
+    border-radius: 10px;
+    padding: 60px;
+    margin: 15px;
 }
