@@ -7,7 +7,7 @@
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/account.css' %}">
     <div class="username">
-        <p>Welcome, {{ user_type }} {{ user.username }}!</p>
+       <p> Welcome, {{ user_type }} {{ user.username }}!</p>
     </div>
     <div class="user_information">
         <b>Username:</b> {{ request.user.username }}<br>
