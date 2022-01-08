@@ -1,9 +1,8 @@
 from django.contrib import messages
-from django.contrib.auth import logout, login, authenticate, get_user_model
-from django.contrib.auth.models import Group,User
-from django.shortcuts import render, HttpResponse, redirect
+from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.models import Group
+from django.shortcuts import render, redirect
 from accounts.forms import CreateUserForm
-# User = get_user_model()
 
 
 def loginPage(request):
