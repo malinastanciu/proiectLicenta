@@ -15,7 +15,7 @@ class PathProject(models.Model):
     path = models.CharField(max_length=100)
 
 
-class Topics(models.Model):
+class Assignments(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
     projectID = models.ForeignKey(Project, on_delete=models.CASCADE)
