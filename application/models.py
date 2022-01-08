@@ -8,6 +8,7 @@ class Project(models.Model):
     name = models.CharField(max_length=100)
     registration_date = models.DateField(auto_now_add=True)
     final_date = models.DateField()
+    ownerID = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class PathProject(models.Model):
