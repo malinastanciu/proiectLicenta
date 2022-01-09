@@ -17,20 +17,3 @@
 
     width: 550px;
 }
-.custom-scrollbar {
-    position: relative;
-    height:45vh;
-    overflow: auto;
-}
-
-.table-wrapper-scroll-y {
-    display: block;
-}
-
-.table-bordered {
-    text-align: left;
-}
-th{
-    background-color: #005c99;
-    color: white;
-}

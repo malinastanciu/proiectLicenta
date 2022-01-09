@@ -6,7 +6,28 @@
 {% endblock %}
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/dashboard.css' %}">
-    This is the dashboard page
+     {% if 'teachers' in user_groups %}
+    <div class="table-wrapper-scroll-y custom-scrollbar">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Registration date</th>
+                    <th>End date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in projects %}
+                    <tr>
+                        <td>{{ project.name }}</td>
+                        <td>{{ project.registration_date }}</td>
+                        <td>{{ project.final_date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
 {% endblock %}
 
 
