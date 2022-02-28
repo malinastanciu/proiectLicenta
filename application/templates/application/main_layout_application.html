@@ -6,10 +6,11 @@
 
 
         <ul class="topnav">
-            <li><a href="{% url 'dashboard' %}">Projects</a></li>
-            <li><a href="{% url 'projects' %}">Add new project</a></li>
-            <li><a href="{% url 'account' %}">Account</a>
-            <li class="right"><a class="logout" href="{% url 'logout' %}">Logout</a></li>
+            <li><a href="{% url 'dashboard' %}">Discipline</a></li>
+                {% block pages %}
+                {% endblock %}
+            <li><a href="{% url 'account' %}">Cont</a>
+            <li class="right"><a class="logout" href="{% url 'logout' %}">Deconectare</a></li>
         </ul>
 
 {% endblock %}

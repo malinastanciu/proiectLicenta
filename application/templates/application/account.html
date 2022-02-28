@@ -2,23 +2,23 @@
 {% load static %}
 
 {% block title %}
-    Account
+    Cont
 {% endblock %}
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/account.css' %}">
     <div class="username">
-       <p> Welcome, {{ user_type }} {{ user.username }}!</p>
+       <p> Bine ati venit, {{ user_type }} {{ user.username }}!</p>
     </div>
     <div class="user_information">
-        <b>Username:</b> {{ request.user.username }}<br>
+        <b>Nume utilizator:</b> {{ request.user.username }}<br>
         <b>Email:</b> {{ request.user.email }}<br>
-        <b>First name:</b> {{ request.user.first_name }}<br>
-        <b>Last name:</b> {{ request.user.last_name }}<br>
-        <b>Account type:</b> {{ user_type }}<br>
+        <b>Prenume:</b> {{ request.user.first_name }}<br>
+        <b>Nume:</b> {{ request.user.last_name }}<br>
+        <b>Tipul contului:</b> {{ user_type }}<br>
 
     </div>
     <div class="change_password">
-        Do you want to change the password?<br>
-            <a href="{% url 'change_password' %}">Click here</a>
+        Vreti sa va schimbati parola?<br>
+            <a href="{% url 'change_password' %}">Apasati aici</a>
     </div>
 {% endblock %}

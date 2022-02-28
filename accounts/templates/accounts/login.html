@@ -1,33 +1,33 @@
 {% extends 'accounts/main_layout_accounts.html' %}
 
 {% block title %}
-    Login
+    Conectare
 {% endblock %}
-{% block name %}Login{% endblock %}
+{% block name %}Conectare{% endblock %}
 {% block content %}
     <form method="POST" action="">
          {% csrf_token %}
 
         <div class="form-group mb-3">
-            <input type="text" name="username" id="username" class="form-control input-sm" placeholder="Username">
+            <input type="text" name="username" id="username" class="form-control input-sm" placeholder="Nume utilizator">
         </div>
 
         <div class="form-group mb-3">
-            <input type="password" name="password" id="password" class="form-control input-sm" placeholder="Password">
+            <input type="password" name="password" id="password" class="form-control input-sm" placeholder="Parola">
         </div>
 
 
-        <input type="submit" value="Log In" class="btn btn-info btn-block">
+        <input type="submit" value="Conectare" class="btn btn-info btn-block">
         {% for message in messages %}
             <p id="messages">{{message}}</p>
         {% endfor %}
         <br>
         <div class="mt-4">
             <div class="d-flex justify-content-center links">
-                <a href="{% url 'reset_password' %}" class="ml-2">Forgot password?</a>
+                <a href="{% url 'reset_password' %}" class="ml-2">Ai uitat parola?</a>
             </div>
             <div class="d-flex justify-content-center links">
-                Don't have an account? <a href="{% url 'register' %}" class="ml-2">Register</a>
+                Nu ai cont? <a href="{% url 'register' %}" class="ml-2">Creaza cont</a>
             </div>
         </div>
     </form>

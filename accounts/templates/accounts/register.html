@@ -1,9 +1,9 @@
 {% extends 'accounts/main_layout_accounts.html' %}
 
 {% block title %}
-    Register
+    Creare cont
 {% endblock %}
-{% block name %}Register{% endblock %}
+{% block name %}Creare cont{% endblock %}
 {% block content %}
 
     <form method="POST" action="">
@@ -14,18 +14,18 @@
 
         </div>
         <div class="form-group">
-            <input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email Address" >
+            <input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email" >
         </div>
 
         <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                    <input type="password" name="password1" id="password1" class="form-control input-sm" placeholder="Password">
+                    <input type="password" name="password1" id="password1" class="form-control input-sm" placeholder="Parola">
                 </div>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                    <input type="password" name="password2" id="password2" class="form-control input-sm" placeholder="Confirm Password">
+                    <input type="password" name="password2" id="password2" class="form-control input-sm" placeholder="Confirma parola">
                 </div>
             </div>
         </div>
@@ -34,12 +34,12 @@
         <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                    <input type="text" name="first_name" id="first_name" class="form-control input-sm" placeholder="First Name">
+                    <input type="text" name="first_name" id="first_name" class="form-control input-sm" placeholder="Prenume">
                 </div>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                    <input type="text" name="last_name" id="last_name" class="form-control input-sm" placeholder="Last Name">
+                    <input type="text" name="last_name" id="last_name" class="form-control input-sm" placeholder="Nume">
                 </div>
             </div>
         </div>
@@ -47,8 +47,8 @@
         <input type="submit" value="Register" class="btn btn-info btn-block">
         {{ user.errors }}
         <br>
-        <p style="text-align: center"> Already have an account? </p>
-        <a href="{% url 'login' %}" class="ml-2" style="text-align: center; margin-left: 45%">Login</a>
+        <p style="text-align: center">Ai deja cont?</p>
+        <a href="{% url 'login' %}" class="ml-2" style="text-align: center; margin-left: 45%">Conectare</a>
 
 
     </form>

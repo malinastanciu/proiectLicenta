@@ -6,7 +6,7 @@ from application import views as application_views
 
 urlpatterns = [
     path('', application_views.dashboard, name='dashboard'),
-    path('account/', application_views.account, name='account'),
-    path('add-new-project/', application_views.projects, name='projects'),
+    path('cont/', application_views.account, name='account'),
+    path('adaugare-proiect-nou/', application_views.projects, name='projects'),
 
 ]

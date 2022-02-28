@@ -4,24 +4,32 @@
 {% block title %}
     Dashboard
 {% endblock %}
+
+{# o voi sterge de aici si o pun in pagina fiecarui proiect#}
+{% block pages %}
+    <li><a href="{% url 'projects' %}">Adaugare proiect</a>
+{% endblock %}
+
+{# partea asta va fi in functie de disciplina #}
+{# in dashboard vad toate disciplinele #}
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/dashboard.css' %}">
-     {% if 'teachers' in user_groups %}
+     {% if 'profesori' in user_groups %}
     <div class="table-wrapper-scroll-y custom-scrollbar">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Registration date</th>
-                    <th>End date</th>
+                    <th>Nume</th>
+                    <th>Data inregistare</th>
+                    <th>Data finalizare</th>
                 </tr>
             </thead>
             <tbody>
                 {% for project in projects %}
                     <tr>
-                        <td>{{ project.name }}</td>
-                        <td>{{ project.registration_date }}</td>
-                        <td>{{ project.final_date }}</td>
+                        <td>{{ project.nume }}</td>
+                        <td>{{ project.data_inregistare }}</td>
+                        <td>{{ project.data_finalizare }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

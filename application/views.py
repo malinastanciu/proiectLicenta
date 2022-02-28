@@ -4,13 +4,13 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from application.functions import create_context
 from django.core.files.storage import FileSystemStorage
-from application.models import Project
+from application.models import Proiect
 
 
 @login_required(login_url='login')
 def dashboard(request):
     context = create_context(request)
-    user_projects = Project.objects.all().filter(ownerID=request.user)
+    user_projects = Proiect.objects.all().filter(profesor=request.user)
     context['projects'] = user_projects
     return render(request, 'application/dashboard.html', context)
 
@@ -24,18 +24,18 @@ def account(request):
 @login_required(login_url='login')
 def projects(request):
     context = create_context(request)
-    project = Project()
+    project = Proiect()
     if request.method == 'POST':
-        project.name = request.POST.get('name')
-        project.registration_date = date.today()
-        project.final_date = request.POST.get('final_date')
-        project.ownerID = request.user
+        project.nume = request.POST.get('name')
+        project.data_inregistare = date.today()
+        project.data_finalizare = request.POST.get('final_date')
+        project.profesor = request.user
         uploaded_file = request.FILES['document']
-        project.path = uploaded_file.name
+        project.cale = uploaded_file.name
         fs = FileSystemStorage()
         txt = uploaded_file.name
         x = txt.split('.')
-        fs.save(project.name + '.'+x[1], uploaded_file)
+        fs.save(project.nume + '.'+x[1], uploaded_file)
         project.save()
         return redirect('dashboard')
     return render(request, 'application/projects.html', context)

@@ -9,10 +9,10 @@ def get_user_info(request):
 
     if 'admin' in user_groups:
         user_type = 'admin'
-    elif 'students' in user_groups:
+    elif 'studenti' in user_groups:
         user_type = 'student'
     else:
-        user_type = 'teacher'
+        user_type = 'profesor'
 
     out = {'user': user,
            'user_groups': user_groups,
