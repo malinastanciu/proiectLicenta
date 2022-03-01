@@ -7,7 +7,9 @@
 
 {# o voi sterge de aici si o pun in pagina fiecarui proiect#}
 {% block pages %}
-    <li><a href="{% url 'projects' %}">Adaugare proiect</a>
+    {% if user_type is 'profesor' %}
+        <li><a href="{% url 'projects' %}">Adaugare proiect</a>
+    {% endif %}
 {% endblock %}
 
 {# partea asta va fi in functie de disciplina #}
@@ -30,6 +32,35 @@
                         <td>{{ project.nume }}</td>
                         <td>{{ project.data_inregistare }}</td>
                         <td>{{ project.data_finalizare }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    {% if 'admin' in user_groups %}
+        <div class="box">
+            <p><b><a href="{% url 'adaugareDisciplina' %}">Adaugare disciplina noua</a></b></p>
+        </div>
+
+        <div class="table-wrapper-scroll-y custom-scrollbar">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nume</th>
+                    <th>Profesor</th>
+                    <th>An universitar</th>
+                    <th>Semestru</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for disciplina in discipline %}
+                    <tr>
+                        <td>{{ disciplina.nume }}</td>
+                        <td>{{ disciplina.profesor }}</td>
+                        <td>{{ disciplina.an_universitar }}</td>
+                        <td>{{ disciplina.semestru }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

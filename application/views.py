@@ -1,17 +1,20 @@
 from datetime import date
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from application.functions import create_context
 from django.core.files.storage import FileSystemStorage
-from application.models import Proiect
+from application.models import Proiect, Disciplina
 
 
 @login_required(login_url='login')
 def dashboard(request):
     context = create_context(request)
     user_projects = Proiect.objects.all().filter(profesor=request.user)
+    discipline = Disciplina.objects.all()
     context['projects'] = user_projects
+    context['discipline'] = discipline
     return render(request, 'application/dashboard.html', context)
 
 
@@ -39,3 +42,20 @@ def projects(request):
         project.save()
         return redirect('dashboard')
     return render(request, 'application/projects.html', context)
+
+
+@login_required(login_url='login')
+def adaugareDisciplina(request):
+    context = create_context(request)
+    disciplina = Disciplina()
+    profesori = User.objects.filter(groups__name='profesori')
+    print(profesori)
+    if request.method == 'POST':
+        disciplina.nume = request.POST.get('nume')
+        disciplina.profesor = request.POST.get('profesor')
+        disciplina.an_universitar = request.POST.get('an_universitar')
+        disciplina.semestru = request.POST.get('semestru')
+        disciplina.save()
+        return redirect('dashboard')
+    context['profesori'] = profesori
+    return render(request, 'application/adaugare_disciplina.html', context)

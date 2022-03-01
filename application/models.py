@@ -7,6 +7,8 @@ class Disciplina(models.Model):
     id = models.AutoField(primary_key=True)
     nume = models.CharField(max_length=100)
     profesor = models.ForeignKey(User, on_delete=models.CASCADE)
+    an_universitar = models.IntegerField(null=True)
+    semestru = models.IntegerField(null=True)
 
 
 class Proiect(models.Model):

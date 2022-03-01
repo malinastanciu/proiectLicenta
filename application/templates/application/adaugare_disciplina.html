@@ -1,0 +1,46 @@
+{% extends 'application/main_layout_application.html' %}
+{% load static %}
+
+{% block title %}
+    Adugare disciplina noua
+{% endblock %}
+{% block article %}
+    <link rel="stylesheet" href="{% static 'application/adaugare_discipline.css' %}">
+    {% if 'admin' in user_groups %}
+        <div class="create_project ">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h4>Adaugarea unei noi discipline</h4><br>
+                <label for="nume">Nume disciplina:</label>
+                <input type="text" name="nume"><br>
+                <label for="profesor">Profesor:</label>
+                <select id="profesori" name="profesor">
+                {% for profesor in profesori %}
+                    <option value="{{ profesor.id }}">{{ profesor.last_name }} {{ profesor.first_name }}</option>
+                {% endfor %}
+                </select><br>
+
+                <label for="an_univeristar">An universitar:</label>
+                <select id="an_universitar" name="an_universitar">
+                    <option value=2022>2030</option>
+                    <option value=2022>2029</option>
+                    <option value=2022>2028</option>
+                    <option value=2022>2027</option>
+                    <option value=2022>2026</option>
+                    <option value=2022>2025</option>
+                    <option value=2022>2024</option>
+                    <option value=2022>2023</option>
+                    <option value=2022>2022</option>
+                    <option value=2021>2021</option>
+                    <option value=2020>2020</option>
+                </select><br>
+                <label for="semestru">Semestru:</label>
+
+                    <h3 style="margin-top: -5px;"><input id="semestru" type="checkbox" value=1 name="semestru">I
+                    <input id="semestru" type="checkbox" value=2  name="semestru">II</h3>
+                <br>
+                <input type="submit" class="btn btn-info" value="Submit">
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}
