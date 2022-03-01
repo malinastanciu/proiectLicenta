@@ -43,13 +43,49 @@
         <div class="box">
             <p><b><a href="{% url 'adaugareDisciplina' %}">Adaugare disciplina noua</a></b></p>
         </div>
+        <div class="box2">
+            <p><b><a href="{% url 'adaugareDisciplina' %}">Stergere disciplina existenta</a></b></p>
+        </div>
 
-        <div class="table-wrapper-scroll-y custom-scrollbar">
+        <div class="box3">
+            <p><b><a href="{% url 'adaugareDisciplina' %}">Cautare discipline</a></b></p>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-6" style="background-color: pink; width: 460px; border-radius: 20px; margin-right: 10px; margin-left: 1%">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <div class="card-title">
+                    <p><b><a href="{% url 'adaugareDisciplina' %}">Adaugare disciplina noua</a></b></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6" style="background-color: #1b6d85; border-radius: 20px; width: 460px; margin-right: 10px">
+            <div class="card">
+              <div class="card-body" style="margin-bottom: 10px">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              </div>
+            </div>
+          </div><div class="col-sm-6" style="background-color: #1b6d85; border-radius: 20px; width: 460px; margin-right: 10px">
+            <div class="card">
+              <div class="card-body" style="margin-bottom: 10px">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top: 70px">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Nume</th>
-                    <th>Profesor</th>
+                    <th>Nume disciplina</th>
+                    <th>Profesor coordonator</th>
                     <th>An universitar</th>
                     <th>Semestru</th>
                 </tr>

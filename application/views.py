@@ -52,7 +52,7 @@ def adaugareDisciplina(request):
     print(profesori)
     if request.method == 'POST':
         disciplina.nume = request.POST.get('nume')
-        disciplina.profesor = request.POST.get('profesor')
+        disciplina.profesor = User.objects.filter(id=request.POST.get('profesor'))[0]
         disciplina.an_universitar = request.POST.get('an_universitar')
         disciplina.semestru = request.POST.get('semestru')
         disciplina.save()

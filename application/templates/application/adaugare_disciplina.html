@@ -14,8 +14,9 @@
                 <label for="nume">Nume disciplina:</label>
                 <input type="text" name="nume"><br>
                 <label for="profesor">Profesor:</label>
-                <select id="profesori" name="profesor">
+                <select id="profesor" name="profesor">
                 {% for profesor in profesori %}
+
                     <option value="{{ profesor.id }}">{{ profesor.last_name }} {{ profesor.first_name }}</option>
                 {% endfor %}
                 </select><br>
