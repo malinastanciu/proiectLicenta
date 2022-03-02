@@ -9,5 +9,6 @@ urlpatterns = [
     path('cont/', application_views.account, name='account'),
     path('adaugare-proiect-nou/', application_views.projects, name='projects'),
     path('adaugare-disciplina-noua/', application_views.adaugareDisciplina, name='adaugareDisciplina'),
+    path('stergere-disciplina-existenta/', application_views.stergereDisciplina, name='stergereDisciplina'),
 
 ]

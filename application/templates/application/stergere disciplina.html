@@ -1,0 +1,29 @@
+{% extends 'application/main_layout_application.html' %}
+{% load static %}
+
+{% block title %}
+    Stergere disciplina existenta
+{% endblock %}
+{% block article %}
+    <link rel="stylesheet" href="{% static 'application/stergere_disciplina.css' %}">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="card text-center d-flex justify-content-center" style="background-color: #1b6d85; width: 500px; border-radius: 20px; margin-left: 30%; padding: 10px 10px 20px 10px">
+          <div class="card-header" style="color: white; padding: 5px">
+              <h1>Stergere disciplina existenta</h1>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title" style="color: white">Alegeti disciplina pe care doriti sa o stergeti</h4>
+                <label for="discipline" style="color: white">Discipline:</label>
+                    <select id="discipline" name="discipline" style="margin-bottom: 30px">
+                    {% for disciplina in discipline %}
+
+                        <option value="{{ disciplina.id }}">{{ disciplina.nume }}</option>
+                    {% endfor %}
+                    </select><br>
+                    <input type="submit" class="btn" value="Submit" style="background-color: lightblue; width: 100%">
+          <br>
+          </div>
+        </div>
+    </form>
+{% endblock %}

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Dashboard
+    Pagina principala
 {% endblock %}
 
 {# o voi sterge de aici si o pun in pagina fiecarui proiect#}
@@ -16,6 +16,7 @@
 {# in dashboard vad toate disciplinele #}
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/dashboard.css' %}">
+    <script type="text/javascript" src="{% static 'application/js/dashboard.js' %}"></script>
      {% if 'profesori' in user_groups %}
     <div class="table-wrapper-scroll-y custom-scrollbar">
         <table class="table table-bordered">
@@ -40,45 +41,35 @@
     {% endif %}
 
     {% if 'admin' in user_groups %}
-        <div class="box">
-            <p><b><a href="{% url 'adaugareDisciplina' %}">Adaugare disciplina noua</a></b></p>
-        </div>
-        <div class="box2">
-            <p><b><a href="{% url 'adaugareDisciplina' %}">Stergere disciplina existenta</a></b></p>
-        </div>
-
-        <div class="box3">
-            <p><b><a href="{% url 'adaugareDisciplina' %}">Cautare discipline</a></b></p>
-        </div>
         <br>
         <div class="row">
-            <div class="col-sm-6" style="background-color: pink; width: 460px; border-radius: 20px; margin-right: 10px; margin-left: 1%">
+            <div class="col-sm-6" style="background-color: #383838; width: 460px; border-radius: 20px; margin-right: 10vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
+            <div class="card">
+              <div class="card-body" style="margin-top: 5px">
+                <h3 class="card-title" style="text-align: center;"><a href="{% url 'adaugareDisciplina' %}" style="color: white;">Adaugare disciplina noua</a></h3>
+                <br>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6" style="background-color: #383838; border-radius: 20px; width: 460px; margin-right: 8vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <div class="card-title">
-                    <p><b><a href="{% url 'adaugareDisciplina' %}">Adaugare disciplina noua</a></b></p>
+                <h3 class="card-title" style="text-align: center; color: white; "><a href="{% url 'stergereDisciplina' %}" style="color: white;">Stergere disciplina existenta</a></h3>
+                  <br>
+              </div>
+            </div>
+          </div>
+            <div class="col-sm-6" style="background-color: #383838; border-radius: 20px; width: 460px; margin-left: -1.5vh; margin-right: -5vh; padding-top: 5px; margin-bottom: 5px">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title collapsible" style="text-align: center"><a href="" style="color: white; margin-top: 5px">Cautare discipline</a></h3>
+                        <div class="content" style="background-color: white">
+                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        </div>
+                        <br>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-          <div class="col-sm-6" style="background-color: #1b6d85; border-radius: 20px; width: 460px; margin-right: 10px">
-            <div class="card">
-              <div class="card-body" style="margin-bottom: 10px">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              </div>
-            </div>
-          </div><div class="col-sm-6" style="background-color: #1b6d85; border-radius: 20px; width: 460px; margin-right: 10px">
-            <div class="card">
-              <div class="card-body" style="margin-bottom: 10px">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              </div>
-            </div>
-          </div>
-
         </div>
         <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top: 70px">
         <table class="table table-bordered">

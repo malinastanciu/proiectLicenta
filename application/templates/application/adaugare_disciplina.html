@@ -7,7 +7,7 @@
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/adaugare_discipline.css' %}">
     {% if 'admin' in user_groups %}
-        <div class="create_project ">
+        <div>
             <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <h4>Adaugarea unei noi discipline</h4><br>

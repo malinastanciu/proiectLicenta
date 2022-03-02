@@ -38,7 +38,7 @@ def projects(request):
         fs = FileSystemStorage()
         txt = uploaded_file.name
         x = txt.split('.')
-        fs.save(project.nume + '.'+x[1], uploaded_file)
+        fs.save(project.nume + '.' + x[1], uploaded_file)
         project.save()
         return redirect('dashboard')
     return render(request, 'application/projects.html', context)
@@ -59,3 +59,15 @@ def adaugareDisciplina(request):
         return redirect('dashboard')
     context['profesori'] = profesori
     return render(request, 'application/adaugare_disciplina.html', context)
+
+
+@login_required(login_url='login')
+def stergereDisciplina(request):
+    context = create_context(request)
+    discipline = Disciplina.objects.all()
+    if request.method == 'POST':
+        disciplina = Disciplina.objects.filter(id=request.POST.get('discipline'))[0]
+        disciplina.delete()
+        return redirect('dashboard')
+    context['discipline'] = discipline
+    return render(request, 'application/stergere disciplina.html', context)
