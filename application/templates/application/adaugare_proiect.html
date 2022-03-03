@@ -6,22 +6,19 @@
 {% endblock %}
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/projects.css' %}">
-    {% if 'teachers' in user_groups %}
-        <div class="create_project ">
+    <div style="padding-top: 60px">
+        <div class="create_project" style="padding: 20px; margin-left: 35%; font-size: 15px">
             <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <h4>Add a new project:</h4><br>
-                <label for="name">Name</label>
+                <h3><b>Adaugare proiect nou</b></h3><br>
+                <label for="name">Nume proiect</label>
                 <input type="text" name="name"><br>
-                <label for="final_date">End date</label>
+                <label for="final_date">Data de finalizare</label>
                 <input type="date" name="final_date"><br>
-                <label for="document">Add the document with the project topics</label>
+                <label for="document">Adaugarea documentului cu temele proiectului:</label>
                 <input type="file" name="document">
                 <input type="submit" class="btn btn-info" value="Submit">
             </form>
         </div>
-    {% endif %}
-    {% if 'students' in user_groups %}
-        Do you want to add the project?
-    {% endif %}
+    </div>
 {% endblock %}

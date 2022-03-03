@@ -4,7 +4,7 @@ p {
 }
 
 .username {
-    background-color: lightgrey;
+    background-color: aliceblue;
     border-radius: 10px;
     width: 500px;
     padding: 30px 60px;
@@ -12,14 +12,14 @@ p {
 }
 
 .change_password {
-    background-color: lightgrey;
+    background-color: aliceblue;
     width: 500px;
     border-radius: 10px;
     padding: 60px;
     margin: 15px;
 }
 .user_information {
-    background-color: lightgrey;
+    background-color: aliceblue;
     width: 500px;
     border-radius: 10px;
     padding: 60px;

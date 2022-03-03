@@ -1,0 +1,42 @@
+{% extends 'application/main_layout_application.html' %}
+{% load static %}
+
+{% block title %}
+    {{ disciplina.nume }}
+{% endblock %}
+{% block article %}
+    <link rel="stylesheet" href="{% static 'application/adaugare_discipline.css' %}">
+    <h1 style="color: #383838; font-size: 100px; padding: 50px"><b>{{ disciplina.nume }}</b></h1>
+         <div class="row">
+            <div class="col-sm-6"
+                 style="background-color: #383838; width: 460px; border-radius: 20px; margin-right: 10vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
+                <div class="card">
+                    <div class="card-body" style="margin-top: 5px">
+                        <h3 class="card-title" style="text-align: center;"><a href="{% url 'adaugareProiect' disciplina.id %}"
+                                                                              style="color: white;">Adaugare proiect
+                            nou</a></h3>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6"
+                 style="background-color: #383838; border-radius: 20px; width: 460px; margin-right: 8vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title" style="text-align: center; color: white; "><a
+                                href="{% url 'vizualizareProiecte' disciplina.id %}" style="color: white;">Vizualizare proiecte</a></h3>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6"
+                 style="background-color: #383838; border-radius: 20px; width: 460px; margin-left: -1.5vh; margin-right: -5vh; padding-top: 5px; margin-bottom: 5px">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title collapsible" style="text-align: center; color: white; "><a href="" style="color: white;">Vizualizare studenti</a></h3>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

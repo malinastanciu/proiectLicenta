@@ -6,9 +6,9 @@
 {% endblock %}
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/stergere_disciplina.css' %}">
-    <form method="POST">
+    <form method="POST" style="padding-top:100px">
         {% csrf_token %}
-        <div class="card text-center d-flex justify-content-center" style="background-color: #1b6d85; width: 500px; border-radius: 20px; margin-left: 30%; padding: 10px 10px 20px 10px">
+        <div class="card text-center d-flex justify-content-center" style="background-color: #1b6d85; width: 500px; border-radius: 20px; margin-left: 35%; padding: 10px 10px 20px 10px">
           <div class="card-header" style="color: white; padding: 5px">
               <h1>Stergere disciplina existenta</h1>
           </div>

@@ -3,6 +3,8 @@ from datetime import date
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+
+from application.decorators import allowed_users
 from application.functions import create_context
 from django.core.files.storage import FileSystemStorage
 from application.models import Proiect, Disciplina
@@ -24,26 +26,30 @@ def account(request):
     return render(request, 'application/account.html', context)
 
 
+@allowed_users(allowed_roles=['profesori'])
 @login_required(login_url='login')
-def projects(request):
+def adaugareProiect(request, pk):
     context = create_context(request)
-    project = Proiect()
+    proiect = Proiect()
     if request.method == 'POST':
-        project.nume = request.POST.get('name')
-        project.data_inregistare = date.today()
-        project.data_finalizare = request.POST.get('final_date')
-        project.profesor = request.user
+        proiect.nume = request.POST.get('name')
+        proiect.data_inregistrare = date.today()
+        proiect.data_finalizare = request.POST.get('final_date')
+        proiect.profesor = request.user
+        proiect.disciplina = Disciplina.objects.get(pk=pk)
         uploaded_file = request.FILES['document']
-        project.cale = uploaded_file.name
+        proiect.document = uploaded_file.name
         fs = FileSystemStorage()
         txt = uploaded_file.name
         x = txt.split('.')
-        fs.save(project.nume + '.' + x[1], uploaded_file)
-        project.save()
-        return redirect('dashboard')
-    return render(request, 'application/projects.html', context)
+        fs.save(proiect.nume + '.' + x[1], uploaded_file)
+        proiect.cale = proiect.nume + '.' + x[1]
+        proiect.save()
+        return redirect('vizualizareDisciplina', pk=pk)
+    return render(request, 'application/adaugare_proiect.html', context)
 
 
+@allowed_users(allowed_roles=['admin'])
 @login_required(login_url='login')
 def adaugareDisciplina(request):
     context = create_context(request)
@@ -61,6 +67,7 @@ def adaugareDisciplina(request):
     return render(request, 'application/adaugare_disciplina.html', context)
 
 
+@allowed_users(allowed_roles=['admin'])
 @login_required(login_url='login')
 def stergereDisciplina(request):
     context = create_context(request)
@@ -71,3 +78,27 @@ def stergereDisciplina(request):
         return redirect('dashboard')
     context['discipline'] = discipline
     return render(request, 'application/stergere disciplina.html', context)
+
+
+@allowed_users(allowed_roles=['profesori'])
+@login_required(login_url='login')
+def vizualizareDisciplina(request, pk):
+    context = create_context(request)
+    disciplina = Disciplina.objects.get(pk=pk)
+    if request.method == 'POST':
+
+        return redirect('dashboard')
+    context['disciplina'] = disciplina
+    return render(request, 'application/vizualizare_disciplina.html', context)
+
+
+@allowed_users(allowed_roles=['profesori'])
+@login_required(login_url='login')
+def vizualizareProiecte(request, pk):
+    context = create_context(request)
+    proiecte = Proiect.objects.all()
+    if request.method == 'POST':
+
+        return redirect('vizualizareDisciplina')
+    context['proiecte'] = proiecte
+    return render(request, 'application/vizualizare_proiecte.html', context)

@@ -14,10 +14,11 @@ class Disciplina(models.Model):
 class Proiect(models.Model):
     id = models.AutoField(primary_key=True)
     nume = models.CharField(max_length=100)
-    data_inregistare = models.DateField(auto_now_add=True)
+    data_inregistrare = models.DateField(auto_now_add=True)
     data_finalizare = models.DateField()
     profesor = models.ForeignKey(User, on_delete=models.CASCADE)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE, null=True)
+    document = models.CharField(max_length=100, null=True)
     cale = models.CharField(max_length=100, default=None)
 
 

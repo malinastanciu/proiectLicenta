@@ -51,10 +51,8 @@ a:hover{
     text-decoration: none;
 }
 .collapsible {
-  background-color: #777;
   color: white;
   cursor: pointer;
-  padding: 18px;
   width: 100%;
   border: none;
   text-align: left;
@@ -62,15 +60,11 @@ a:hover{
   font-size: 15px;
 }
 
-.active, .collapsible:hover {
-  background-color: #555;
-}
 
 .content {
   padding: 0 18px;
   display: none;
   overflow: hidden;
-  background-color: #f1f1f1;
 }
 @media screen and (max-width: 600px) {
   .box1, .box2, .box3{float: none}

@@ -3,6 +3,7 @@ from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 from accounts.forms import CreateUserForm
+from application.decorators import allowed_users
 
 
 def loginPage(request):

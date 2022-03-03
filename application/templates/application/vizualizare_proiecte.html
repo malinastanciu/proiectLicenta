@@ -1,0 +1,36 @@
+{% extends 'application/main_layout_application.html' %}
+{% load static %}
+
+{% block title %}
+    Projects
+{% endblock %}
+{% block article %}
+        <h3><b>Vizualizare proiecte</b></h3><br>
+        <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top: 50px">
+            <table class="table table-bordered" id="myTable">
+                <thead>
+                <tr>
+                    <th>Nume proiect</th>
+                    <th>Data inregistare</th>
+                    <th>Data finalizare</th>
+                    <th>Cale</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for proiect in proiecte %}
+
+                    <tr class="tr">
+                        <td>{{ proiect.nume }}</td>
+                        <td>{{ proiect.data_inregistrare }}</td>
+                        <td>{{ proiect.data_finalizare }}</td>
+                        <td>{{ proiect.cale }}</td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+{% endblock %}

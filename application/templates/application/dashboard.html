@@ -16,84 +16,102 @@
 {# in dashboard vad toate disciplinele #}
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/dashboard.css' %}">
-    <script type="text/javascript" src="{% static 'application/js/dashboard.js' %}"></script>
-     {% if 'profesori' in user_groups %}
-    <div class="table-wrapper-scroll-y custom-scrollbar">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Nume</th>
-                    <th>Data inregistare</th>
-                    <th>Data finalizare</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for project in projects %}
-                    <tr>
-                        <td>{{ project.nume }}</td>
-                        <td>{{ project.data_inregistare }}</td>
-                        <td>{{ project.data_finalizare }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    {% if 'profesori' in user_groups %}
+        <h1><b>Vizualizarea disciplinelor</b></h1>
+        <br>
+        <div class="row">
+            {% for disciplina in discipline %}
+                {% if disciplina.profesor == request.user %}
+                    <div class="col-sm-6"
+                         style="background-color: #383838; width: 330px; height: 200px; border-radius: 20px; margin-right: 6vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
+                        <div class="card">
+                            <div class="card-body" style="margin-top: 5px">
+                                <h1 class="card-title" style="text-align: center; padding-top: 50px"><a href="{% url 'vizualizareDisciplina' disciplina.id %}"
+                                                                                                    style="color: white;">{{ disciplina.nume }}</a></h1>
+                                    <h5 class="card-title" style="text-align: center; color: white">Anul {{ disciplina.an_universitar }}, semestrul {{ disciplina.semestru }}</h5>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
     {% endif %}
 
     {% if 'admin' in user_groups %}
         <br>
         <div class="row">
-            <div class="col-sm-6" style="background-color: #383838; width: 460px; border-radius: 20px; margin-right: 10vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
-            <div class="card">
-              <div class="card-body" style="margin-top: 5px">
-                <h3 class="card-title" style="text-align: center;"><a href="{% url 'adaugareDisciplina' %}" style="color: white;">Adaugare disciplina noua</a></h3>
-                <br>
-              </div>
+            <div class="col-sm-6"
+                 style="background-color: #383838; width: 460px; border-radius: 20px; margin-right: 10vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
+                <div class="card">
+                    <div class="card-body" style="margin-top: 5px">
+                        <h3 class="card-title" style="text-align: center;"><a href="{% url 'adaugareDisciplina' %}"
+                                                                              style="color: white;">Adaugare disciplina
+                            noua</a></h3>
+                        <br>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="col-sm-6" style="background-color: #383838; border-radius: 20px; width: 460px; margin-right: 8vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
-            <div class="card">
-              <div class="card-body">
-                <h3 class="card-title" style="text-align: center; color: white; "><a href="{% url 'stergereDisciplina' %}" style="color: white;">Stergere disciplina existenta</a></h3>
-                  <br>
-              </div>
-            </div>
-          </div>
-            <div class="col-sm-6" style="background-color: #383838; border-radius: 20px; width: 460px; margin-left: -1.5vh; margin-right: -5vh; padding-top: 5px; margin-bottom: 5px">
+            <div class="col-sm-6"
+                 style="background-color: #383838; border-radius: 20px; width: 460px; margin-right: 8vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="card-title collapsible" style="text-align: center"><a href="" style="color: white; margin-top: 5px">Cautare discipline</a></h3>
-                        <div class="content" style="background-color: white">
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <h3 class="card-title" style="text-align: center; color: white; "><a
+                                href="{% url 'stergereDisciplina' %}" style="color: white;">Stergere disciplina
+                            existenta</a></h3>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6"
+                 style="background-color: #383838; border-radius: 20px; width: 460px; margin-left: -1.5vh; margin-right: -5vh; padding-top: 5px; margin-bottom: 5px">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title collapsible" style="text-align: center">Cautare discipline</h3>
+                        <div class="content">
+                            <input type="text" id="myInput" onkeyup="myFunction()"
+                                   placeholder="Introduceti o disciplina" style="width: 390px; border-radius: 5px">
                         </div>
                         <br>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top: 70px">
-        <table class="table table-bordered">
-            <thead>
+
+            <table class="table table-bordered" id="myTable">
+                <thead>
                 <tr>
                     <th>Nume disciplina</th>
                     <th>Profesor coordonator</th>
                     <th>An universitar</th>
                     <th>Semestru</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+
+                <tbody>
+
                 {% for disciplina in discipline %}
-                    <tr>
+
+                    <tr class="tr">
                         <td>{{ disciplina.nume }}</td>
                         <td>{{ disciplina.profesor }}</td>
                         <td>{{ disciplina.an_universitar }}</td>
                         <td>{{ disciplina.semestru }}</td>
                     </tr>
+
                 {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                </tbody>
+
+            </table>
+        </div>
+
+
+
     {% endif %}
+    <script type="text/javascript" src="{% static 'application/js/dashboard.js' %}"></script>
+    <script type="text/javascript" src="{% static 'application/js/search_bar.js' %}"></script>
 {% endblock %}
 
 
