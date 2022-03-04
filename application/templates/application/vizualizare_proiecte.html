@@ -7,26 +7,30 @@
 {% block article %}
         <h3><b>Vizualizare proiecte</b></h3><br>
         <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top: 50px">
-            <table class="table table-bordered" id="myTable">
-                <thead>
-                <tr>
-                    <th>Nume proiect</th>
-                    <th>Data inregistare</th>
-                    <th>Data finalizare</th>
-                    <th>Cale</th>
+            <table class="table table-bordered" id="myTable" style="border-color: #1b6d85">
+                <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px">
+                <tr  style="border-color: #1b6d85">
+                    <th  style="border-color: #1b6d85">Nume proiect</th>
+                    <th  style="border-color: #1b6d85">Data inregistare</th>
+                    <th  style="border-color: #1b6d85">Data finalizare</th>
+                    <th  style="border-color: #1b6d85">Cale</th>
+                    <th  style="border-color: #1b6d85">Document</th>
                 </tr>
                 </thead>
 
                 <tbody>
 
                 {% for proiect in proiecte %}
+                    {% if proiect.disciplina.id is disciplina.id %}
 
                     <tr class="tr">
-                        <td>{{ proiect.nume }}</td>
-                        <td>{{ proiect.data_inregistrare }}</td>
-                        <td>{{ proiect.data_finalizare }}</td>
-                        <td>{{ proiect.cale }}</td>
+                        <td  style="border-color: #1b6d85">{{ proiect.nume }}</td>
+                        <td  style="border-color: #1b6d85">{{ proiect.data_inregistrare }}</td>
+                        <td  style="border-color: #1b6d85">{{ proiect.data_finalizare }}</td>
+                        <td  style="border-color: #1b6d85">{{ proiect.cale }}</td>
+                        <td  style="border-color: #1b6d85">{{ proiect.document }}</td>
                     </tr>
+                    {% endif %}
 
                 {% endfor %}
                 </tbody>

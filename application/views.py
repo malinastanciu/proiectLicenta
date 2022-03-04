@@ -97,8 +97,10 @@ def vizualizareDisciplina(request, pk):
 def vizualizareProiecte(request, pk):
     context = create_context(request)
     proiecte = Proiect.objects.all()
+    disciplina = Disciplina.objects.get(pk=pk)
     if request.method == 'POST':
 
         return redirect('vizualizareDisciplina')
     context['proiecte'] = proiecte
+    context['disciplina'] = disciplina
     return render(request, 'application/vizualizare_proiecte.html', context)

@@ -7,7 +7,9 @@
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/projects.css' %}">
     <div style="padding-top: 60px">
-        <div class="create_project" style="padding: 20px; margin-left: 35%; font-size: 15px">
+    <div class="row d-flex justify-content-center" style="width: auto; position: center">
+        <div class="col-sm-6"></div>
+        <div class="create_project" style="padding: 20px;font-size: 15px">
             <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <h3><b>Adaugare proiect nou</b></h3><br>
@@ -20,5 +22,7 @@
                 <input type="submit" class="btn btn-info" value="Submit">
             </form>
         </div>
+        </div>
+    </div>
     </div>
 {% endblock %}
