@@ -145,3 +145,12 @@ def adaugareStudenti(request):
                 stud.save()
         return redirect('dashboard')
     return render(request, 'application/adaugare_studenti.html', context)
+
+
+@allowed_users(allowed_roles=['admin'])
+@login_required(login_url='login')
+def vizualizareStudenti(request):
+    context = create_context(request)
+    studenti = Student.objects.all()
+    context['studenti'] = studenti
+    return render(request, 'application/vizualizare_studenti.html', context)

@@ -14,7 +14,7 @@ urlpatterns = [
          name='adaugareProiect'),
     path('vizualizare-disciplina/<str:pk>/vizualizare-proiecte/', application_views.vizualizareProiecte,
          name='vizualizareProiecte'),
-    path('adugare-studenti/', application_views.adaugareStudenti,
-         name='adaugareStudenti'),
+    path('adugare-studenti/', application_views.adaugareStudenti, name='adaugareStudenti'),
+    path('vizualizare-studenti/', application_views.vizualizareStudenti, name='vizualizareStudenti'),
 
 ]

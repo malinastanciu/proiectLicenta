@@ -1,0 +1,44 @@
+{% extends 'application/main_layout_application.html' %}
+{% load static %}
+
+{% block title %}
+    Studenti
+{% endblock %}
+{% block article %}
+        <h3><b>Vizualizare studenti</b></h3><br>
+        <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top: 50px">
+            <table class="table table-bordered" id="myTable" style="border-color: #1b6d85">
+                <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px">
+                <tr  style="border-color: #1b6d85">
+                    <th  style="border-color: #1b6d85">Nume student</th>
+                    <th  style="border-color: #1b6d85">Prenume</th>
+                    <th  style="border-color: #1b6d85">Email</th>
+                    <th  style="border-color: #1b6d85">Facultatea</th>
+                    <th  style="border-color: #1b6d85">Ciclu de studii</th>
+                    <th  style="border-color: #1b6d85">Specializarea</th>
+                    <th  style="border-color: #1b6d85">Anul</th>
+                    <th  style="border-color: #1b6d85">Grupa</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for student in studenti %}
+
+                    <tr class="tr">
+                        <td  style="border-color: #1b6d85">{{ student.utilizator.last_name }}</td>
+                        <td  style="border-color: #1b6d85">{{ student.utilizator.first_name }}</td>
+                        <td  style="border-color: #1b6d85">{{ student.utilizator.email }}</td>
+                        <td  style="border-color: #1b6d85">{{ student.facultate}}</td>
+                        <td  style="border-color: #1b6d85">{{ student.ciclu_de_studii}}</td>
+                        <td  style="border-color: #1b6d85">{{ student.specializare}}</td>
+                        <td  style="border-color: #1b6d85">{{ student.an_studiu}}</td>
+                        <td  style="border-color: #1b6d85">{{ student.grupa}}</td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+{% endblock %}
