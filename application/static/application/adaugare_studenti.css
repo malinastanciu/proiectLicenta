@@ -1,0 +1,19 @@
+.create_project {
+/*    margin-top: 20px;*/
+/*    border-radius: 5px;*/
+    background-color: #f2f2f2;
+/*    padding: 20px;*/
+/*    width: 500px;*/
+/*    margin-left: 0px;*/
+}
+
+.create_project input {
+    width: 100%;
+    clear: both;
+    margin-bottom: 10px;
+}
+
+.input-submit {
+
+    width: 550px;
+}

@@ -7,21 +7,21 @@
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/projects.css' %}">
     <div style="padding-top: 60px">
-    <div class="row d-flex justify-content-center" style="width: auto; position: center">
-        <div class="col-sm-6"></div>
-        <div class="create_project" style="padding: 20px;font-size: 15px">
-            <form action="" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <h3><b>Adaugare proiect nou</b></h3><br>
-                <label for="name">Nume proiect</label>
-                <input type="text" name="name"><br>
-                <label for="final_date">Data de finalizare</label>
-                <input type="date" name="final_date"><br>
-                <label for="document">Adaugarea documentului cu temele proiectului:</label>
-                <input type="file" name="document">
-                <input type="submit" class="btn btn-info" value="Submit">
-            </form>
-        </div>
+        <div class="row d-flex justify-content-center" style="width: auto; position: center">
+            <div class="col-sm-6">
+            <div class="create_project" style="padding: 20px;font-size: 15px">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h3><b>Adaugare proiect nou</b></h3><br>
+                    <label for="name">Nume proiect</label>
+                    <input type="text" name="name"><br>
+                    <label for="final_date">Data de finalizare</label>
+                    <input type="date" name="final_date"><br>
+                    <label for="document">Adaugarea documentului cu temele proiectului:</label>
+                    <input type="file" name="document">
+                    <input type="submit" class="btn btn-info" value="Submit">
+                </form>
+            </div>
         </div>
     </div>
     </div>

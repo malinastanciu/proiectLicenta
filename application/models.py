@@ -23,4 +23,10 @@ class Proiect(models.Model):
 
 
 class Student(models.Model):
-    pass
+    id = models.AutoField(primary_key=True)
+    utilizator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    facultate = models.CharField(max_length=100, null=True)
+    ciclu_de_studii = models.CharField(max_length=100, null=True)
+    specializare = models.CharField(max_length=50, null=True)
+    an_studiu = models.CharField(max_length=20, null=True)
+    grupa = models.CharField(max_length=10, null=True)
