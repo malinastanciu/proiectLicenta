@@ -30,10 +30,10 @@ def registerPage(request):
                 user.save()
                 group = Group.objects.get(name='profesori')
                 user.groups.add(group)
-            elif user.email.endswith('@stud.acs.upb.ro'):
-                user.save()
-                group = Group.objects.get(name='studenti')
-                user.groups.add(group)
+            # elif user.email.endswith('@stud.acs.upb.ro'):
+            #     user.save()
+            #     group = Group.objects.get(name='studenti')
+            #     user.groups.add(group)
             return redirect('login')
     context = {'user': user, 'page_name': 'Creare cont'}
     return render(request, 'accounts/register.html', context)

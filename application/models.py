@@ -21,6 +21,7 @@ class Proiect(models.Model):
     document = models.CharField(max_length=100, null=True)
     nr_persoane = models.IntegerField(null=True)
     cale = models.CharField(max_length=100, default=None)
+    distribuire_teme = models.BooleanField()
 
 
 class Student(models.Model):
