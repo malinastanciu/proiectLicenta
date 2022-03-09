@@ -1,0 +1,45 @@
+{% extends 'application/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    Vizualizare discipline
+{% endblock %}
+
+{% block article %}
+    <div class="content">
+        <h3 style="color: #005c99"><b>Cautati o disciplina</b></h3>
+        <input type="text" id="myInput" onkeyup="myFunction()"
+            placeholder="Introduceti o disciplina" style="width: 500px; height: 30px; border-radius: 5px; border-color: whitesmoke">
+    </div>
+    <br>
+    <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top: 70px">
+
+            <table class="table table-bordered" id="myTable">
+                <thead style="background-color: #005c99; color: white">
+                <tr>
+                    <th>Nume disciplina</th>
+                    <th>Profesor coordonator</th>
+                    <th>An universitar</th>
+                    <th>Semestru</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for disciplina in discipline %}
+
+                    <tr class="tr">
+                        <td>{{ disciplina.nume }}</td>
+                        <td>{{ disciplina.profesor }}</td>
+                        <td>{{ disciplina.an_universitar }}</td>
+                        <td>{{ disciplina.semestru }}</td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    <script type="text/javascript" src="{% static 'application/js/search_bar.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'application/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    Adugare studenti
+{% endblock %}
+{% block article %}
+    <link rel="stylesheet" href="{% static 'application/css/adaugare_studenti.css' %}">
+
+
+     <div style="padding-top: 60px">
+        <div class="row d-flex justify-content-center" style="width: auto; position: center">
+
+            <div class="create_project" style="padding: 20px;font-size: 15px">
+                 <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h4>Adaugarea studenti</h4><br>
+                <label for="document">Adaugarea fisierului Excel cu studenti</label>
+                <input type="file" name="document">
+                <input type="submit" class="btn btn-info" value="Submit">
+            </form>
+        </div>
+    </div>
+    </div>
+{% endblock %}

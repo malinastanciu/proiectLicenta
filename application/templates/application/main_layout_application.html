@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block header %}
-    <link rel="stylesheet" href="{% static 'application/main_layout_application.css' %}">
+    <link rel="stylesheet" href="{% static 'application/css/main_layout_application.css' %}">
 
 
         <ul class="topnav">
-            <li><a href="{% url 'dashboard' %}">Discipline</a></li>
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
                 {% block pages %}
                 {% endblock %}
             <li><a href="{% url 'account' %}">Cont</a>

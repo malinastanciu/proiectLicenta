@@ -7,15 +7,13 @@
 
 {# o voi sterge de aici si o pun in pagina fiecarui proiect#}
 {% block pages %}
-    {% if user_type is 'profesor' %}
-        <li><a href="{% url 'projects' %}">Adaugare proiect</a>
+    {% if user_type == 'admin' %}
+        <li><a href="{% url 'vizualizareDiscipline' %}">Discipline</a>
     {% endif %}
 {% endblock %}
 
-{# partea asta va fi in functie de disciplina #}
-{# in dashboard vad toate disciplinele #}
 {% block article %}
-    <link rel="stylesheet" href="{% static 'application/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'application/css/dashboard.css' %}">
     {% if 'profesori' in user_groups %}
         <h1><b>Vizualizarea disciplinelor</b></h1>
         <br>
@@ -42,117 +40,101 @@
         <br>
         <div class="row">
             <div class="col-sm-6"
-                 style="background-color: #383838; width: 430px; border-radius: 20px; margin-right: 10vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
+                 style="background-color: #383838; width: 430px; height: 200px; border-radius: 20px; margin-left: 30vh; margin-right: 20vh; padding-top: 5px; margin-bottom: 5px">
                 <div class="card">
                     <div class="card-body" style="margin-top: 5px">
-                        <h4 class="card-title" style="text-align: center;"><a href="{% url 'adaugareDisciplina' %}"
+                        <h2 class="card-title" style="text-align: center; padding-top: 50px"><a href="{% url 'adaugareDisciplina' %}"
                                                                               style="color: white;">Adaugare disciplina
-                            noua</a></h4>
+                            noua</a></h2>
                         <br>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6"
-                 style="background-color: #383838; border-radius: 20px; width: 430px; margin-right: 8vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
+                 style="background-color: #383838; border-radius: 20px; width: 430px; height: 200px;  margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title" style="text-align: center; color: white; "><a
+                        <h2 class="card-title" style="text-align: center; padding-top: 50px"><a
                                 href="{% url 'stergereDisciplina' %}" style="color: white;">Stergere disciplina
-                            existenta</a></h4>
+                            existenta</a></h2>
                         <br>
                     </div>
                 </div>
             </div>
-{#            pentru secretariat#}
+            <div class="col-sm-6"
+                 style="background-color: #383838; border-radius: 20px; width: 430px; height: 200px; margin-left: 30vh; margin-right: 20vh;  padding-top: 5px; margin-bottom: 5px">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title" style="text-align: center;  padding-top: 50px"><a
+                                href="{% url 'adaugareCont' %}" style="color: white;">Adaugare cont</a></h2>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6"
+                 style="background-color: #383838; border-radius: 20px; width: 430px;  height: 200px; margin-right: 10vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title" style="text-align: center; padding-top: 50px"><a
+                                href="{% url 'stergereCont'  %}" style="color: white;">Stergere cont</a></h2>
+                        <br>
+                    </div>
+                </div>
+            </div>
 {#            <div class="col-sm-6"#}
-{#                 style="background-color: #383838; border-radius: 20px; width: 430px; margin-right: 8vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">#}
+{#                 style="background-color: #383838; border-radius: 20px; width: 430px; margin-left: -1.5vh; margin-right: 8vh; padding-top: 5px; margin-bottom: 5px">#}
 {#                <div class="card">#}
 {#                    <div class="card-body">#}
-{#                        <h4 class="card-title" style="text-align: center; color: white; "><a#}
-{#                                href="{% url 'adaugareStudenti' %}" style="color: white;">Adaugare studenti</a></h4>#}
+{#                        <h4 class="card-title collapsible" style="text-align: center">Cautare discipline</h4>#}
+{#                        <div class="content">#}
+{#                            <input type="text" id="myInput" onkeyup="myFunction()"#}
+{#                                   placeholder="Introduceti o disciplina" style="width: 360px; border-radius: 5px">#}
+{#                        </div>#}
 {#                        <br>#}
 {#                    </div>#}
 {#                </div>#}
 {#            </div>#}
-{#            <div class="col-sm-6"#}
-{#                 style="background-color: #383838; border-radius: 20px; width: 430px; margin-right: 10vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">#}
-{#                <div class="card">#}
-{#                    <div class="card-body">#}
-{#                        <h4 class="card-title" style="text-align: center; color: white; "><a#}
-{#                                href="{% url 'vizualizareStudenti' %}" style="color: white;">Vizualizare studenti</a></h4>#}
-{#                        <br>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-            <div class="col-sm-6"
-                 style="background-color: #383838; border-radius: 20px; width: 430px; margin-right: 10vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title" style="text-align: center; color: white; "><a
-                                href="{% url 'adaugareCont' %}" style="color: white;">Adaugare cont</a></h4>
-                        <br>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6"
-                 style="background-color: #383838; border-radius: 20px; width: 430px; margin-right: 10vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title" style="text-align: center; color: white; "><a
-                                href="{% url 'stergereCont'  %}" style="color: white;">Stergere cont</a></h4>
-                        <br>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6"
-                 style="background-color: #383838; border-radius: 20px; width: 430px; margin-left: -1.5vh; margin-right: 8vh; padding-top: 5px; margin-bottom: 5px">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title collapsible" style="text-align: center">Cautare discipline</h4>
-                        <div class="content">
-                            <input type="text" id="myInput" onkeyup="myFunction()"
-                                   placeholder="Introduceti o disciplina" style="width: 360px; border-radius: 5px">
-                        </div>
-                        <br>
-                    </div>
-                </div>
-            </div>
         </div>
-
-        <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top: 70px">
-
-            <table class="table table-bordered" id="myTable">
-                <thead>
-                <tr>
-                    <th>Nume disciplina</th>
-                    <th>Profesor coordonator</th>
-                    <th>An universitar</th>
-                    <th>Semestru</th>
-                </tr>
-                </thead>
-
-                <tbody>
-
-                {% for disciplina in discipline %}
-
-                    <tr class="tr">
-                        <td>{{ disciplina.nume }}</td>
-                        <td>{{ disciplina.profesor }}</td>
-                        <td>{{ disciplina.an_universitar }}</td>
-                        <td>{{ disciplina.semestru }}</td>
-                    </tr>
-
-                {% endfor %}
-                </tbody>
-
-            </table>
-        </div>
-
-
-
     {% endif %}
+    {% if 'secretariat' in user_groups %}
+        <div class="row">
+            <div class="col-sm-6"
+                 style="background-color: #383838; border-radius: 20px; width: 430px; height:200px; padding-top: 5px; margin: 5vh 0 5px 33vh">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title" style="text-align: center; padding: 50px "><a
+                                href="{% url 'adaugareStudenti' %}" style="color: white;">Adaugare studenti</a></h2>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6"
+                 style="background-color: #383838; border-radius: 20px; width: 430px; height: 200px; padding-top: 5px; margin: 5vh 0 5px 20vh;">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title" style="text-align: center; padding: 50px"><a
+                                href="{% url 'vizualizareStudenti' %}" style="color: white;">Vizualizare studenti</a></h2>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6"
+                 style="background-color: #383838; border-radius: 20px; width: 430px; height: 200px; padding-top: 5px; margin: 5vh 0 5px 33vh;">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title" style="text-align: center; padding: 35px"><a
+                                href="{% url 'asignareDiscipline' %}" style="color: white;">Asignarea disciplinelor studentilor</a></h2>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+
+
     <script type="text/javascript" src="{% static 'application/js/dashboard.js' %}"></script>
-    <script type="text/javascript" src="{% static 'application/js/search_bar.js' %}"></script>
 {% endblock %}
 
 

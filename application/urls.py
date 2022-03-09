@@ -17,4 +17,6 @@ urlpatterns = [
     path('vizualizare-studenti/', application_views.vizualizareStudenti, name='vizualizareStudenti'),
     path('stergere-cont-utilizator/', application_views.stergereCont, name='stergereCont'),
     path('adaugare-cont-utilizator/', application_views.adaugareCont, name='adaugareCont'),
+    path('vizualizare-discipline/', application_views.vizualizareDiscipline, name='vizualizareDiscipline'),
+    path('asignare-discipline/', application_views.asignareDiscipline, name='asignareDiscipline'),
 ]

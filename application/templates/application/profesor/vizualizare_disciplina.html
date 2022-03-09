@@ -1,11 +1,11 @@
-{% extends 'application/main_layout_application.html' %}
+{% extends 'application/dashboard.html' %}
 {% load static %}
 
 {% block title %}
     {{ disciplina.nume }}
 {% endblock %}
 {% block article %}
-    <link rel="stylesheet" href="{% static 'application/adaugare_discipline.css' %}">
+    <link rel="stylesheet" href="{% static 'application/css/adaugare_discipline.css' %}">
     <h1 style="color: #383838; font-size: 100px; padding: 50px"><b>{{ disciplina.nume }}</b></h1>
          <div class="row">
             <div class="col-sm-6"

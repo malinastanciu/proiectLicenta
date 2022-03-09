@@ -1,16 +1,16 @@
-{% extends 'application/main_layout_application.html' %}
+{% extends 'application/dashboard.html' %}
 {% load static %}
 
 {% block title %}
     Adaugare cont
 {% endblock %}
 {% block article %}
-    <link rel="stylesheet" href="{% static 'application/adaugare_discipline.css' %}">
+    <link rel="stylesheet" href="{% static 'application/css/adaugare_cont.css' %}">
     <div>
         <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="card text-center d-flex justify-content-center"
-                 style="background-color: #677294; width: 500px; border-radius: 20px; margin-left: 35%; margin-top: 10%; padding: 10px 10px 20px 10px">
+                 style="background-color: #677294; width: 500px; border-radius: 20px; margin-left: 35%; margin-top: 5%; padding: 10px 10px 20px 10px">
                 <div class="card-header" style="padding: 5px">
                     <div class="card-body">
                         <h2 style="color: white"><b>Adaugarea unui nou cont</b></h2><br>

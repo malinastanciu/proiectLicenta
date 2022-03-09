@@ -52,7 +52,7 @@ def adaugareProiect(request, pk):
         proiect.cale = proiect.nume + '.' + x[1]
         proiect.save()
         return redirect('vizualizareDisciplina', pk=pk)
-    return render(request, 'application/adaugare_proiect.html', context)
+    return render(request, 'application/profesor/adaugare_proiect.html', context)
 
 
 @allowed_users(allowed_roles=['admin'])
@@ -70,7 +70,7 @@ def adaugareDisciplina(request):
         disciplina.save()
         return redirect('dashboard')
     context['profesori'] = profesori
-    return render(request, 'application/adaugare_disciplina.html', context)
+    return render(request, 'application/administrator/adaugare_disciplina.html', context)
 
 
 @allowed_users(allowed_roles=['admin'])
@@ -83,7 +83,7 @@ def stergereDisciplina(request):
         disciplina.delete()
         return redirect('dashboard')
     context['discipline'] = discipline
-    return render(request, 'application/stergere disciplina.html', context)
+    return render(request, 'application/administrator/stergere disciplina.html', context)
 
 
 @allowed_users(allowed_roles=['profesori'])
@@ -94,7 +94,7 @@ def vizualizareDisciplina(request, pk):
     if request.method == 'POST':
         return redirect('dashboard')
     context['disciplina'] = disciplina
-    return render(request, 'application/vizualizare_disciplina.html', context)
+    return render(request, 'application/profesor/vizualizare_disciplina.html', context)
 
 
 @allowed_users(allowed_roles=['profesori'])
@@ -107,10 +107,10 @@ def vizualizareProiecte(request, pk):
         return redirect('vizualizareDisciplina')
     context['proiecte'] = proiecte
     context['disciplina'] = disciplina
-    return render(request, 'application/vizualizare_proiecte.html', context)
+    return render(request, 'application/profesor/vizualizare_proiecte.html', context)
 
 
-@allowed_users(allowed_roles=['admin'])
+@allowed_users(allowed_roles=['secretariat'])
 @login_required(login_url='login')
 def adaugareStudenti(request):
     context = create_context(request)
@@ -144,16 +144,16 @@ def adaugareStudenti(request):
                 stud.grupa = student['Grupa']
                 stud.save()
         return redirect('dashboard')
-    return render(request, 'application/adaugare_studenti.html', context)
+    return render(request, 'application/scretariat/adaugare_studenti.html', context)
 
 
-@allowed_users(allowed_roles=['admin'])
+@allowed_users(allowed_roles=['secretariat'])
 @login_required(login_url='login')
 def vizualizareStudenti(request):
     context = create_context(request)
     studenti = Student.objects.all()
     context['studenti'] = studenti
-    return render(request, 'application/vizualizare_studenti.html', context)
+    return render(request, 'application/scretariat/vizualizare_studenti.html', context)
 
 
 @allowed_users(allowed_roles=['admin'])
@@ -168,7 +168,7 @@ def stergereCont(request):
         return redirect('dashboard')
     context['utilizatori'] = utilizatori
     context['profesori'] = profesori
-    return render(request, 'application/stergere_cont.html', context)
+    return render(request, 'application/administrator/stergere_cont.html', context)
 
 
 @allowed_users(allowed_roles=['admin'])
@@ -196,4 +196,23 @@ def adaugareCont(request):
             group = Group.objects.get(name='secretariat')
             utilizator_nou.groups.add(group)
         return redirect('dashboard')
-    return render(request, 'application/adaugare_cont.html', context)
+    return render(request, 'application/administrator/adaugare_cont.html', context)
+
+
+@allowed_users(allowed_roles=['admin'])
+@login_required(login_url='login')
+def vizualizareDiscipline(request):
+    context = create_context(request)
+    discipline = Disciplina.objects.all()
+    context['discipline'] = discipline
+    return render(request, 'application/administrator/vizualizareDiscipline.html', context)\
+
+
+
+@allowed_users(allowed_roles=['secretariat'])
+@login_required(login_url='login')
+def asignareDiscipline(request):
+    context = create_context(request)
+    discipline = Disciplina.objects.all()
+    context['discipline'] = discipline
+    return render(request, 'application/scretariat/asignarea_disciplinelor.html', context)

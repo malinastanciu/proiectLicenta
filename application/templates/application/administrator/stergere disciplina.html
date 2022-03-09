@@ -1,4 +1,4 @@
-{% extends 'application/main_layout_application.html' %}
+{% extends 'application/dashboard.html' %}
 {% load static %}
 
 {% block title %}
@@ -14,14 +14,14 @@
           </div>
           <div class="card-body">
             <h4 class="card-title" style="color: white">Alegeti disciplina pe care doriti sa o stergeti</h4>
-                <label for="discipline" style="color: white">Discipline:</label>
-                    <select id="discipline" name="discipline" style="margin-bottom: 30px">
+                <label for="discipline" style="color: white">Disciplina:</label>
+                    <select id="discipline" name="discipline" style="margin-bottom: 30px; width: 100%;">
                     {% for disciplina in discipline %}
 
                         <option value="{{ disciplina.id }}">{{ disciplina.nume }}</option>
                     {% endfor %}
                     </select><br>
-                    <input type="submit" class="btn" value="Submit" style="background-color: lightblue; width: 100%">
+                    <input type="submit" class="btn" value="Submit" style="background-color: lightblue; width: 100%;">
           <br>
           </div>
         </div>

@@ -1,20 +1,24 @@
-{% extends 'application/main_layout_application.html' %}
+{% extends 'application/dashboard.html' %}
 {% load static %}
 
 {% block title %}
     Adugare disciplina noua
 {% endblock %}
 {% block article %}
-    <link rel="stylesheet" href="{% static 'application/adaugare_discipline.css' %}">
+    <link rel="stylesheet" href="{% static 'application/css/adaugare_discipline.css' %}">
     {% if 'admin' in user_groups %}
         <div>
             <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <h4>Adaugarea unei noi discipline</h4><br>
+            <div class="card text-center d-flex justify-content-center"
+                 style="background-color: #484848; color: white; width: 500px; border-radius: 20px; margin-left: 35%; margin-top: 10%; padding: 10px 10px 20px 10px">
+                <div class="card-header" style="padding: 5px">
+                    <div class="card-body">
+                <h3>Adaugarea unei noi discipline</h3><br>
                 <label for="nume">Nume disciplina:</label>
-                <input type="text" name="nume"><br>
+                <input type="text" name="nume" style="width: 100%;"><br>
                 <label for="profesor">Profesor:</label>
-                <select id="profesor" name="profesor">
+                <select id="profesor" name="profesor" style="width: 100%; color: black">
                 {% for profesor in profesori %}
 
                     <option value="{{ profesor.id }}">{{ profesor.last_name }} {{ profesor.first_name }}</option>
@@ -22,7 +26,7 @@
                 </select><br>
 
                 <label for="an_univeristar">An universitar:</label>
-                <select id="an_universitar" name="an_universitar">
+                <select id="an_universitar" name="an_universitar" style="width: 100%; color: black">
                     <option value=1>1</option>
                     <option value=2>2</option>
                     <option value=3>3</option>
@@ -33,7 +37,10 @@
                     <h3 style="margin-top: -5px;"><input id="semestru" type="checkbox" value=1 name="semestru">I
                     <input id="semestru" type="checkbox" value=2  name="semestru">II</h3>
                 <br>
-                <input type="submit" class="btn btn-info" value="Submit">
+                <input type="submit" class="btn btn-info" value="Submit" style="width: 100%;">
+                    </div>
+                </div>
+            </div>
             </form>
         </div>
     {% endif %}

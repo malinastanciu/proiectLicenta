@@ -1,11 +1,11 @@
-{% extends 'application/main_layout_application.html' %}
+{% extends 'application/dashboard.html' %}
 {% load static %}
 
 {% block title %}
     Cont
 {% endblock %}
 {% block article %}
-    <link rel="stylesheet" href="{% static 'application/account.css' %}">
+    <link rel="stylesheet" href="{% static 'application/css/account.css' %}">
     <div class="username">
        <p> Bine ati venit, {{ user_type }} {{ user.username }}!</p>
     </div>

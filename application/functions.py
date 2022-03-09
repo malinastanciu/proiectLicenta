@@ -11,6 +11,8 @@ def get_user_info(request):
         user_type = 'admin'
     elif 'studenti' in user_groups:
         user_type = 'student'
+    elif 'secretariat' in user_groups:
+        user_type = 'secretar'
     else:
         user_type = 'profesor'
 

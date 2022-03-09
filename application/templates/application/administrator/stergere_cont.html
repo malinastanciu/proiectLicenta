@@ -1,11 +1,11 @@
-{% extends 'application/main_layout_application.html' %}
+{% extends 'application/dashboard.html' %}
 {% load static %}
 
 {% block title %}
     Stergere cont utilizator
 {% endblock %}
 {% block article %}
-    <link rel="stylesheet" href="{% static 'application/stergere_disciplina.css' %}">
+    <link rel="stylesheet" href="{% static 'application/css/stergere_cont.css' %}">
     <form method="POST" style="padding-top:10px">
         {% csrf_token %}
         <div class="card text-center d-flex justify-content-center" style="background-color: slategrey; width: 500px; border-radius: 20px; margin-left: 10%;margin-top: 10%; padding: 10px 10px 20px 10px">
