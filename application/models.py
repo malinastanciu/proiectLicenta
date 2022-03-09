@@ -24,6 +24,12 @@ class Proiect(models.Model):
     distribuire_teme = models.BooleanField()
 
 
+class Grupa(models.Model):
+    id = models.AutoField(primary_key=True)
+    nume = models.CharField(max_length=10, null=True)
+    discipline = models.ManyToManyField(Disciplina)
+
+
 class Student(models.Model):
     id = models.AutoField(primary_key=True)
     utilizator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -31,5 +37,8 @@ class Student(models.Model):
     ciclu_de_studii = models.CharField(max_length=100, null=True)
     specializare = models.CharField(max_length=50, null=True)
     an_studiu = models.CharField(max_length=20, null=True)
-    discipline = models.ManyToManyField(Disciplina)
-    grupa = models.CharField(max_length=10, null=True)
+    grupa = models.ForeignKey(Grupa, on_delete=models.CASCADE, null=True)
+
+
+
+

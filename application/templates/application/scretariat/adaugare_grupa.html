@@ -1,0 +1,50 @@
+{% extends 'application/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    Adugare grupa
+{% endblock %}
+{% block article %}
+    <link rel="stylesheet" href="{% static 'application/css/adaugare_studenti.css' %}">
+
+
+     <div style="padding-top: 60px">
+        <div class="row d-flex justify-content-center" style="width: auto; position: center">
+
+            <div class="create_project" style="padding: 20px;font-size: 15px">
+                 <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h4>Adaugarea grupa</h4><br>
+                <label for="nume">Nume grupa</label>
+                <input type="text" name="nume" required>
+                <input type="submit" class="btn btn-info" value="Submit">
+            </form>
+        </div>
+    </div>
+    </div>
+
+
+        <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top: 50px">
+            <table class="table table-bordered" id="myTable">
+                <thead style="background-color: whitesmoke; font-size: 15px">
+                <tr>
+                    <th>ID grupa</th>
+                    <th>Nume</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for grupa in grupe %}
+
+                    <tr class="tr">
+                        <td>{{ grupa.id }}</td>
+                        <td>{{ grupa.nume }}</td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+{% endblock %}

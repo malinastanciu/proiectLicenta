@@ -19,4 +19,5 @@ urlpatterns = [
     path('adaugare-cont-utilizator/', application_views.adaugareCont, name='adaugareCont'),
     path('vizualizare-discipline/', application_views.vizualizareDiscipline, name='vizualizareDiscipline'),
     path('asignare-discipline/', application_views.asignareDiscipline, name='asignareDiscipline'),
+    path('adaugare-grupa/', application_views.adaugareGrupa, name='adaugareGrupa'),
 ]

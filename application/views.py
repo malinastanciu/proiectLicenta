@@ -1,19 +1,15 @@
 from datetime import date
-from turtle import pd
-
-import openpyxl
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.shortcuts import render, redirect
-from openpyxl import load_workbook
+
 import pandas
 import numpy as np
 
-from accounts.forms import CreateUserForm
 from application.decorators import allowed_users
 from application.functions import create_context
 from django.core.files.storage import FileSystemStorage
-from application.models import Proiect, Disciplina, Student
+from application.models import Proiect, Disciplina, Student, Grupa
 
 
 @login_required(login_url='login')
@@ -143,6 +139,8 @@ def adaugareStudenti(request):
                 stud.an_studiu = student['Anul']
                 stud.grupa = student['Grupa']
                 stud.save()
+                if i == rows-1:
+                    pass
         return redirect('dashboard')
     return render(request, 'application/scretariat/adaugare_studenti.html', context)
 
@@ -205,8 +203,7 @@ def vizualizareDiscipline(request):
     context = create_context(request)
     discipline = Disciplina.objects.all()
     context['discipline'] = discipline
-    return render(request, 'application/administrator/vizualizareDiscipline.html', context)\
-
+    return render(request, 'application/administrator/vizualizareDiscipline.html', context)
 
 
 @allowed_users(allowed_roles=['secretariat'])
@@ -216,3 +213,17 @@ def asignareDiscipline(request):
     discipline = Disciplina.objects.all()
     context['discipline'] = discipline
     return render(request, 'application/scretariat/asignarea_disciplinelor.html', context)
+
+
+@allowed_users(allowed_roles=['secretariat'])
+@login_required(login_url='login')
+def adaugareGrupa(request):
+    context = create_context(request)
+    grupe = Grupa.objects.all()
+    grupa = Grupa()
+    if request.method == 'POST':
+        grupa.nume = request.POST.get('nume')
+        grupa.save()
+        return redirect('adaugareGrupa')
+    context['grupe'] = grupe
+    return render(request, 'application/scretariat/adaugare_grupa.html', context)
