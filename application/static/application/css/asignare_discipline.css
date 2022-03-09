@@ -1,0 +1,31 @@
+label {
+  display: block;
+  padding-left: 15px;
+  text-indent: -15px;
+}
+#disciplina {
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  margin:0;
+  vertical-align: bottom;
+  position: relative;
+  top: -4px;
+  *overflow: hidden;
+}
+#submit-button{
+  width: 100%;
+}
+.create_project input {
+    width: 100%;
+    clear: both;
+    margin-bottom: 10px;
+}
+
+.input-submit {
+
+    width: 550px;
+}
+.create_project {
+    background-color: #f2f2f2;
+}

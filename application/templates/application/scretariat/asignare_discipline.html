@@ -1,0 +1,27 @@
+{% extends 'application/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    {{ grupa.nume }}
+{% endblock %}
+{% block article %}
+    <link rel="stylesheet" href="{% static 'application/css/asignare_discipline.css' %}">
+     <div style="padding-top: 60px">
+        <div class="row d-flex justify-content-center" style="width: auto; position: center">
+            <div class="create_project" style="padding: 20px;font-size: 15px">
+                 <form action="" method="POST" enctype="multipart/form-data">
+                     {% csrf_token %}
+                     <h3><b>Asignare disicpline pentru grupa {{ grupa.nume }}</b></h3><br>
+                     <label for="disciplina">Discipline:</label>
+                     {% for disciplina in discipline %}
+                            <input id="disciplina" type="checkbox" value={{ disciplina.nume }} name="disciplina">
+                         <b>{{ disciplina.nume }}</b>, profesor: {{ disciplina.profesor.last_name }} {{ disciplina.profesor.first_name }},
+                         semestru: {{ disciplina.semestru }}<br>
+                     {% endfor %}
+                <input id="submit-button" type="submit" class="btn btn-info" value="Submit">
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

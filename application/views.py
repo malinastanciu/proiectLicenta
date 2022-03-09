@@ -1,3 +1,4 @@
+import os
 from datetime import date
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
@@ -9,7 +10,7 @@ import numpy as np
 from application.decorators import allowed_users
 from application.functions import create_context
 from django.core.files.storage import FileSystemStorage
-from application.models import Proiect, Disciplina, Student, Grupa
+from application.models import Proiect, Disciplina, Student, Grupa, Tema
 
 
 @login_required(login_url='login')
@@ -19,6 +20,12 @@ def dashboard(request):
     discipline = Disciplina.objects.all()
     context['projects'] = user_projects
     context['discipline'] = discipline
+
+    if 'studenti' in request.user.groups.all():
+        student = Student.objects.get(utilizator=request.user)
+        context['student'] = student
+        discipline_student = Grupa.objects.get(nume=student.grupa.nume).discipline.all()
+        context['discipline_student'] = discipline_student
     return render(request, 'application/dashboard.html', context)
 
 
@@ -39,14 +46,38 @@ def adaugareProiect(request, pk):
         proiect.data_finalizare = request.POST.get('final_date')
         proiect.profesor = request.user
         proiect.disciplina = Disciplina.objects.get(pk=pk)
+        proiect.nr_persoane = request.POST.get('nr_persoane')
+        proiect.distribuire_teme = False
+
+        path = os.path.abspath(os.getcwd()) + r'\\media\\'
+        path_of_directory = os.path.join(path, proiect.nume)
+        os.mkdir(path_of_directory)
         uploaded_file = request.FILES['document']
-        proiect.document = uploaded_file.name
-        fs = FileSystemStorage()
+        fs = FileSystemStorage(path_of_directory)
         txt = uploaded_file.name
         x = txt.split('.')
         fs.save(proiect.nume + '.' + x[1], uploaded_file)
-        proiect.cale = proiect.nume + '.' + x[1]
+
+        proiect.document = proiect.nume + '.' + x[1]
+        proiect.cale = path_of_directory
         proiect.save()
+
+        uploaded_file = request.FILES['document']
+        file = pandas.ExcelFile(uploaded_file)
+        for sheet in file.sheet_names:
+            data = file.parse(sheet)
+            dimensions = data.shape
+            rows = dimensions[0]
+            for i in range(0, rows):
+                teme = {}
+                tema = Tema()
+                for key in data.keys():
+                    value = np.array(data.iloc[i][key]).tolist()
+                    teme[key] = value
+                tema.nume = teme['Nume tema']
+                tema.proiect = proiect
+                tema.save()
+
         return redirect('vizualizareDisciplina', pk=pk)
     return render(request, 'application/profesor/adaugare_proiect.html', context)
 
@@ -210,11 +241,11 @@ def vizualizareDiscipline(request):
 
 @allowed_users(allowed_roles=['secretariat'])
 @login_required(login_url='login')
-def asignareDiscipline(request):
+def vizulalizareGrupe(request):
     context = create_context(request)
-    discipline = Disciplina.objects.all()
-    context['discipline'] = discipline
-    return render(request, 'application/scretariat/asignarea_disciplinelor.html', context)
+    grupe = Grupa.objects.all()
+    context['grupe'] = grupe
+    return render(request, 'application/scretariat/vizualizare_grupe.html', context)
 
 
 @allowed_users(allowed_roles=['secretariat'])
@@ -229,3 +260,21 @@ def adaugareGrupa(request):
         return redirect('adaugareGrupa')
     context['grupe'] = grupe
     return render(request, 'application/scretariat/adaugare_grupa.html', context)
+
+
+@allowed_users(allowed_roles=['secretariat'])
+@login_required(login_url='login')
+def asignareDiscipline(request, pk):
+    context = create_context(request)
+    grupa = Grupa.objects.get(pk=pk)
+    discipline = Disciplina.objects.filter(an_universitar=int(grupa.nume[1]))
+    grupa = Grupa.objects.get(pk=pk)
+    if request.method == 'POST':
+        for disciplina in request.POST.getlist('disciplina'):
+            d = Disciplina.objects.get(nume=disciplina)
+            grupa.discipline.add(d.id)
+        grupa.save()
+        return redirect('vizualizareGrupe')
+    context['grupa'] = grupa
+    context['discipline'] = discipline
+    return render(request, 'application/scretariat/asignare_discipline.html', context)

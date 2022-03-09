@@ -2,13 +2,17 @@
 {% load static %}
 
 {% block title %}
-    Pagina principala
+    Dashboard
 {% endblock %}
 
 {# o voi sterge de aici si o pun in pagina fiecarui proiect#}
 {% block pages %}
     {% if user_type == 'admin' %}
         <li><a href="{% url 'vizualizareDiscipline' %}">Discipline</a>
+    {% endif %}
+    {% if user_type == 'student' %}
+        <li><a href="">Note</a>
+        <li><a href="">Proiecte active</a>
     {% endif %}
 {% endblock %}
 
@@ -123,7 +127,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title" style="text-align: center; padding: 35px"><a
-                                href="{% url 'asignareDiscipline' %}" style="color: white;">Asignarea disciplinelor studentilor</a></h2>
+                                href="{% url 'vizualizareGrupe' %}" style="color: white;">Asignarea disciplinelor pe grupe</a></h2>
                         <br>
                     </div>
                 </div>
@@ -143,7 +147,22 @@
     {% endif %}
 
 
-
+    {% if 'studenti' in user_groups %}
+        <div class="row">
+        {% for disciplina in discipline_student %}
+            <div class="col-sm-6"
+                 style="background-color: #383838; border-radius: 20px; width: 430px; height: 100px; padding-top: 5px; margin: 5vh -5vh 5px 30vh;">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title" style="text-align: center; padding: 10px"><a
+                                href="" style="color: white;">{{ disciplina.nume }}</a></h2>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
 
     <script type="text/javascript" src="{% static 'application/js/dashboard.js' %}"></script>
 {% endblock %}

@@ -40,5 +40,18 @@ class Student(models.Model):
     grupa = models.ForeignKey(Grupa, on_delete=models.CASCADE, null=True)
 
 
+class Tema(models.Model):
+    id = models.AutoField(primary_key=True)
+    nume = models.CharField(max_length=100)
+    proiect = models.ForeignKey(Proiect, on_delete=models.CASCADE)
+    student = models.ManyToManyField(Student)
+    data_incarcare = models.DateField(null=True)
+    document = models.CharField(max_length=100, null=True)
 
 
+class Task(models.Model):
+    id = models.AutoField(primary_key=True)
+    nume = models.CharField(max_length=100)
+    descriere = models.CharField(max_length=300)
+    tema = models.ForeignKey(Tema, on_delete=models.CASCADE)
+    efectuat = models.BooleanField()
