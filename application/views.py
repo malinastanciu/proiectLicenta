@@ -122,10 +122,13 @@ def adaugareStudenti(request):
             # columns = dimensions[1]
             for i in range(0, rows):
                 student = {}
+
                 for key in data.keys():
                     value = np.array(data.iloc[i][key]).tolist()
                     student[key] = value
                 email = str(student['Email address'])
+                if i == 0:
+                    grupa = Grupa.objects.filter(nume=student['Grupa'])[0]
                 user = User.objects.create_user(username=email.split('@')[0], email=email, password='student123456',
                                                 first_name=student['First name'], last_name=student['Surname'])
 
@@ -137,10 +140,9 @@ def adaugareStudenti(request):
                 stud.ciclu_de_studii = student['Ciclu de studii']
                 stud.specializare = student['Specializarea']
                 stud.an_studiu = student['Anul']
-                stud.grupa = student['Grupa']
+                stud.grupa = grupa
                 stud.save()
-                if i == rows-1:
-                    pass
+
         return redirect('dashboard')
     return render(request, 'application/scretariat/adaugare_studenti.html', context)
 
