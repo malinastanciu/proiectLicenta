@@ -1,0 +1,49 @@
+{% extends 'application/main_layout_application.html' %}
+{% load static %}
+
+{% block title %}
+    Stergere cont utilizator
+{% endblock %}
+{% block article %}
+    <link rel="stylesheet" href="{% static 'application/stergere_disciplina.css' %}">
+    <form method="POST" style="padding-top:10px">
+        {% csrf_token %}
+        <div class="card text-center d-flex justify-content-center" style="background-color: slategrey; width: 500px; border-radius: 20px; margin-left: 10%;margin-top: 10%; padding: 10px 10px 20px 10px">
+          <div class="card-header" style="color: white; padding: 5px">
+              <h1>Stergere cont utilizator student</h1>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title" style="color: white">Alegeti studentul pe care doriti sa il stergeti</h4>
+
+                <label for="utilizator" style="color: white">Email:</label>
+                    <select id="utilizator" name="utilizator" style="margin-bottom: 30px">
+                    {% for utilizator in utilizatori %}
+                            <option value="{{ utilizator.id }}">{{ utilizator.email }}</option>
+                    {% endfor %}
+                    </select><br>
+                    <input type="submit" class="btn" value="Submit" style="background-color: ghostwhite; width: 100%">
+          <br>
+          </div>
+        </div>
+    </form>
+    <form method="POST" style="padding-top:10px">
+        {% csrf_token %}
+        <div class="card text-center d-flex justify-content-center" style="background-color: slategrey; width: 500px; border-radius: 20px; margin-left: 55%; margin-top: -19.5%; padding: 10px 10px 20px 10px">
+          <div class="card-header" style="color: white; padding: 5px">
+              <h1>Stergere cont utilizator profesor</h1>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title" style="color: white">Alegeti profesorul pe care doriti sa il stergeti</h4>
+
+                <label for="utilizator" style="color: white">Email:</label>
+                    <select id="utilizator" name="utilizator" style="margin-bottom: 30px">
+                    {% for utilizator in profesori %}
+                            <option value="{{ utilizator.id }}">{{ utilizator.email }}</option>
+                    {% endfor %}
+                    </select><br>
+                    <input type="submit" class="btn" value="Submit" style="background-color: ghostwhite; width: 100%">
+          <br>
+          </div>
+        </div>
+    </form>
+{% endblock %}

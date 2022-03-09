@@ -3,7 +3,6 @@ from django.urls import path
 
 from application import views as application_views
 
-
 urlpatterns = [
     path('', application_views.dashboard, name='dashboard'),
     path('cont/', application_views.account, name='account'),
@@ -16,5 +15,6 @@ urlpatterns = [
          name='vizualizareProiecte'),
     path('adugare-studenti/', application_views.adaugareStudenti, name='adaugareStudenti'),
     path('vizualizare-studenti/', application_views.vizualizareStudenti, name='vizualizareStudenti'),
-
+    path('stergere-cont-utilizator/', application_views.stergereCont, name='stergereCont'),
+    path('adaugare-cont-utilizator/', application_views.adaugareCont, name='adaugareCont'),
 ]

@@ -154,3 +154,46 @@ def vizualizareStudenti(request):
     studenti = Student.objects.all()
     context['studenti'] = studenti
     return render(request, 'application/vizualizare_studenti.html', context)
+
+
+@allowed_users(allowed_roles=['admin'])
+@login_required(login_url='login')
+def stergereCont(request):
+    context = create_context(request)
+    utilizatori = User.objects.filter(groups__name='studenti')
+    profesori = User.objects.filter(groups__name='profesori')
+    if request.method == 'POST':
+        utilizator = User.objects.filter(id=request.POST.get('utilizator'))[0]
+        utilizator.delete()
+        return redirect('dashboard')
+    context['utilizatori'] = utilizatori
+    context['profesori'] = profesori
+    return render(request, 'application/stergere_cont.html', context)
+
+
+@allowed_users(allowed_roles=['admin'])
+@login_required(login_url='login')
+def adaugareCont(request):
+    context = create_context(request)
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if request.POST.get('tip') == 'student':
+            utilizator_nou = User.objects.create_user(username=email.split('@')[0], email=email,
+                                                      password='student123456', first_name=request.POST.get('prenume'),
+                                                      last_name=request.POST.get('nume'))
+            group = Group.objects.get(name='studenti')
+            utilizator_nou.groups.add(group)
+        elif request.POST.get('tip') == 'profesor':
+            utilizator_nou = User.objects.create_user(username=email.split('@')[0], email=email,
+                                                      password='profesor123456', first_name=request.POST.get('prenume'),
+                                                      last_name=request.POST.get('nume'))
+            group = Group.objects.get(name='profesori')
+            utilizator_nou.groups.add(group)
+        elif request.POST.get('tip') == 'secretar':
+            utilizator_nou = User.objects.create_user(username=email.split('@')[0], email=email,
+                                                      password='secretar123456', first_name=request.POST.get('prenume'),
+                                                      last_name=request.POST.get('nume'))
+            group = Group.objects.get(name='secretariat')
+            utilizator_nou.groups.add(group)
+        return redirect('dashboard')
+    return render(request, 'application/adaugare_cont.html', context)
