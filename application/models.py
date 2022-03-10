@@ -6,7 +6,7 @@ from django.contrib.auth.models import Group, User
 class Disciplina(models.Model):
     id = models.AutoField(primary_key=True)
     nume = models.CharField(max_length=100, unique=True)
-    profesor = models.ForeignKey(User, on_delete=models.CASCADE)
+    profesori = models.ManyToManyField(User)
     an_universitar = models.IntegerField(null=True)
     semestru = models.IntegerField(null=True)
 

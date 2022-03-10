@@ -49,7 +49,7 @@ def adaugareProiect(request, pk):
         proiect.nr_persoane = request.POST.get('nr_persoane')
         proiect.distribuire_teme = False
 
-        path = os.path.abspath(os.getcwd()) + r'\\media\\'
+        path = os.path.abspath(os.getcwd()) + r"\media"
         path_of_directory = os.path.join(path, proiect.nume)
         os.mkdir(path_of_directory)
         uploaded_file = request.FILES['document']
@@ -86,14 +86,18 @@ def adaugareProiect(request, pk):
 @login_required(login_url='login')
 def adaugareDisciplina(request):
     context = create_context(request)
-    disciplina = Disciplina()
     profesori = User.objects.filter(groups__name='profesori')
-    print(profesori)
+    disciplina = Disciplina()
     if request.method == 'POST':
+        user = User.objects.get(id=request.POST.get('profesor'))
         disciplina.nume = request.POST.get('nume')
-        disciplina.profesor = User.objects.filter(id=request.POST.get('profesor'))[0]
+        # user = User.objects.filter(id=request.POST.get('profesor'))[0]
+        print(user.id)
         disciplina.an_universitar = request.POST.get('an_universitar')
         disciplina.semestru = request.POST.get('semestru')
+        disciplina.save()
+        # disciplina = Disciplina.objects.get(nume=request.POST.get('nume'))
+        disciplina.profesori.add(user)
         disciplina.save()
         return redirect('dashboard')
     context['profesori'] = profesori
@@ -235,6 +239,8 @@ def adaugareCont(request):
 def vizualizareDiscipline(request):
     context = create_context(request)
     discipline = Disciplina.objects.all()
+    for disciplina in discipline:
+        print(disciplina.profesori.all())
     context['discipline'] = discipline
     return render(request, 'application/administrator/vizualizareDiscipline.html', context)
 

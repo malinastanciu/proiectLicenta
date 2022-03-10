@@ -23,7 +23,7 @@
         <br>
         <div class="row">
             {% for disciplina in discipline %}
-                {% if disciplina.profesor == request.user %}
+                {% if disciplina.profesori.all.get == request.user %}
                     <div class="col-sm-6"
                          style="background-color: #383838; width: 330px; height: 200px; border-radius: 20px; margin-right: 6vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
                         <div class="card">
