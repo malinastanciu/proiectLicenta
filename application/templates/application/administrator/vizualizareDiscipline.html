@@ -30,7 +30,12 @@
 
                     <tr class="tr">
                         <td>{{ disciplina.nume }}</td>
-                        <td>{{ disciplina.profesori.all.get.last_name }} {{ disciplina.profesori.all.get.first_name }} </td>
+                    <td>
+                        {% for profesor in disciplina.profesori.all %}
+
+                            {{ profesor.last_name }} {{ profesor.first_name }}<br>
+                        {% endfor %}
+                    </td>
                         <td>{{ disciplina.an_universitar }}</td>
                         <td>{{ disciplina.semestru }}</td>
                     </tr>

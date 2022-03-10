@@ -90,15 +90,23 @@ def adaugareDisciplina(request):
     disciplina = Disciplina()
     if request.method == 'POST':
         user = User.objects.get(id=request.POST.get('profesor'))
-        disciplina.nume = request.POST.get('nume')
-        # user = User.objects.filter(id=request.POST.get('profesor'))[0]
-        print(user.id)
-        disciplina.an_universitar = request.POST.get('an_universitar')
-        disciplina.semestru = request.POST.get('semestru')
-        disciplina.save()
-        # disciplina = Disciplina.objects.get(nume=request.POST.get('nume'))
-        disciplina.profesori.add(user)
-        disciplina.save()
+        disciplina_existenta = Disciplina.objects.get(nume=request.POST.get('nume'))
+        print(disciplina_existenta)
+        if disciplina_existenta:
+
+            disciplina_existenta.profesori.add(user)
+            disciplina_existenta.save()
+            print(disciplina_existenta.profesori.all())
+        else:
+            disciplina.nume = request.POST.get('nume')
+            # user = User.objects.filter(id=request.POST.get('profesor'))[0]
+            print(user.id)
+            disciplina.an_universitar = request.POST.get('an_universitar')
+            disciplina.semestru = request.POST.get('semestru')
+            disciplina.save()
+            # disciplina = Disciplina.objects.get(nume=request.POST.get('nume'))
+            disciplina.profesori.add(user)
+            disciplina.save()
         return redirect('dashboard')
     context['profesori'] = profesori
     return render(request, 'application/administrator/adaugare_disciplina.html', context)
