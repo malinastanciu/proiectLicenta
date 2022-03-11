@@ -22,4 +22,6 @@ urlpatterns = [
     path('adaugare-grupa/', application_views.adaugareGrupa, name='adaugareGrupa'),
     path('vizualizare-grupe/asignare-discipline/<str:pk>', application_views.asignareDiscipline,
          name='asignareDiscipline'),
+    path('vizualizare-disciplina/vizualizare-proiecte/proiect/<str:pk>', application_views.proiect,
+         name='proiect'),
 ]

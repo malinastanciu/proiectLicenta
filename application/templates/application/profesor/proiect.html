@@ -1,0 +1,45 @@
+{% extends 'application/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    {{ proiect.nume }}
+{% endblock %}
+{% block article %}
+    {% if proiect.nr_persoane > 1 %}
+      <h3><b>{{ proiect.nume }} -  Proiect pe echipe de {{ proiect.nr_persoane }} persoane</b></h3>
+    {% else %}
+      <h3><b>{{ proiect.nume }} -  Proiect individual </b></h3>
+    {% endif %}
+    <form action="" method="POST">
+        <button class="btn btn-lg btn-success">Distribuirea random a temelor</button>
+    </form>
+    <br>
+    <b style="font-size: 20px">Temele proiectului sunt:</b>
+    <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top: 50px">
+        <table class="table table-bordered" id="myTable" style="border-color: #1b6d85">
+            <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px">
+            <tr style="border-color: #1b6d85">
+                <th style="border-color: #1b6d85">Tema</th>
+                <th style="border-color: #1b6d85">Studenti</th>
+                <th style="border-color: #1b6d85">Data incarcare</th>
+                <th style="border-color: #1b6d85">Document</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for tema in teme %}
+                    <tr class="tr">
+                        <td style="border-color: #1b6d85">{{ tema.nume }}</td>
+                        <td style="border-color: #1b6d85">
+                            {% for student in tema.student.all %}
+                                {{ student }}
+                            {% endfor %}
+                        </td>
+                        <td style="border-color: #1b6d85">{{ tema.data_incarcare }}</td>
+                        <td style="border-color: #1b6d85">{{ tema.document }}</td>
+                    </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

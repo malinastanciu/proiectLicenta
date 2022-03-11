@@ -30,6 +30,12 @@ class Grupa(models.Model):
     discipline = models.ManyToManyField(Disciplina)
 
 
+class Tema(models.Model):
+    id = models.AutoField(primary_key=True)
+    nume = models.CharField(max_length=100, unique=False)
+    proiect = models.ForeignKey(Proiect, on_delete=models.CASCADE, unique=False)
+
+
 class Student(models.Model):
     id = models.AutoField(primary_key=True)
     utilizator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -38,15 +44,15 @@ class Student(models.Model):
     specializare = models.CharField(max_length=50, null=True)
     an_studiu = models.CharField(max_length=20, null=True)
     grupa = models.ForeignKey(Grupa, on_delete=models.CASCADE, null=True)
+    teme = models.ManyToManyField(Tema)
 
 
-class Tema(models.Model):
+class Incarcare(models.Model):
     id = models.AutoField(primary_key=True)
-    nume = models.CharField(max_length=100)
-    proiect = models.ForeignKey(Proiect, on_delete=models.CASCADE)
-    student = models.ManyToManyField(Student)
-    data_incarcare = models.DateField(null=True)
-    document = models.CharField(max_length=100, null=True)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    tema = models.ForeignKey(Tema, on_delete=models.CASCADE)
+    data_incarcare = models.DateField(null=True, unique=False)
+    document = models.CharField(max_length=100, null=True, unique=False)
 
 
 class Task(models.Model):

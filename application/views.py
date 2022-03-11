@@ -292,3 +292,29 @@ def asignareDiscipline(request, pk):
     context['grupa'] = grupa
     context['discipline'] = discipline
     return render(request, 'application/scretariat/asignare_discipline.html', context)
+
+
+@allowed_users(allowed_roles=['profesori'])
+@login_required(login_url='login')
+def proiect(request, pk):
+    proiect = Proiect.objects.get(pk=pk)
+    teme = Tema.objects.all().filter(proiect=pk)
+    context = create_context(request)
+    context['proiect'] = proiect
+    context['teme'] = teme
+    return render(request, 'application/profesor/proiect.html', context)
+
+
+@allowed_users(allowed_roles=['profesori'])
+@login_required(login_url='login')
+def distribuireaTemelor(request, pk):
+    proiect = Proiect.objects.get(pk=pk)
+    teme = Tema.objects.all().filter(proiect=pk)
+    lista = list()
+    for tema in teme:
+        lista.append(tema.id)
+
+    context = create_context(request)
+    context['proiect'] = proiect
+    context['teme'] = teme
+    return render(request, 'application/profesor/proiect.html', context)
