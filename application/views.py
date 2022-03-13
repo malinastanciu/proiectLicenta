@@ -307,7 +307,7 @@ def proiect(request, pk):
 
 @allowed_users(allowed_roles=['profesori'])
 @login_required(login_url='login')
-def distribuireaTemelor(request, pk):
+def distribuireTeme(request, pk):
     proiect = Proiect.objects.get(pk=pk)
     teme = Tema.objects.all().filter(proiect=pk)
     lista = list()

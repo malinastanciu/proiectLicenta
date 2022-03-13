@@ -13,7 +13,7 @@ class Disciplina(models.Model):
 
 class Proiect(models.Model):
     id = models.AutoField(primary_key=True)
-    nume = models.CharField(max_length=100)
+    nume = models.CharField(max_length=100, unique=False)
     data_inregistrare = models.DateField(auto_now_add=True)
     data_finalizare = models.DateField()
     profesor = models.ForeignKey(User, on_delete=models.CASCADE)
