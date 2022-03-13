@@ -308,13 +308,12 @@ def proiect(request, pk):
 @allowed_users(allowed_roles=['profesori'])
 @login_required(login_url='login')
 def distribuireTeme(request, pk):
-    proiect = Proiect.objects.get(pk=pk)
-    teme = Tema.objects.all().filter(proiect=pk)
-    lista = list()
-    for tema in teme:
-        lista.append(tema.id)
-
+    disciplina = Disciplina.objects.get(pk=pk)
+    proiecte = Proiect.objects.all().filter(disciplina=disciplina)
+    grupe = Grupa.objects.all().filter(discipline=disciplina)
     context = create_context(request)
-    context['proiect'] = proiect
-    context['teme'] = teme
-    return render(request, 'application/profesor/proiect.html', context)
+    context['disciplina'] = disciplina
+    context['proiecte'] = proiecte
+    context['grupe'] = grupe
+
+    return render(request, 'application/profesor/distribuire_teme.html', context)

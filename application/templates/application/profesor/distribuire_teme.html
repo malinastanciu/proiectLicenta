@@ -1,0 +1,36 @@
+{% extends 'application/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    Distribuire teme
+{% endblock %}
+{% block article %}
+    <link rel="stylesheet" href="{% static 'application/stergere_disciplina.css' %}">
+    <form method="POST" style="padding-top:100px">
+        {% csrf_token %}
+        <div class="card text-center d-flex justify-content-center" style="background-color: #1b6d85; width: 500px; border-radius: 20px; margin-left: 35%; padding: 10px 10px 20px 10px">
+          <div class="card-header" style="color: white; padding: 5px">
+              <h1>Distribuirea random a temelor pentru fiecare grupa</h1>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title" style="color: white">Alegeti proiectul pentru care distribuiti temele:</h4>
+                <label for="discipline" style="color: white">Proiect:</label>
+                    <select id="discipline" name="discipline" style="margin-bottom: 30px; width: 100%;">
+                    {% for proiect in proiecte %}
+
+                        <option value="{{ proiect.id }}">{{ proiect.nume }}</option>
+                    {% endfor %}
+                    </select>
+            <h4 class="card-title" style="color: white">Alegeti grupa care va primi temele:</h4>
+                <label for="discipline" style="color: white">Grupa:</label>
+                    <select id="discipline" name="discipline" style="margin-bottom: 30px; width: 100%;">
+                    {% for grupa in grupe %}
+                        <option value="{{ grupa.id }}">{{ grupa.nume }}</option>
+                    {% endfor %}
+                    </select><br>
+                    <input type="submit" class="btn" value="Distribuire random a temelor" style="background-color: lightblue; width: 100%;">
+          <br>
+          </div>
+        </div>
+    </form>
+{% endblock %}
