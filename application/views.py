@@ -311,6 +311,11 @@ def distribuireTeme(request, pk):
     disciplina = Disciplina.objects.get(pk=pk)
     proiecte = Proiect.objects.all().filter(disciplina=disciplina)
     grupe = Grupa.objects.all().filter(discipline=disciplina)
+    if request.method == 'POST':
+        proiect = Proiect.objects.all().filter(id=request.POST.get('proiect'))
+        print(proiect)
+        teme = Tema.objects.all().filter(proiect=request.POST.get('proiect'))
+        print(teme)
     context = create_context(request)
     context['disciplina'] = disciplina
     context['proiecte'] = proiecte

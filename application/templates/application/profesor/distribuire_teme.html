@@ -14,8 +14,8 @@
           </div>
           <div class="card-body">
             <h4 class="card-title" style="color: white">Alegeti proiectul pentru care distribuiti temele:</h4>
-                <label for="discipline" style="color: white">Proiect:</label>
-                    <select id="discipline" name="discipline" style="margin-bottom: 30px; width: 100%;">
+                <label for="proiect" style="color: white">Proiect:</label>
+                    <select id="proiect" name="proiect" style="margin-bottom: 30px; width: 100%;">
                     {% for proiect in proiecte %}
 
                         <option value="{{ proiect.id }}">{{ proiect.nume }}</option>

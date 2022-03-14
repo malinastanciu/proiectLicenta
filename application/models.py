@@ -21,7 +21,6 @@ class Proiect(models.Model):
     document = models.CharField(max_length=100, null=True)
     nr_persoane = models.IntegerField(null=True)
     cale = models.CharField(max_length=100, default=None)
-    distribuire_teme = models.BooleanField()
 
 
 class Grupa(models.Model):
@@ -53,6 +52,7 @@ class Incarcare(models.Model):
     tema = models.ForeignKey(Tema, on_delete=models.CASCADE)
     data_incarcare = models.DateField(null=True, unique=False)
     document = models.CharField(max_length=100, null=True, unique=False)
+    nota = models.FloatField(default=0)
 
 
 class Task(models.Model):
