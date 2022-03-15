@@ -21,11 +21,13 @@ def dashboard(request):
     discipline = Disciplina.objects.all()
     context['projects'] = user_projects
     context['discipline'] = discipline
-
-    if 'studenti' in request.user.groups.all():
+    print(discipline)
+    print(request.user.groups.all())
+    if 'studenti' == request.user.groups.all()[0].name:
         student = Student.objects.get(utilizator=request.user)
         context['student'] = student
         discipline_student = Grupa.objects.get(nume=student.grupa.nume).discipline.all()
+        print(discipline_student)
         context['discipline_student'] = discipline_student
     return render(request, 'application/dashboard.html', context)
 
@@ -341,3 +343,21 @@ def distribuireTeme(request, pk):
     context['grupe'] = grupe
 
     return render(request, 'application/profesor/distribuire_teme.html', context)
+
+
+@allowed_users(allowed_roles=['studenti'])
+@login_required(login_url='login')
+def disciplinaStudent(request, pk):
+    context = create_context(request)
+    disciplina = Disciplina.objects.get(pk=pk)
+    proiecte = Proiect.objects.all().filter(disciplina=disciplina)
+    teme = Tema.objects.all().filter(proiect__in=proiecte)
+    print(teme)
+    student = Student.objects.get(utilizator=request.user)
+    teme_student = student.teme.all().filter(proiect__in=proiecte)
+    context['teme_student'] = teme_student
+    if request.method == 'POST':
+        return redirect('dashboard')
+    context['disciplina'] = disciplina
+    context['proiecte'] = proiecte
+    return render(request, 'application/student/disciplinaStudent.html', context)

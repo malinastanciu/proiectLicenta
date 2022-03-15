@@ -1,0 +1,34 @@
+{% extends 'application/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    {{ disciplina.nume }}
+{% endblock %}
+{% block article %}
+        <h3><b>Proiecte create pentru {{ disciplina.nume }}</b></h3><br>
+        <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top: 50px">
+        {% for proiect in proiecte %}
+            <table class="table table-bordered" id="myTable" style="border-color: #1b6d85">
+                <h3><b>{{ proiect.nume }}</b></h3>
+                <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px">
+                <tr  style="border-color: #1b6d85">
+                    <th  style="border-color: #1b6d85">Nume tema</th>
+                    <th  style="border-color: #1b6d85">Data finalizare</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for tema in teme_student %}
+                    <tr class="tr">
+                        <td  style="border-color: #1b6d85"><a href=""> {{ tema.nume }}</a></td>
+                        <td  style="border-color: #1b6d85">{{ proiect.data_finalizare }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        {% endfor %}
+        </div>
+
+{% endblock %}
