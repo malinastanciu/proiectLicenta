@@ -22,8 +22,8 @@
                     {% endfor %}
                     </select>
             <h4 class="card-title" style="color: white">Alegeti grupa care va primi temele:</h4>
-                <label for="discipline" style="color: white">Grupa:</label>
-                    <select id="discipline" name="discipline" style="margin-bottom: 30px; width: 100%;">
+                <label for="grupa" style="color: white">Grupa:</label>
+                    <select id="grupa" name="grupa" style="margin-bottom: 30px; width: 100%;">
                     {% for grupa in grupe %}
                         <option value="{{ grupa.id }}">{{ grupa.nume }}</option>
                     {% endfor %}

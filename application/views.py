@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 
 import pandas
 import numpy as np
+import random
 
 from application.decorators import allowed_users
 from application.functions import create_context
@@ -311,11 +312,29 @@ def distribuireTeme(request, pk):
     disciplina = Disciplina.objects.get(pk=pk)
     proiecte = Proiect.objects.all().filter(disciplina=disciplina)
     grupe = Grupa.objects.all().filter(discipline=disciplina)
+    lista_teme = list()
     if request.method == 'POST':
         proiect = Proiect.objects.all().filter(id=request.POST.get('proiect'))
         print(proiect)
         teme = Tema.objects.all().filter(proiect=request.POST.get('proiect'))
         print(teme)
+        for tema in teme:
+            lista_teme.append(tema.id)
+        print(lista_teme)
+        grupa = Grupa.objects.all().filter(id=request.POST.get('grupa'))[0]
+        # print(grupa.nume)
+        studenti = Student.objects.all().filter(grupa=grupa)
+        print(studenti)
+        print(len(studenti))
+        random.shuffle(lista_teme)
+        print(lista_teme)
+        for i in range(len(studenti)):
+            print(studenti[i])
+            # print(teme[i])
+            tema = Tema.objects.get(id=lista_teme[i])
+            print(tema)
+            studenti[i].teme.add(tema)
+        return redirect('vizualizareDisciplina', pk)
     context = create_context(request)
     context['disciplina'] = disciplina
     context['proiecte'] = proiecte
