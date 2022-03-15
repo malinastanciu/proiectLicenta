@@ -7,23 +7,54 @@
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/css/tema.css' %}">
         <h3><b>{{ tema.nume }} pentru proiectul {{ tema.proiect.nume }}</b></h3><br>
-        <div style="padding-top: 60px; margin-left: 35%">
+
         <div class="row d-flex justify-content-center" style="width: auto; position: center">
             <div class="col-sm-6">
-            <div class="create_project" style="padding: 20px;font-size: 15px">
+                <div class="create_task" style="padding: 20px;font-size: 15px">
                 <form action="" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <h3><b>Adaugare task nou</b></h3><br>
-                    <label for="name">Nume</label>
-                    <input type="text" name="name"><br>
+                    <label for="nume">Nume</label>
+                    <input type="text" name="nume"><br>
                     <label for="descriere">Descriere</label><br>
-                    <textarea id="descriere" rows="5" cols="40"></textarea><br>
+                    <textarea name="descriere" rows="5" cols="40"></textarea><br>
 
                     <input type="submit" class="btn btn-info" value="Submit">
                 </form>
+                </div>
+            </div>
+                     <div class="col-sm-6" style="width: 300px">
+
+
+                        <table class="table table-bordered" id="myTable" style="border-color: #1b6d85; width: 200px">
+                            <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px; width: 60px">
+                            <tr  style="border-color: #1b6d85">
+                                <th  style="border-color: #1b6d85; width: 100px">Nume</th>
+                                <th  style="border-color: #1b6d85; width: 60px">Descriere</th>
+                                <th  style="border-color: #1b6d85; width: 60px">Efectuat</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                        {% for task in tasks %}
+
+
+                            <tr>
+                                <td  style="border-color: #1b6d85">{{ task.nume }}</td>
+                                <td  style="border-color: #1b6d85">{{ task.descriere }}</td>
+                                <td  style="border-color: #1b6d85">{{ task.efectuat }}</td>
+                            </tr>
+
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+
+
             </div>
         </div>
-    </div>
-    </div>
+
+
 
 {% endblock %}

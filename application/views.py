@@ -11,7 +11,7 @@ import random
 from application.decorators import allowed_users
 from application.functions import create_context
 from django.core.files.storage import FileSystemStorage
-from application.models import Proiect, Disciplina, Student, Grupa, Tema
+from application.models import Proiect, Disciplina, Student, Grupa, Tema, Task
 
 
 @login_required(login_url='login')
@@ -368,6 +368,16 @@ def disciplinaStudent(request, pk):
 def temaStudent(request, pk):
     context = create_context(request)
     tema = Tema.objects.get(pk=pk)
-    print(tema.nume)
+    tasks = Task.objects.all().filter(tema=tema)
+    if request.method == 'POST':
+        task = Task()
+        task.nume = request.POST.get('nume')
+        task.descriere = request.POST.get('descriere')
+        task.tema = tema
+        task.student = Student.objects.get(utilizator=request.user)
+        task.efectuat = False
+        task.save()
+        return redirect('temaStudent', pk)
     context['tema'] = tema
+    context['tasks'] = tasks
     return render(request, 'application/student/tema.html', context)

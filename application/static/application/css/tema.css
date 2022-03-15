@@ -1,16 +1,16 @@
-.create_project {
+.create_task {
     background-color: #f2f2f2;
+    width: 500px;
 }
 
-.create_project input {
+.create_task input {
     width: 100%;
     clear: both;
-    margin-bottom: 10px;
 }
 
-.input-submit {
-    width: 550px;
-}
 textarea{
     width: 100%;
+}
+td, th{
+    width: 25%;
 }
