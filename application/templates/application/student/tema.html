@@ -1,0 +1,29 @@
+{% extends 'application/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    {{ tema.nume }}
+{% endblock %}
+{% block article %}
+    <link rel="stylesheet" href="{% static 'application/css/tema.css' %}">
+        <h3><b>{{ tema.nume }} pentru proiectul {{ tema.proiect.nume }}</b></h3><br>
+        <div style="padding-top: 60px; margin-left: 35%">
+        <div class="row d-flex justify-content-center" style="width: auto; position: center">
+            <div class="col-sm-6">
+            <div class="create_project" style="padding: 20px;font-size: 15px">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h3><b>Adaugare task nou</b></h3><br>
+                    <label for="name">Nume</label>
+                    <input type="text" name="name"><br>
+                    <label for="descriere">Descriere</label><br>
+                    <textarea id="descriere" rows="5" cols="40"></textarea><br>
+
+                    <input type="submit" class="btn btn-info" value="Submit">
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

@@ -361,3 +361,13 @@ def disciplinaStudent(request, pk):
     context['disciplina'] = disciplina
     context['proiecte'] = proiecte
     return render(request, 'application/student/disciplinaStudent.html', context)
+
+
+@allowed_users(allowed_roles=['studenti'])
+@login_required(login_url='login')
+def temaStudent(request, pk):
+    context = create_context(request)
+    tema = Tema.objects.get(pk=pk)
+    print(tema.nume)
+    context['tema'] = tema
+    return render(request, 'application/student/tema.html', context)

@@ -60,4 +60,5 @@ class Task(models.Model):
     nume = models.CharField(max_length=100)
     descriere = models.CharField(max_length=300)
     tema = models.ForeignKey(Tema, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, default=False)
     efectuat = models.BooleanField()

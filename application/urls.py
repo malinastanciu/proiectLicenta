@@ -28,4 +28,6 @@ urlpatterns = [
          name='distribuireTeme'),
     path('disciplina-student/<str:pk>/', application_views.disciplinaStudent,
          name='disciplinaStudent'),
+    path('disciplina-student/tema/<str:pk>', application_views.temaStudent,
+         name='temaStudent'),
 ]
