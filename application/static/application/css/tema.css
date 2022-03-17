@@ -14,3 +14,7 @@ textarea{
 td, th{
     width: 25%;
 }
+progress{
+    height: 50px;
+    width: 700px;
+}

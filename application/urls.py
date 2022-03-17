@@ -30,4 +30,6 @@ urlpatterns = [
          name='disciplinaStudent'),
     path('disciplina-student/tema/<str:pk>', application_views.temaStudent,
          name='temaStudent'),
+    path('disciplina-student/tema/<str:pk1>/efectuare-task/<str:pk2>', application_views.efectuareTask,
+         name='efectuareTask'),
 ]

@@ -369,6 +369,11 @@ def temaStudent(request, pk):
     context = create_context(request)
     tema = Tema.objects.get(pk=pk)
     tasks = Task.objects.all().filter(tema=tema)
+    efectuat = 0
+    for task in tasks:
+        if task.efectuat == True:
+            efectuat +=1
+    progresul = 100/len(tasks) * efectuat
     if request.method == 'POST':
         task = Task()
         task.nume = request.POST.get('nume')
@@ -377,7 +382,27 @@ def temaStudent(request, pk):
         task.student = Student.objects.get(utilizator=request.user)
         task.efectuat = False
         task.save()
+        efectuat = 0
+        tasks_progres = Task.objects.all().filter(tema=tema)
+        for task in tasks_progres:
+            if task.efectuat == True:
+                efectuat += 1
+        progresul = 100 / len(tasks_progres) * efectuat
+        context['progresul'] = progresul
         return redirect('temaStudent', pk)
     context['tema'] = tema
     context['tasks'] = tasks
+    context['progresul'] = progresul
+    return render(request, 'application/student/tema.html', context)
+
+
+@allowed_users(allowed_roles=['studenti'])
+@login_required(login_url='login')
+def efectuareTask(request, pk1, pk2):
+    context = create_context(request)
+    task = Task.objects.get(pk=pk2)
+    if request.method == 'GET':
+        task.efectuat = True
+        task.save()
+        return redirect('temaStudent', pk1)
     return render(request, 'application/student/tema.html', context)
