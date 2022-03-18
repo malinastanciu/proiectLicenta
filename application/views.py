@@ -373,7 +373,7 @@ def temaStudent(request, pk):
     for task in tasks:
         if task.efectuat == True:
             efectuat +=1
-    progresul = 100/len(tasks) * efectuat
+    progresul = 100/(len(tasks) + 1) * efectuat
     if request.method == 'POST':
         task = Task()
         task.nume = request.POST.get('nume')
