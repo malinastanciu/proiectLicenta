@@ -15,7 +15,7 @@
     <b style="font-size: 27px;">Temele proiectului sunt:</b>
     <div  style="margin-top: 40px">
                 {% for tema in teme %}
-                           <a href="" style="color: black; font-size: 25px"> <b>||  {{ tema.nume }}  </b> </a>
+                           <a href="{% url 'vizualizareTema' tema.id %}" style="color: black; font-size: 25px"> <b>||  {{ tema.nume }}  </b> </a>
                 {% endfor %}
 
     </div>

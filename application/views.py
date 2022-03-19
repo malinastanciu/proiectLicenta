@@ -11,7 +11,7 @@ import random
 from application.decorators import allowed_users
 from application.functions import create_context
 from django.core.files.storage import FileSystemStorage
-from application.models import Proiect, Disciplina, Student, Grupa, Tema, Task
+from application.models import Proiect, Disciplina, Student, Grupa, Tema, Task, Incarcare
 
 
 @login_required(login_url='login')
@@ -406,3 +406,19 @@ def efectuareTask(request, pk1, pk2):
         task.save()
         return redirect('temaStudent', pk1)
     return render(request, 'application/student/tema.html', context)
+
+
+@allowed_users(allowed_roles=['profesori'])
+@login_required(login_url='login')
+def vizualizareTema(request, pk):
+    context = create_context(request)
+    tema = Tema.objects.all().filter(id=pk).get(id=pk)
+    studenti = Student.objects.all().filter(teme=tema)
+    tasks = Task.objects.all().filter(tema=tema)
+    incarcari = Incarcare.objects.all().filter(tema=tema)
+    print(incarcari)
+    context['tema'] = tema
+    context['studenti'] = studenti
+    context['tasks'] = tasks
+    context['incarcari'] = incarcari
+    return render(request, 'application/profesor/vizualizareTema.html', context)

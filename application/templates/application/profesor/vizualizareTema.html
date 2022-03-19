@@ -1,0 +1,69 @@
+{% extends 'application/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    {{ tema.nume }}
+{% endblock %}
+{% block article %}
+        <h3><b>Informatii {{ tema.nume }}:</b></h3><br>
+        {% for student in studenti %}
+            <h3><b>{{ student.utilizator.last_name }} {{ student.utilizator.first_name }}, grupa {{ student.grupa.nume }}</b></h3>
+            <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top: 50px">
+                <table class="table table-bordered" id="myTable" style="border-color: #1b6d85">
+                    <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px; text-align: center">
+                    <tr  style="border-color: #1b6d85">
+                        <th  style="border-color: #1b6d85; text-align: center" colspan="2">Task-uri</th>
+                    </tr>
+                    <tr  style="border-color: #1b6d85">
+                        <th  style="border-color: #1b6d85; text-align: center;">Nume task</th>
+                        <th  style="border-color: #1b6d85; text-align: center;">Descriere</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    {% for task in tasks %}
+                        {% if task.student.id is student.id %}
+                        <tr class="tr">
+                            <td  style="border-color: #1b6d85"> {{ task.nume }}</td>
+                            <td  style="border-color: #1b6d85">{{ task.descriere }}</td>
+
+                        </tr>
+                        {% endif %}
+
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+             <table style="border: solid  black">
+                        <thead>
+                            <th style="border: solid black; padding: 5px">Document</th>
+                            <th style="border: solid black; padding: 5px">Data incarcare</th>
+                        </thead>
+                    <tbody>
+                        <tr>
+                            <td  style="border: solid black">{{ incarcare.document }}</td>
+                            <td  style="border: solid black">{{ incarcare.data_incarcare }}</td>
+                        </tr>
+                    </tbody>
+                    </table>
+            {% for incarcare in incarcari %}
+                {% if incarcare.student.id is student.id %}
+                    <table>
+                        <thead style="border-color: black">
+                            <th>Document</th>
+                            <th>Data incarcare</th>
+                        </thead>
+                    <tbody>
+                        <tr>
+                            <td  style="border-color: #1b6d85">{{ incarcare.document }}</td>
+                            <td  style="border-color: #1b6d85" colspan="8">{{ incarcare.data_incarcare }}</td>
+                        </tr>
+                    </tbody>
+                    </table>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+
+{% endblock %}

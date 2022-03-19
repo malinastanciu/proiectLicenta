@@ -32,4 +32,6 @@ urlpatterns = [
          name='temaStudent'),
     path('disciplina-student/tema/<str:pk1>/efectuare-task/<str:pk2>', application_views.efectuareTask,
          name='efectuareTask'),
+    path('vizualizare-disciplina/vizualizare-proiecte/proiect/tema/<str:pk>', application_views.vizualizareTema,
+         name='vizualizareTema'),
 ]
