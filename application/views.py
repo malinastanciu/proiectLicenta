@@ -413,6 +413,7 @@ def efectuareTask(request, pk1, pk2):
 def vizualizareTema(request, pk):
     context = create_context(request)
     tema = Tema.objects.all().filter(id=pk).get(id=pk)
+    # tema = Tema.objects.get(pk=pk)
     studenti = Student.objects.all().filter(teme=tema)
     tasks = Task.objects.all().filter(tema=tema)
     incarcari = Incarcare.objects.all().filter(tema=tema)
@@ -422,3 +423,14 @@ def vizualizareTema(request, pk):
     context['tasks'] = tasks
     context['incarcari'] = incarcari
     return render(request, 'application/profesor/vizualizareTema.html', context)
+
+
+@allowed_users(allowed_roles=['studenti'])
+@login_required(login_url='login')
+def incarcareTema(request, pk):
+    context = create_context(request)
+    tema = Tema.objects.get(pk=pk)
+    proiect = Proiect.objects.get(pk=tema.proiect.id)
+    context['tema'] = tema
+    context['proiect'] = proiect
+    return render(request, 'application/student/incarcareTema.html', context)

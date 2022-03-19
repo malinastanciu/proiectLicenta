@@ -30,6 +30,8 @@ urlpatterns = [
          name='disciplinaStudent'),
     path('disciplina-student/tema/<str:pk>', application_views.temaStudent,
          name='temaStudent'),
+    path('disciplina-student/tema/incarcare-tema/<str:pk>', application_views.incarcareTema,
+         name='incarcareTema'),
     path('disciplina-student/tema/<str:pk1>/efectuare-task/<str:pk2>', application_views.efectuareTask,
          name='efectuareTask'),
     path('vizualizare-disciplina/vizualizare-proiecte/proiect/tema/<str:pk>', application_views.vizualizareTema,
