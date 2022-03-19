@@ -10,6 +10,7 @@
                 {% block pages %}
                 {% endblock %}
             <li><a href="{% url 'account' %}">Cont</a>
+            <li style="padding: 7px; color: white; font-size: 20px; margin-left: 600px">Sunteti conectat ca {{ user_type }} {{ request.user.username }}</li>
             <li class="right"><a class="logout" href="{% url 'logout' %}">Deconectare</a></li>
         </ul>
 

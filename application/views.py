@@ -1,3 +1,4 @@
+import datetime
 import os
 from datetime import date
 from django.contrib.auth.decorators import login_required
@@ -433,4 +434,25 @@ def incarcareTema(request, pk):
     proiect = Proiect.objects.get(pk=tema.proiect.id)
     context['tema'] = tema
     context['proiect'] = proiect
+    incarcare = Incarcare()
+    if request.method == 'POST':
+        path = os.path.abspath(os.getcwd()) + r"\media"
+        print(path)
+        print(date.today())
+        print(Student.objects.get(utilizator=request.user))
+        path_of_directory = os.path.join(path, proiect.nume)
+        path_of_file = os.path.join(path_of_directory, request.user.first_name + '_' + request.user.last_name + '_' +
+                                    tema.nume)
+        os.mkdir(path_of_file)
+        uploaded_file = request.FILES['document']
+        fs = FileSystemStorage(path_of_file)
+        txt = uploaded_file.name
+        x = txt.split('.')
+        fs.save(request.user.first_name + '_' + request.user.last_name + '_' + tema.nume + '.' + x[1], uploaded_file)
+        incarcare.tema = tema
+        incarcare.data_incarcare = date.today()
+        incarcare.student = Student.objects.get(utilizator=request.user.id)
+        incarcare.document = request.user.first_name + '_' + request.user.last_name + '_' + tema.nume + '.' + x[1]
+        incarcare.save()
+        return redirect('temaStudent', tema.id)
     return render(request, 'application/student/incarcareTema.html', context)
