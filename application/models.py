@@ -53,6 +53,7 @@ class Incarcare(models.Model):
     data_incarcare = models.DateField(null=True, unique=False)
     document = models.CharField(max_length=100, null=True, unique=False)
     nota = models.FloatField(default=0)
+    feedback = models.CharField(max_length=500, null=True)
 
 
 class Task(models.Model):

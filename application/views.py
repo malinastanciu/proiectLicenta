@@ -456,3 +456,19 @@ def incarcareTema(request, pk):
         incarcare.save()
         return redirect('temaStudent', tema.id)
     return render(request, 'application/student/incarcareTema.html', context)
+
+
+@allowed_users(allowed_roles=['profesori'])
+@login_required(login_url='login')
+def adaugareNota(request, pk):
+    context = create_context(request)
+    tema = Tema.objects.get(pk=pk)
+    incarcare = Incarcare.objects.get(tema=tema)
+    print(incarcare.document)
+    if request.method == 'POST':
+        incarcare.nota = request.POST.get('nota')
+        print(request.POST.get('nota'))
+        incarcare.feedback = request.POST.get('feedback')
+        incarcare.save()
+        return redirect('vizualizareTema', pk)
+    return render(request, 'application/profesor/vizualizareTema.html', context)

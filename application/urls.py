@@ -36,4 +36,6 @@ urlpatterns = [
          name='efectuareTask'),
     path('vizualizare-disciplina/vizualizare-proiecte/proiect/tema/<str:pk>', application_views.vizualizareTema,
          name='vizualizareTema'),
+    path('vizualizare-disciplina/vizualizare-proiecte/proiect/tema/<str:pk>/adaugare-nota/', application_views.adaugareNota,
+         name='adaugareNota'),
 ]

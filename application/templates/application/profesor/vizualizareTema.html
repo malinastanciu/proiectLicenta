@@ -5,6 +5,7 @@
     {{ tema.nume }}
 {% endblock %}
 {% block article %}
+    <link rel="stylesheet" href="{% static 'application/css/vizualizareTema.css' %}">
         <h3><b>Informatii {{ tema.nume }}:</b></h3>
         {% for student in studenti %}
             <h3><b>{{ student.utilizator.last_name }} {{ student.utilizator.first_name }}, grupa {{ student.grupa.nume }}</b></h3>
@@ -15,12 +16,16 @@
                 {% endif %}
             {% endfor %}
 
-            <button type="button" class="collapsible btn btn-info">Adaugare nota si feedback</button>
-            <div class="content" style="margin-top:5px; display: none; width: 300px; padding: 10px; border-radius: 10px">
-                <label for="nota">Nota:</label><br>
-                <input type="number" name="nota" style="width: 70px; height: 35px"><br>
-                <label for="feedback">Feedback:</label><br>
-                <textarea name="feedback" rows="5" cols="20"></textarea>
+            <button type="button" class="collapsible"><h4>Adaugare nota si feedback</h4></button>
+            <div class="content" style="margin-top:-2px; display: none; background-color: white; width: 400px; padding: 10px;">
+                <form action="{% url 'adaugareNota' tema.id %}" method="POST">
+                    {% csrf_token %}
+                    <label for="nota">Nota:</label><br>
+                    <input type="number" name="nota" style="width: 70px; height: 35px"><br>
+                    <label for="feedback">Feedback:</label><br>
+                    <textarea name="feedback" rows="5" cols="45"></textarea><br>
+                    <button type="submit" class="btn" style="background-color: #097969; color: white">Salvare</button>
+                </form>
             </div>
             <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top: 5px">
                 <table class="table table-bordered" id="myTable" style="border-color: #1b6d85; width: 800px">
