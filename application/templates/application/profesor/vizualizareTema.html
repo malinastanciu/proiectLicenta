@@ -15,7 +15,13 @@
                 {% endif %}
             {% endfor %}
 
-            <button class="btn btn-info">Adaugare nota</button>
+            <button type="button" class="collapsible btn btn-info">Adaugare nota si feedback</button>
+            <div class="content" style="margin-top:5px; display: none; width: 300px; padding: 10px; border-radius: 10px">
+                <label for="nota">Nota:</label><br>
+                <input type="number" name="nota" style="width: 70px; height: 35px"><br>
+                <label for="feedback">Feedback:</label><br>
+                <textarea name="feedback" rows="5" cols="20"></textarea>
+            </div>
             <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top: 5px">
                 <table class="table table-bordered" id="myTable" style="border-color: #1b6d85; width: 800px">
                     <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px; text-align: center">
@@ -45,6 +51,21 @@
                 </table>
             </div>
         {% endfor %}
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
 
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
 
 {% endblock %}
