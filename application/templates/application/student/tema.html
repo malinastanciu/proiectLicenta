@@ -24,10 +24,15 @@
                 </div>
 
                 <div style="margin-top: -400px; margin-left: 600px; padding: 50px">
+                    {% if data %}
                     <form action="{% url 'incarcareTema' tema.id %}">
                         <input type="submit" id="incarcare-tema" class="btn btn-info" value="Incarcare tema" style="width: 700px;
                                 background-color: black; border-color: black; margin-bottom: 10px">
                     </form>
+                    {% else %}
+                        <input type="submit" id="incarcare-tema" class="btn btn-info" disabled value="Incarcare tema" style="width: 700px;
+                                background-color: black; border-color: black; margin-bottom: 10px">
+                    {% endif %}
                     <progress id="progress" value={{ progresul }}  max="100" style="color: white">{{ progresul }}%</progress>
                     <table class="table table-bordered" id="myTable" style="border-color: #1b6d85; width: 700px">
                         <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px; width: 60px">

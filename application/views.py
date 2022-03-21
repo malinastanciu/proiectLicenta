@@ -369,6 +369,15 @@ def disciplinaStudent(request, pk):
 def temaStudent(request, pk):
     context = create_context(request)
     tema = Tema.objects.get(pk=pk)
+    proiect = Proiect.objects.get(tema=tema)
+    print(proiect.nume)
+    print(proiect.data_finalizare)
+    print(date.today())
+    if str(proiect.data_finalizare) > str(date.today()):
+        context['data'] = True
+    else:
+        context['data'] = False
+
     tasks = Task.objects.all().filter(tema=tema)
     efectuat = 0
     for task in tasks:
