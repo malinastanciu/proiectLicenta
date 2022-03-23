@@ -13,6 +13,7 @@
                 <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px">
                 <tr  style="border-color: #1b6d85">
                     <th  style="border-color: #1b6d85">Nume tema</th>
+                    <th  style="border-color: #1b6d85">Descriere</th>
                     <th  style="border-color: #1b6d85">Data finalizare</th>
                 </tr>
                 </thead>
@@ -22,6 +23,7 @@
                 {% for tema in teme_student %}
                     <tr class="tr">
                         <td  style="border-color: #1b6d85"><a href="{% url 'temaStudent' disciplina.id tema.id %}"> {{ tema.nume }}</a></td>
+                        <td  style="border-color: #1b6d85">{{ tema.descriere }}</td>
                         <td  style="border-color: #1b6d85">{{ proiect.data_finalizare }}</td>
                     </tr>
                 {% endfor %}

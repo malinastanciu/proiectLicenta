@@ -6,7 +6,7 @@
 {% endblock %}
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/css/vizualizareTema.css' %}">
-        <h3><b>Informatii {{ tema.nume }}:</b></h3>
+    <h3 style="padding: 20px; margin-left: -20px"><b>Nume:</b> {{ tema.nume }}, <b>descriere:</b> {{ tema.descriere }}</h3>
         {% for student in studenti %}
             <h3><b>{{ student.utilizator.last_name }} {{ student.utilizator.first_name }}, grupa {{ student.grupa.nume }}</b></h3>
             {% for incarcare in incarcari %}
