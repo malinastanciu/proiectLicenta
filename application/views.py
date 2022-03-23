@@ -44,6 +44,8 @@ def account(request):
 def adaugareProiect(request, pk):
     context = create_context(request)
     proiect = Proiect()
+    disciplina = Disciplina.objects.get(pk=pk)
+    context['disciplina'] = disciplina
     if request.method == 'POST':
         proiect.nume = request.POST.get('name')
         proiect.data_inregistrare = date.today()
@@ -79,6 +81,7 @@ def adaugareProiect(request, pk):
                     value = np.array(data.iloc[i][key]).tolist()
                     teme[key] = value
                 tema.nume = teme['Nume tema']
+                tema.descriere = teme['Descriere']
                 tema.proiect = proiect
                 tema.save()
 
@@ -366,9 +369,10 @@ def disciplinaStudent(request, pk):
 
 @allowed_users(allowed_roles=['studenti'])
 @login_required(login_url='login')
-def temaStudent(request, pk):
+def temaStudent(request, pk1, pk2):
     context = create_context(request)
-    tema = Tema.objects.get(pk=pk)
+    disciplina = Disciplina.objects.get(pk=pk1)
+    tema = Tema.objects.get(pk=pk2)
     proiect = Proiect.objects.get(tema=tema)
     print(proiect.nume)
     print(proiect.data_finalizare)
@@ -399,10 +403,11 @@ def temaStudent(request, pk):
                 efectuat += 1
         progresul = 100 / len(tasks_progres) * efectuat
         context['progresul'] = progresul
-        return redirect('temaStudent', pk)
+        return redirect('temaStudent', pk1, pk2)
     context['tema'] = tema
     context['tasks'] = tasks
     context['progresul'] = progresul
+    context['disciplina'] = disciplina
     return render(request, 'application/student/tema.html', context)
 
 

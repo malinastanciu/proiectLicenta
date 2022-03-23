@@ -6,9 +6,10 @@
 {% endblock %}
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/css/tema.css' %}">
-        <h3><b>{{ tema.nume }} pentru proiectul {{ tema.proiect.nume }}</b></h3><br>
+        <h1 style="color: #383838; font-size: 70px; padding: 30px; margin-top: -20px"><b>{{ disciplina.nume }}</b></h1>
+        <h3 style="margin-top: -30px"><b>{{ tema.nume }} pentru proiectul {{ tema.proiect.nume }}</b></h3><br>
 
-        <div class="row d-flex justify-content-center" style="width: auto; position: center">
+        <div class="row d-flex justify-content-center" style="width: auto; position: center;">
 
                 <div class="create_task" style="padding: 20px;font-size: 15px">
                 <form action="" method="POST" enctype="multipart/form-data">
@@ -23,7 +24,7 @@
                 </form>
                 </div>
 
-                <div style="margin-top: -400px; margin-left: 600px; padding: 50px">
+                <div style="margin-top: -520px; margin-left: 600px; padding: 50px">
                     {% if data %}
                     <form action="{% url 'incarcareTema' tema.id %}">
                         <input type="submit" id="incarcare-tema" class="btn btn-info" value="Incarcare tema" style="width: 700px;

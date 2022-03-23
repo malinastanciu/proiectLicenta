@@ -6,7 +6,8 @@
 {% endblock %}
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/stergere_disciplina.css' %}">
-    <form method="POST" style="padding-top:100px">
+    <h1 style="color: #383838; font-size: 100px; padding: 30px"><b>{{ disciplina.nume }}</b></h1>
+    <form method="POST" style="padding-top:100px; margin-top: -150px">
         {% csrf_token %}
         <div class="card text-center d-flex justify-content-center" style="background-color: #1b6d85; width: 500px; border-radius: 20px; margin-left: 35%; padding: 10px 10px 20px 10px">
           <div class="card-header" style="color: white; padding: 5px">
