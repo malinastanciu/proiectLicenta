@@ -32,6 +32,7 @@ class Grupa(models.Model):
 class Tema(models.Model):
     id = models.AutoField(primary_key=True)
     nume = models.CharField(max_length=100, unique=False)
+    descriere = models.CharField(max_length=500, null=True)
     proiect = models.ForeignKey(Proiect, on_delete=models.CASCADE, unique=False)
 
 
