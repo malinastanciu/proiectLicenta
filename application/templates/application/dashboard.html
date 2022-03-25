@@ -103,7 +103,18 @@
     {% if 'secretariat' in user_groups %}
         <div class="row">
             <div class="col-sm-6"
-                 style="background-color: #383838; border-radius: 20px; width: 430px; height:200px; padding-top: 5px; margin: 5vh 0 5px 33vh">
+                 style="background-color: #383838; border-radius: 20px; width: 430px; height: 200px; padding-top: 5px; margin: 5vh 0 5px 33vh;">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title" style="text-align: center; padding: 50px"><a
+                                href="{% url 'adaugareGrupa' %}" style="color: white;">Adaugare grupa</a></h2>
+                        <br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6"
+                 style="background-color: #383838; border-radius: 20px; width: 430px; height:200px; padding-top: 5px; margin: 5vh 0 5px 20vh">
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title" style="text-align: center; padding: 50px "><a
@@ -112,16 +123,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6"
-                 style="background-color: #383838; border-radius: 20px; width: 430px; height: 200px; padding-top: 5px; margin: 5vh 0 5px 20vh;">
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="card-title" style="text-align: center; padding: 50px"><a
-                                href="{% url 'vizualizareStudenti' %}" style="color: white;">Vizualizare studenti</a></h2>
-                        <br>
-                    </div>
-                </div>
-            </div>
+
             <div class="col-sm-6"
                  style="background-color: #383838; border-radius: 20px; width: 430px; height: 200px; padding-top: 5px; margin: 5vh 0 5px 33vh;">
                 <div class="card">
@@ -132,13 +134,12 @@
                     </div>
                 </div>
             </div>
-
-        <div class="col-sm-6"
+            <div class="col-sm-6"
                  style="background-color: #383838; border-radius: 20px; width: 430px; height: 200px; padding-top: 5px; margin: 5vh 0 5px 20vh;">
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title" style="text-align: center; padding: 50px"><a
-                                href="{% url 'adaugareGrupa' %}" style="color: white;">Adaugare grupa</a></h2>
+                                href="{% url 'vizualizareStudenti' %}" style="color: white;">Vizualizare studenti</a></h2>
                         <br>
                     </div>
                 </div>
