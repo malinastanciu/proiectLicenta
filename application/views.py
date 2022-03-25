@@ -27,7 +27,7 @@ def dashboard(request):
     if 'studenti' == request.user.groups.all()[0].name:
         student = Student.objects.get(utilizator=request.user)
         context['student'] = student
-        discipline_student = Grupa.objects.get(nume=student.grupa.nume).discipline.all()
+        discipline_student = student.discipline.all()
         print(discipline_student)
         context['discipline_student'] = discipline_student
     return render(request, 'application/dashboard.html', context)
@@ -98,9 +98,9 @@ def adaugareDisciplina(request):
     if request.method == 'POST':
         user = User.objects.get(id=request.POST.get('profesor'))
         disciplina_existenta = Disciplina.objects.get(nume=request.POST.get('nume'))
-        print(disciplina_existenta)
+        print(disciplina_existenta.profesori)
+        print(disciplina_existenta.nume)
         if disciplina_existenta:
-
             disciplina_existenta.profesori.add(user)
             disciplina_existenta.save()
             print(disciplina_existenta.profesori.all())
@@ -194,16 +194,17 @@ def adaugareStudenti(request):
                 stud.save()
 
         return redirect('dashboard')
-    return render(request, 'application/scretariat/adaugare_studenti.html', context)
+    return render(request, 'application/secretariat/adaugare_studenti.html', context)
 
 
 @allowed_users(allowed_roles=['secretariat'])
 @login_required(login_url='login')
-def vizualizareStudenti(request):
+def vizualizareStudenti(request, pk):
     context = create_context(request)
-    studenti = Student.objects.all()
+    grupa = Grupa.objects.get(pk=pk)
+    studenti = Student.objects.all().filter(grupa=grupa)
     context['studenti'] = studenti
-    return render(request, 'application/scretariat/vizualizare_studenti.html', context)
+    return render(request, 'application/secretariat/vizualizare_studenti.html', context)
 
 
 @allowed_users(allowed_roles=['admin'])
@@ -266,7 +267,16 @@ def vizulalizareGrupe(request):
     context = create_context(request)
     grupe = Grupa.objects.all()
     context['grupe'] = grupe
-    return render(request, 'application/scretariat/vizualizare_grupe.html', context)
+    return render(request, 'application/secretariat/vizualizare_grupe.html', context)
+
+
+@allowed_users(allowed_roles=['secretariat'])
+@login_required(login_url='login')
+def vizulalizareGrupeStudenti(request):
+    context = create_context(request)
+    grupe = Grupa.objects.all()
+    context['grupe'] = grupe
+    return render(request, 'application/secretariat/grupe_studenti.html', context)
 
 
 @allowed_users(allowed_roles=['secretariat'])
@@ -280,7 +290,7 @@ def adaugareGrupa(request):
         grupa.save()
         return redirect('adaugareGrupa')
     context['grupe'] = grupe
-    return render(request, 'application/scretariat/adaugare_grupa.html', context)
+    return render(request, 'application/secretariat/adaugare_grupa.html', context)
 
 
 @allowed_users(allowed_roles=['secretariat'])
@@ -290,15 +300,18 @@ def asignareDiscipline(request, pk):
     grupa = Grupa.objects.get(pk=pk)
     discipline = Disciplina.objects.filter(an_universitar=int(grupa.nume[1]))
     grupa = Grupa.objects.get(pk=pk)
+    studenti = Student.objects.all().filter(grupa=grupa)
+    print(studenti)
     if request.method == 'POST':
         for disciplina in request.POST.getlist('disciplina'):
             d = Disciplina.objects.get(nume=disciplina)
-            grupa.discipline.add(d.id)
-        grupa.save()
+            for student in studenti:
+                student.discipline.add(d.id)
+                student.save()
         return redirect('vizualizareGrupe')
     context['grupa'] = grupa
     context['discipline'] = discipline
-    return render(request, 'application/scretariat/asignare_discipline.html', context)
+    return render(request, 'application/secretariat/asignare_discipline.html', context)
 
 
 @allowed_users(allowed_roles=['profesori'])
@@ -317,7 +330,7 @@ def proiect(request, pk):
 def distribuireTeme(request, pk):
     disciplina = Disciplina.objects.get(pk=pk)
     proiecte = Proiect.objects.all().filter(disciplina=disciplina)
-    grupe = Grupa.objects.all().filter(discipline=disciplina)
+    grupe = Grupa.objects.all()
     lista_teme = list()
     if request.method == 'POST':
         proiect = Proiect.objects.all().filter(id=request.POST.get('proiect'))
@@ -369,10 +382,9 @@ def disciplinaStudent(request, pk):
 
 @allowed_users(allowed_roles=['studenti'])
 @login_required(login_url='login')
-def temaStudent(request, pk1, pk2):
+def temaStudent(request, pk1):
     context = create_context(request)
-    disciplina = Disciplina.objects.get(pk=pk1)
-    tema = Tema.objects.get(pk=pk2)
+    tema = Tema.objects.get(pk=pk1)
     proiect = Proiect.objects.get(tema=tema)
     print(proiect.nume)
     print(proiect.data_finalizare)
@@ -387,7 +399,10 @@ def temaStudent(request, pk1, pk2):
     for task in tasks:
         if task.efectuat == True:
             efectuat +=1
-    progresul = 100/(len(tasks) + 1) * efectuat
+    if len(tasks) == 0:
+        progresul = 0
+    else:
+        progresul = (100/len(tasks)) * efectuat
     if request.method == 'POST':
         task = Task()
         task.nume = request.POST.get('nume')
@@ -403,11 +418,10 @@ def temaStudent(request, pk1, pk2):
                 efectuat += 1
         progresul = 100 / len(tasks_progres) * efectuat
         context['progresul'] = progresul
-        return redirect('temaStudent', pk1, pk2)
+        return redirect('temaStudent', pk1)
     context['tema'] = tema
     context['tasks'] = tasks
     context['progresul'] = progresul
-    context['disciplina'] = disciplina
     return render(request, 'application/student/tema.html', context)
 
 
@@ -486,3 +500,16 @@ def adaugareNota(request, pk):
         incarcare.save()
         return redirect('vizualizareTema', pk)
     return render(request, 'application/profesor/vizualizareTema.html', context)
+
+
+@allowed_users(allowed_roles=['secretariat'])
+@login_required(login_url='login')
+def modificareDiscipline(request, pk):
+    context = create_context(request)
+    student = Student.objects.get(pk=pk)
+    context['student'] = student
+    discipline_student = student.discipline.all()
+    context['discipline_student'] = discipline_student
+    context['discipline'] = Disciplina.objects.all().filter(an_universitar=4)
+    return render(request, 'application/secretariat/modificare_discipline.html', context)
+

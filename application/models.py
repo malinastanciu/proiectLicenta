@@ -26,7 +26,6 @@ class Proiect(models.Model):
 class Grupa(models.Model):
     id = models.AutoField(primary_key=True)
     nume = models.CharField(max_length=10, null=True)
-    discipline = models.ManyToManyField(Disciplina)
 
 
 class Tema(models.Model):
@@ -45,6 +44,7 @@ class Student(models.Model):
     an_studiu = models.CharField(max_length=20, null=True)
     grupa = models.ForeignKey(Grupa, on_delete=models.CASCADE, null=True)
     teme = models.ManyToManyField(Tema)
+    discipline = models.ManyToManyField(Disciplina)
 
 
 class Incarcare(models.Model):

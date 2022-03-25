@@ -18,6 +18,7 @@
                     <th  style="border-color: #1b6d85">Specializarea</th>
                     <th  style="border-color: #1b6d85">Anul</th>
                     <th  style="border-color: #1b6d85">Grupa</th>
+                    <th  style="border-color: #1b6d85">Actiune</th>
                 </tr>
                 </thead>
 
@@ -34,6 +35,7 @@
                         <td  style="border-color: #1b6d85">{{ student.specializare}}</td>
                         <td  style="border-color: #1b6d85">{{ student.an_studiu}}</td>
                         <td  style="border-color: #1b6d85">{{ student.grupa.nume}}</td>
+                        <td  style="border-color: #1b6d85"><a href="{% url 'modeificareDiscipline' student.id %}">Modificare discipline</a></td>
                     </tr>
 
                 {% endfor %}

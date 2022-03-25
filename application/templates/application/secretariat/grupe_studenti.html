@@ -1,0 +1,24 @@
+{% extends 'application/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    Grupe studenti
+{% endblock %}
+{% block article %}
+    <link rel="stylesheet" href="">
+
+     <h1 style="color: #383838; font-size: 100px; padding: 50px"><b>Grupe</b></h1>
+         <div class="row">
+         {% for grupa in grupe %}
+            <div class="col-sm-6"
+                 style="background-color: #383838; width: 460px; border-radius: 20px; margin-right: 10vh; margin-left: 20vh; padding-top: 5px; margin-bottom: 5px">
+                <div class="card">
+                    <div class="card-body" style="margin-top: 5px">
+                        <h3 class="card-title" style="text-align: center;"><a href="{% url 'vizualizareStudenti' grupa.id %}" style="color: white;">{{ grupa.nume }}</a></h3>
+                        <br>
+                    </div>
+                </div>
+            </div>
+         {% endfor %}
+        </div>
+{% endblock %}

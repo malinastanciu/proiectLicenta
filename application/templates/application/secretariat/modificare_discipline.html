@@ -1,0 +1,18 @@
+{% extends 'application/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    Modificare discipline
+{% endblock %}
+{% block article %}
+    <h3><b>{{ student.utilizator.last_name }} {{ student.utilizator.first_name }}, grupa {{ student.grupa.nume }}</b></h3>
+    Discipline student:
+    {% for disciplina in discipline_student %}
+          {{ disciplina.nume }}
+    {% endfor %}
+    <br>
+    Discipline an univeristar curent:
+    {% for disciplina in discipline %}
+        {{ disciplina.nume }}
+    {% endfor %}
+{% endblock %}
