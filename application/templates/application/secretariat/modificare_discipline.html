@@ -5,14 +5,50 @@
     Modificare discipline
 {% endblock %}
 {% block article %}
+    <link rel="stylesheet" href="{% static 'application/css/modificare_discipline.css' %}">
     <h3><b>{{ student.utilizator.last_name }} {{ student.utilizator.first_name }}, grupa {{ student.grupa.nume }}</b></h3>
-    Discipline student:
-    {% for disciplina in discipline_student %}
-          {{ disciplina.nume }}
-    {% endfor %}
-    <br>
-    Discipline an univeristar curent:
-    {% for disciplina in discipline %}
-        {{ disciplina.nume }}
-    {% endfor %}
+
+     <form action="" method="POST">
+        <div class="container">
+            {% csrf_token %}
+            <div class="container">
+                <ul class="list1">
+                    <li>
+                        <select id="select1" name="select1" multiple >
+                            {% for disciplina in discipline %}
+{#                                {% if disciplina not in discipline_student %}#}
+                                    {% for profesor in disciplina.profesori.all %}
+                                        <option value="{ 'disciplina': {{ disciplina.id }}, 'profesor': {{ profesor.id }} }">{{ disciplina.nume }}, profesor {{ profesor.first_name }} {{ profesor.last_name }},
+                                            an {{ disciplina.an_universitar }}, semestru {{ disciplina.semestru }}</option>
+                                    {% endfor %}
+{#                                {% endif %}#}
+                            {% endfor %}
+                        </select>
+                    </li>
+                </ul>
+                <ul class="list3">
+                    <li class="relative">
+                        <input type="button" id="add" value="&#8702;" onclick="addOptions( 'select1', 'select2' )"/>
+                        <input type="button" id="remove" value="&#8701;" onclick="addOptions( 'select2', 'select1' )"/>
+                    </li>
+                </ul>
+                <ul class="list2">
+                    <li>
+                        <select id="select2" name="select2" multiple>
+                            {% for disciplina in discipline_student %}
+{#                                {% if disciplina not in discipline_student %}#}
+                                    {% for profesor in disciplina.profesori.all %}
+                                        <option value="{ 'disciplina': {{ disciplina.id }}, 'profesor': {{ profesor.id }} }">{{ disciplina.nume }}, profesor {{ profesor.first_name }} {{ profesor.last_name }},
+                                            an {{ disciplina.an_universitar }}, semestru {{ disciplina.semestru }}</option>
+                                    {% endfor %}
+{#                                {% endif %}#}
+                        {% endfor %}
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <input type="submit" class="btn btn-success btn-sm" id="submit-button" name="Submit" onclick="addOptions2()">
+        </div>
+     </form>
+    <script type="text/javascript" src="{% static 'application/js/modificare_discipline.js' %}"></script>
 {% endblock %}

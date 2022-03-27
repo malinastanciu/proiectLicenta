@@ -1,0 +1,79 @@
+form{
+    padding: 50px;
+    text-align: center;
+}
+.container {
+      width: 370px;
+      clear: both;
+
+}
+
+.container input {
+  width: 100%;
+  clear: both;
+}
+#submit-button{
+    margin-top: 20px;
+    width: 1200px;
+    margin-left: -446px;
+}
+
+#label1{
+    text-align: center;
+    float: left;
+    margin-left:540px;
+}
+
+ul.list1 {
+    list-style: none;
+    padding: 0;
+    grid-template-columns: 70px 40px 70px;
+    float: right;
+    margin-right: 300px;
+    margin-top: 20px;
+
+
+}
+
+ul.list3 {
+    list-style: none;
+    position: relative;
+    float: right;
+    margin-right: 225px;
+    margin-top: -200px;
+
+
+}
+
+ul.list2 {
+    list-style: none;
+    padding:0;
+    grid-template-columns: 71px 40px 71px;
+    float: right;
+    margin-right: -400px;
+    margin-top: -310px;
+
+}
+
+#select1 {
+    width: 500px;
+    height: 300px;
+}
+#select2 {
+    width: 500px;
+    height: 300px;
+}
+
+#add {
+    position: absolute;
+    width: 40px;
+    font-size: 18px;
+    top: 30px;
+}
+
+#remove {
+    position: absolute;
+    width: 40px;
+    font-size: 18px;
+    top: 0;
+}

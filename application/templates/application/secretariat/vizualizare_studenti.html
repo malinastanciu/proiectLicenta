@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block title %}
-    Studenti
+    Grupa {{ grupa.nume }}
 {% endblock %}
 {% block article %}
-        <h3><b>Vizualizare studenti</b></h3><br>
-        <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top: 50px">
+        <h2><b>Grupa {{ grupa.nume }}</b></h2><br>
+        <div class="table-wrapper-scroll-y custom-scrollbar">
             <table class="table table-bordered" id="myTable" style="border-color: #1b6d85">
                 <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px">
                 <tr  style="border-color: #1b6d85">

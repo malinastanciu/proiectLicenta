@@ -1,26 +1,29 @@
+import ast
 import datetime
+import json
 import os
 from datetime import date
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
+from django.core.exceptions import MultipleObjectsReturned
 from django.shortcuts import render, redirect
 
 import pandas
 import numpy as np
 import random
 
+from django.utils.datastructures import MultiValueDictKeyError
+
 from application.decorators import allowed_users
 from application.functions import create_context
 from django.core.files.storage import FileSystemStorage
-from application.models import Proiect, Disciplina, Student, Grupa, Tema, Task, Incarcare
+from application.models import Proiect, Disciplina, Student, Grupa, Tema, Task, Incarcare, Profesor
 
 
 @login_required(login_url='login')
 def dashboard(request):
     context = create_context(request)
-    user_projects = Proiect.objects.all().filter(profesor=request.user)
     discipline = Disciplina.objects.all()
-    context['projects'] = user_projects
     context['discipline'] = discipline
     print(discipline)
     print(request.user.groups.all())
@@ -58,34 +61,39 @@ def adaugareProiect(request, pk):
         path = os.path.abspath(os.getcwd()) + r"\media"
         path_of_directory = os.path.join(path, proiect.nume)
         os.mkdir(path_of_directory)
-        uploaded_file = request.FILES['document']
-        fs = FileSystemStorage(path_of_directory)
-        txt = uploaded_file.name
-        x = txt.split('.')
-        fs.save(proiect.nume + '.' + x[1], uploaded_file)
+        try:
+            uploaded_file = request.FILES['document']
 
-        proiect.document = proiect.nume + '.' + x[1]
-        proiect.cale = path_of_directory
-        proiect.save()
+            fs = FileSystemStorage(path_of_directory)
+            txt = uploaded_file.name
+            x = txt.split('.')
+            fs.save(proiect.nume + '.' + x[1], uploaded_file)
 
-        uploaded_file = request.FILES['document']
-        file = pandas.ExcelFile(uploaded_file)
-        for sheet in file.sheet_names:
-            data = file.parse(sheet)
-            dimensions = data.shape
-            rows = dimensions[0]
-            for i in range(0, rows):
-                teme = {}
-                tema = Tema()
-                for key in data.keys():
-                    value = np.array(data.iloc[i][key]).tolist()
-                    teme[key] = value
-                tema.nume = teme['Nume tema']
-                tema.descriere = teme['Descriere']
-                tema.proiect = proiect
-                tema.save()
+            proiect.document = proiect.nume + '.' + x[1]
+            proiect.cale = path_of_directory
+            proiect.save()
 
-        return redirect('vizualizareDisciplina', pk=pk)
+            uploaded_file = request.FILES['document']
+            file = pandas.ExcelFile(uploaded_file)
+            for sheet in file.sheet_names:
+                data = file.parse(sheet)
+                dimensions = data.shape
+                rows = dimensions[0]
+                for i in range(0, rows):
+                    teme = {}
+                    tema = Tema()
+                    for key in data.keys():
+                        value = np.array(data.iloc[i][key]).tolist()
+                        teme[key] = value
+                    tema.nume = teme['Nume tema']
+                    tema.descriere = teme['Descriere']
+                    tema.proiect = proiect
+                    tema.save()
+        except MultiValueDictKeyError:
+            proiect.cale = path_of_directory
+            proiect.save()
+        finally:
+            return redirect('vizualizareDisciplina', pk=pk)
     return render(request, 'application/profesor/adaugare_proiect.html', context)
 
 
@@ -93,26 +101,20 @@ def adaugareProiect(request, pk):
 @login_required(login_url='login')
 def adaugareDisciplina(request):
     context = create_context(request)
-    profesori = User.objects.filter(groups__name='profesori')
+    profesori = Profesor.objects.all()
     disciplina = Disciplina()
     if request.method == 'POST':
-        user = User.objects.get(id=request.POST.get('profesor'))
-        disciplina_existenta = Disciplina.objects.get(nume=request.POST.get('nume'))
-        print(disciplina_existenta.profesori)
-        print(disciplina_existenta.nume)
-        if disciplina_existenta:
-            disciplina_existenta.profesori.add(user)
+        profesor = Profesor.objects.get(pk=request.POST.get('profesor'))
+        try:
+            disciplina_existenta = Disciplina.objects.get(nume=request.POST.get('nume'))
+            disciplina_existenta.profesori.add(profesor)
             disciplina_existenta.save()
-            print(disciplina_existenta.profesori.all())
-        else:
+        except Disciplina.DoesNotExist:
             disciplina.nume = request.POST.get('nume')
-            # user = User.objects.filter(id=request.POST.get('profesor'))[0]
-            print(user.id)
             disciplina.an_universitar = request.POST.get('an_universitar')
             disciplina.semestru = request.POST.get('semestru')
             disciplina.save()
-            # disciplina = Disciplina.objects.get(nume=request.POST.get('nume'))
-            disciplina.profesori.add(user)
+            disciplina.profesori.add(profesor)
             disciplina.save()
         return redirect('dashboard')
     context['profesori'] = profesori
@@ -204,6 +206,7 @@ def vizualizareStudenti(request, pk):
     grupa = Grupa.objects.get(pk=pk)
     studenti = Student.objects.all().filter(grupa=grupa)
     context['studenti'] = studenti
+    context['grupa'] = grupa
     return render(request, 'application/secretariat/vizualizare_studenti.html', context)
 
 
@@ -240,6 +243,9 @@ def adaugareCont(request):
                                                       last_name=request.POST.get('nume'))
             group = Group.objects.get(name='profesori')
             utilizator_nou.groups.add(group)
+            profesor = Profesor()
+            profesor.utilizator = utilizator_nou
+            profesor.save()
         elif request.POST.get('tip') == 'secretar':
             utilizator_nou = User.objects.create_user(username=email.split('@')[0], email=email,
                                                       password='secretar123456', first_name=request.POST.get('prenume'),
@@ -298,19 +304,26 @@ def adaugareGrupa(request):
 def asignareDiscipline(request, pk):
     context = create_context(request)
     grupa = Grupa.objects.get(pk=pk)
-    discipline = Disciplina.objects.filter(an_universitar=int(grupa.nume[1]))
+    discipline = Disciplina.objects.all().filter(an_universitar=int(grupa.nume[1]))
     grupa = Grupa.objects.get(pk=pk)
     studenti = Student.objects.all().filter(grupa=grupa)
+    profesori = Profesor.objects.all()
     print(studenti)
     if request.method == 'POST':
         for disciplina in request.POST.getlist('disciplina'):
-            d = Disciplina.objects.get(nume=disciplina)
+            dictionary = ast.literal_eval(disciplina)
+            d = Disciplina.objects.get(pk=dictionary['disciplina'])
+            p = Profesor.objects.get(pk=dictionary['profesor'])
+            print(d)
+            print(p)
             for student in studenti:
                 student.discipline.add(d.id)
+                student.profesori.add(p.id)
                 student.save()
         return redirect('vizualizareGrupe')
     context['grupa'] = grupa
     context['discipline'] = discipline
+    context['profesori'] = profesori
     return render(request, 'application/secretariat/asignare_discipline.html', context)
 
 
@@ -398,11 +411,11 @@ def temaStudent(request, pk1):
     efectuat = 0
     for task in tasks:
         if task.efectuat == True:
-            efectuat +=1
+            efectuat += 1
     if len(tasks) == 0:
         progresul = 0
     else:
-        progresul = (100/len(tasks)) * efectuat
+        progresul = (100 / len(tasks)) * efectuat
     if request.method == 'POST':
         task = Task()
         task.nume = request.POST.get('nume')
@@ -506,10 +519,24 @@ def adaugareNota(request, pk):
 @login_required(login_url='login')
 def modificareDiscipline(request, pk):
     context = create_context(request)
+    print(pk)
     student = Student.objects.get(pk=pk)
     context['student'] = student
+    grupa = Grupa.objects.get(pk=student.grupa.id)
+    # context['student'] = stude
     discipline_student = student.discipline.all()
+    for d in discipline_student:
+        print(d.nume)
     context['discipline_student'] = discipline_student
     context['discipline'] = Disciplina.objects.all().filter(an_universitar=4)
+    if request.method == 'POST':
+        student.discipline.clear()
+        for select in request.POST.getlist('select2'):
+            dictionary = ast.literal_eval(select)
+            profesor = User.objects.get(pk=dictionary['profesor'])
+            disciplina = Disciplina.objects.all().filter(pk=dictionary['disciplina']).filter(profesori=profesor)
+            disciplina = disciplina.get(profesori=profesor)
+            print(profesor.last_name + ' ' + profesor.first_name)
+            student.discipline.add(disciplina)
+        return redirect('vizualizareStudenti', grupa.id)
     return render(request, 'application/secretariat/modificare_discipline.html', context)
-

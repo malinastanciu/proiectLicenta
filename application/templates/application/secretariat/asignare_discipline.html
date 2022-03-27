@@ -14,9 +14,14 @@
                      <h3><b>Asignare disicpline pentru grupa {{ grupa.nume }}</b></h3><br>
                      <label for="disciplina">Discipline:</label>
                      {% for disciplina in discipline %}
-                            <input id="disciplina" type="checkbox" value={{ disciplina.nume }} name="disciplina">
-                         <b>{{ disciplina.nume }}</b>, profesor: {{ disciplina.profesori.all.get.first_name }} {{ disciplina.profesori.all.get.last_name }},
-                         semestru: {{ disciplina.semestru }}<br>
+                            {% for profesor in profesori %}
+                                 {% if profesor in disciplina.profesori.all %}
+                                        <input id="disciplina" type="checkbox" value="{ 'disciplina': {{ disciplina.id }}, 'profesor': {{ profesor.id }} }" name="disciplina">
+                                     <b>{{ disciplina.nume }}</b>, profesor: {{ profesor.utilizator.first_name }} {{ profesor.utilizator.last_name }},
+                                     semestru: {{ disciplina.semestru }}<br>
+                                 {% endif %}
+                            {% endfor %}
+
                      {% endfor %}
                 <input id="submit-button" type="submit" class="btn btn-info" value="Submit">
                 </form>

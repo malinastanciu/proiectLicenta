@@ -21,7 +21,7 @@
                 <select id="profesor" name="profesor" style="width: 100%; color: black">
                 {% for profesor in profesori %}
 
-                    <option value="{{ profesor.id }}">{{ profesor.last_name }} {{ profesor.first_name }}</option>
+                    <option value="{{ profesor.id }}">{{ profesor.utilizator.last_name }} {{ profesor.utilizator.first_name }}</option>
                 {% endfor %}
                 </select><br>
 

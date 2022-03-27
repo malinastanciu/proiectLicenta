@@ -3,10 +3,15 @@ from django.contrib.auth.models import Group, User
 
 
 # Create your models here.
+class Profesor(models.Model):
+    id = models.AutoField(primary_key=True)
+    utilizator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+
+
 class Disciplina(models.Model):
     id = models.AutoField(primary_key=True)
     nume = models.CharField(max_length=100, unique=True)
-    profesori = models.ManyToManyField(User)
+    profesori = models.ManyToManyField(Profesor)
     an_universitar = models.IntegerField(null=True)
     semestru = models.IntegerField(null=True)
 
@@ -16,7 +21,7 @@ class Proiect(models.Model):
     nume = models.CharField(max_length=100, unique=False)
     data_inregistrare = models.DateField(auto_now_add=True)
     data_finalizare = models.DateField()
-    profesor = models.ForeignKey(User, on_delete=models.CASCADE)
+    profesor = models.ForeignKey(Profesor, on_delete=models.CASCADE)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE, null=True)
     document = models.CharField(max_length=100, null=True)
     nr_persoane = models.IntegerField(null=True)
@@ -45,6 +50,7 @@ class Student(models.Model):
     grupa = models.ForeignKey(Grupa, on_delete=models.CASCADE, null=True)
     teme = models.ManyToManyField(Tema)
     discipline = models.ManyToManyField(Disciplina)
+    profesori = models.ManyToManyField(Profesor)
 
 
 class Incarcare(models.Model):
