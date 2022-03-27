@@ -23,7 +23,6 @@
         <br>
         <div class="row">
             {% for disciplina in discipline %}
-                {% if disciplina.profesori.all.get == request.user %}
                     <div class="col-sm-6"
                          style="background-color: #383838; width: 330px; height: 200px; border-radius: 20px; margin-right: 6vh; margin-left: -1.5vh; padding-top: 5px; margin-bottom: 5px">
                         <div class="card">
@@ -35,7 +34,6 @@
                             </div>
                         </div>
                     </div>
-                {% endif %}
             {% endfor %}
         </div>
     {% endif %}
@@ -156,7 +154,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title" style="text-align: center; padding: 10px"><a
-                                href="{% url 'disciplinaStudent' disciplina.id %}" style="color: white;">{{ disciplina.nume }}</a></h2>
+                                href="{% url 'disciplinaStudent' disciplina.disciplina.id %}" style="color: white;">{{ disciplina.disciplina.nume }}</a></h2>
                         <br>
                     </div>
                 </div>

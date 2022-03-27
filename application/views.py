@@ -17,20 +17,21 @@ from django.utils.datastructures import MultiValueDictKeyError
 from application.decorators import allowed_users
 from application.functions import create_context
 from django.core.files.storage import FileSystemStorage
-from application.models import Proiect, Disciplina, Student, Grupa, Tema, Task, Incarcare, Profesor
+from application.models import Proiect, Disciplina, Student, Grupa, Tema, Task, Incarcare, Profesor, \
+    DisciplinaProfesorStudent
 
 
 @login_required(login_url='login')
 def dashboard(request):
     context = create_context(request)
-    discipline = Disciplina.objects.all()
-    context['discipline'] = discipline
-    print(discipline)
-    print(request.user.groups.all())
+    if context['user_type'] == 'profesor':
+        profesor = Profesor.objects.get(utilizator=request.user)
+        discipline = Disciplina.objects.all().filter(profesori=profesor)
+        context['discipline'] = discipline
     if 'studenti' == request.user.groups.all()[0].name:
         student = Student.objects.get(utilizator=request.user)
         context['student'] = student
-        discipline_student = student.discipline.all()
+        discipline_student = DisciplinaProfesorStudent.objects.all().filter(student=student)
         print(discipline_student)
         context['discipline_student'] = discipline_student
     return render(request, 'application/dashboard.html', context)
@@ -53,7 +54,7 @@ def adaugareProiect(request, pk):
         proiect.nume = request.POST.get('name')
         proiect.data_inregistrare = date.today()
         proiect.data_finalizare = request.POST.get('final_date')
-        proiect.profesor = request.user
+        proiect.profesor = Profesor.objects.get(utilizator=request.user)
         proiect.disciplina = Disciplina.objects.get(pk=pk)
         proiect.nr_persoane = request.POST.get('nr_persoane')
         proiect.distribuire_teme = False
@@ -308,18 +309,17 @@ def asignareDiscipline(request, pk):
     grupa = Grupa.objects.get(pk=pk)
     studenti = Student.objects.all().filter(grupa=grupa)
     profesori = Profesor.objects.all()
-    print(studenti)
     if request.method == 'POST':
         for disciplina in request.POST.getlist('disciplina'):
             dictionary = ast.literal_eval(disciplina)
             d = Disciplina.objects.get(pk=dictionary['disciplina'])
             p = Profesor.objects.get(pk=dictionary['profesor'])
-            print(d)
-            print(p)
             for student in studenti:
-                student.discipline.add(d.id)
-                student.profesori.add(p.id)
-                student.save()
+                disciplina_profesor_student = DisciplinaProfesorStudent()
+                disciplina_profesor_student.disciplina = d
+                disciplina_profesor_student.profesor = p
+                disciplina_profesor_student.student = student
+                disciplina_profesor_student.save()
         return redirect('vizualizareGrupe')
     context['grupa'] = grupa
     context['discipline'] = discipline
@@ -519,24 +519,29 @@ def adaugareNota(request, pk):
 @login_required(login_url='login')
 def modificareDiscipline(request, pk):
     context = create_context(request)
-    print(pk)
     student = Student.objects.get(pk=pk)
+    nume_discipline = list()
     context['student'] = student
     grupa = Grupa.objects.get(pk=student.grupa.id)
-    # context['student'] = stude
-    discipline_student = student.discipline.all()
-    for d in discipline_student:
-        print(d.nume)
+    discipline_student = DisciplinaProfesorStudent.objects.all().filter(student=student)
     context['discipline_student'] = discipline_student
     context['discipline'] = Disciplina.objects.all().filter(an_universitar=4)
     if request.method == 'POST':
-        student.discipline.clear()
         for select in request.POST.getlist('select2'):
+            print(select)
+            document = DisciplinaProfesorStudent()
             dictionary = ast.literal_eval(select)
-            profesor = User.objects.get(pk=dictionary['profesor'])
-            disciplina = Disciplina.objects.all().filter(pk=dictionary['disciplina']).filter(profesori=profesor)
-            disciplina = disciplina.get(profesori=profesor)
-            print(profesor.last_name + ' ' + profesor.first_name)
-            student.discipline.add(disciplina)
+            profesor = Profesor.objects.get(pk=dictionary['profesor'])
+            print(profesor)
+            disciplina = Disciplina.objects.get(pk=dictionary['disciplina'])
+            print(disciplina)
+            materii = DisciplinaProfesorStudent.objects.all().filter(disciplina=disciplina).filter(profesor=profesor).filter(student=student)
+            print(materii)
+            materii.delete()
+            print(materii)
+            document.disciplina = disciplina
+            document.student = student
+            document.profesor = profesor
+            document.save()
         return redirect('vizualizareStudenti', grupa.id)
     return render(request, 'application/secretariat/modificare_discipline.html', context)

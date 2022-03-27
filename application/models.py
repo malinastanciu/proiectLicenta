@@ -3,6 +3,11 @@ from django.contrib.auth.models import Group, User
 
 
 # Create your models here.
+class Grupa(models.Model):
+    id = models.AutoField(primary_key=True)
+    nume = models.CharField(max_length=10, null=True)
+
+
 class Profesor(models.Model):
     id = models.AutoField(primary_key=True)
     utilizator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -28,11 +33,6 @@ class Proiect(models.Model):
     cale = models.CharField(max_length=100, default=None)
 
 
-class Grupa(models.Model):
-    id = models.AutoField(primary_key=True)
-    nume = models.CharField(max_length=10, null=True)
-
-
 class Tema(models.Model):
     id = models.AutoField(primary_key=True)
     nume = models.CharField(max_length=100, unique=False)
@@ -49,8 +49,6 @@ class Student(models.Model):
     an_studiu = models.CharField(max_length=20, null=True)
     grupa = models.ForeignKey(Grupa, on_delete=models.CASCADE, null=True)
     teme = models.ManyToManyField(Tema)
-    discipline = models.ManyToManyField(Disciplina)
-    profesori = models.ManyToManyField(Profesor)
 
 
 class Incarcare(models.Model):
@@ -70,3 +68,10 @@ class Task(models.Model):
     tema = models.ForeignKey(Tema, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, default=False)
     efectuat = models.BooleanField()
+
+
+class DisciplinaProfesorStudent(models.Model):
+    id = models.AutoField(primary_key=True)
+    disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
+    profesor = models.ForeignKey(Profesor, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)

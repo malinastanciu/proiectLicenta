@@ -16,12 +16,11 @@
                     <li>
                         <select id="select1" name="select1" multiple >
                             {% for disciplina in discipline %}
-{#                                {% if disciplina not in discipline_student %}#}
                                     {% for profesor in disciplina.profesori.all %}
-                                        <option value="{ 'disciplina': {{ disciplina.id }}, 'profesor': {{ profesor.id }} }">{{ disciplina.nume }}, profesor {{ profesor.first_name }} {{ profesor.last_name }},
+                                        <option value="{ 'disciplina': {{ disciplina.id }}, 'profesor': {{ profesor.id }} }">{{ disciplina.nume }}, profesor {{ profesor.utilizator.first_name }} {{ profesor.utilizator.last_name }},
                                             an {{ disciplina.an_universitar }}, semestru {{ disciplina.semestru }}</option>
+
                                     {% endfor %}
-{#                                {% endif %}#}
                             {% endfor %}
                         </select>
                     </li>
@@ -36,12 +35,8 @@
                     <li>
                         <select id="select2" name="select2" multiple>
                             {% for disciplina in discipline_student %}
-{#                                {% if disciplina not in discipline_student %}#}
-                                    {% for profesor in disciplina.profesori.all %}
-                                        <option value="{ 'disciplina': {{ disciplina.id }}, 'profesor': {{ profesor.id }} }">{{ disciplina.nume }}, profesor {{ profesor.first_name }} {{ profesor.last_name }},
-                                            an {{ disciplina.an_universitar }}, semestru {{ disciplina.semestru }}</option>
-                                    {% endfor %}
-{#                                {% endif %}#}
+                                <option value="{ 'disciplina': {{ disciplina.disciplina.id }}, 'profesor': {{ disciplina.profesor.id }} }">{{ disciplina.disciplina.nume }}, profesor {{ disciplina.profesor.utilizator.first_name }} {{ disciplina.profesor.utilizator.last_name }},
+                                            an {{ disciplina.disciplina.an_universitar }}, semestru {{ disciplina.disciplina.semestru }}</option>
                         {% endfor %}
                         </select>
                     </li>
