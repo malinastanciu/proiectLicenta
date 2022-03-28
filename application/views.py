@@ -57,7 +57,6 @@ def adaugareProiect(request, pk):
         proiect.profesor = Profesor.objects.get(utilizator=request.user)
         proiect.disciplina = Disciplina.objects.get(pk=pk)
         proiect.nr_persoane = request.POST.get('nr_persoane')
-        proiect.distribuire_teme = False
 
         path = os.path.abspath(os.getcwd()) + r"\media"
         path_of_directory = os.path.join(path, proiect.nume)
@@ -381,10 +380,9 @@ def disciplinaStudent(request, pk):
     context = create_context(request)
     disciplina = Disciplina.objects.get(pk=pk)
     proiecte = Proiect.objects.all().filter(disciplina=disciplina)
-    teme = Tema.objects.all().filter(proiect__in=proiecte)
-    print(teme)
     student = Student.objects.get(utilizator=request.user)
     teme_student = student.teme.all().filter(proiect__in=proiecte)
+    print(teme_student)
     context['teme_student'] = teme_student
     if request.method == 'POST':
         return redirect('dashboard')
