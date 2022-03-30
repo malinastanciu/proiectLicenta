@@ -1,0 +1,11 @@
+.collapsible {
+  background-color: dodgerblue;
+  color: white;
+  cursor: pointer;
+  padding: 2px;
+  width: 310px;
+  border: none;
+  text-align: center;
+  outline: none;
+  font-size: 15px;
+}

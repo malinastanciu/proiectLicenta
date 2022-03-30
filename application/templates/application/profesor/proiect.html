@@ -5,19 +5,51 @@
     {{ proiect.nume }}
 {% endblock %}
 {% block article %}
+    <link rel="stylesheet" href="{% static 'application/css/proiect.css' %}">
     {% if proiect.nr_persoane > 1 %}
       <b style="color: black; font-size: 30px">{{ proiect.nume }} -  Proiect pe echipe de {{ proiect.nr_persoane }} persoane</b>
     {% else %}
       <b  style="color: black; font-size: 30px">{{ proiect.nume }} -  Proiect individual </b>
     {% endif %}
     <br>
+    {% if proiect.document is None %}
+        <button type="button" class="collapsible"><h4>Adaugare tema proiect</h4></button>
+            <div class="content" style="margin-top:-2px; display: none; background-color: white; width: 310px; padding: 10px;">
+                <form action="{% url 'adaugareTema' proiect.id %}" method="POST">
+                    {% csrf_token %}
+                    <label for="nume">Nume tema:</label><br>
+                    <input type="text" name="nume" style="width: 290px"><br>
+                    <label for="descriere">Descriere:</label><br>
+                    <textarea name="descriere" rows="5" cols="37"></textarea><br>
+                    <button type="submit" class="btn btn-sm" style="background-color: dodgerblue; color: white; width: 290px">Salvare</button>
+                </form>
+            </div>
+    {% endif %}
     <br>
-    <b style="font-size: 27px;">Temele proiectului sunt:</b>
+    <br>
+    <b style="font-size: 27px; margin-top: -10px">Temele proiectului sunt:</b>
     <div  style="margin-top: 40px">
                 {% for tema in teme %}
                            <a href="{% url 'vizualizareTema' tema.id %}" style="color: black; font-size: 25px"> <b>||  {{ tema.nume }}  </b> </a>
                 {% endfor %}
 
     </div>
+    <script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "block";
+        }
+      });
+    }
+</script>
+
 
 {% endblock %}

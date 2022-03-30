@@ -27,6 +27,8 @@ urlpatterns = [
          name='asignareDiscipline'),
     path('vizualizare-disciplina/vizualizare-proiecte/proiect/<str:pk>', application_views.proiect,
          name='proiect'),
+    path('vizualizare-disciplina/vizualizare-proiecte/proiect/<str:pk>/adaugareTema', application_views.adaugareTema,
+         name='adaugareTema'),
     path('vizualizare-disciplina/<str:pk>/asignare-teme-studenti/', application_views.distribuireTeme,
          name='distribuireTeme'),
     path('disciplina-student/<str:pk>/', application_views.disciplinaStudent,

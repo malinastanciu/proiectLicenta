@@ -27,34 +27,6 @@
                     <button type="submit" class="btn" style="background-color: #097969; color: white">Salvare</button>
                 </form>
             </div>
-            <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top: 5px">
-                <table class="table table-bordered" id="myTable" style="border-color: #1b6d85; width: 800px">
-                    <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px; text-align: center">
-                    <tr  style="border-color: #1b6d85">
-                        <th  style="border-color: #1b6d85; text-align: center" colspan="2">Task-uri</th>
-                    </tr>
-                    <tr  style="border-color: #1b6d85">
-                        <th  style="border-color: #1b6d85; text-align: center;">Nume task</th>
-                        <th  style="border-color: #1b6d85; text-align: center;">Descriere</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-
-                    {% for task in tasks %}
-                        {% if task.student.id is student.id %}
-                        <tr class="tr">
-                            <td  style="border-color: #1b6d85"> {{ task.nume }}</td>
-                            <td  style="border-color: #1b6d85">{{ task.descriere }}</td>
-
-                        </tr>
-                        {% endif %}
-
-                    {% endfor %}
-                    </tbody>
-
-                </table>
-            </div>
         {% endfor %}
 <script>
     var coll = document.getElementsByClassName("collapsible");

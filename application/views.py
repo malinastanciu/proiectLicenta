@@ -345,7 +345,7 @@ def distribuireTeme(request, pk):
     grupe = Grupa.objects.all()
     lista_teme = list()
     if request.method == 'POST':
-        proiect = Proiect.objects.all().filter(id=request.POST.get('proiect'))
+        proiect = Proiect.objects.get(id=request.POST.get('proiect'))
         print(proiect)
         teme = Tema.objects.all().filter(proiect=request.POST.get('proiect'))
         print(teme)
@@ -359,12 +359,42 @@ def distribuireTeme(request, pk):
         print(len(studenti))
         random.shuffle(lista_teme)
         print(lista_teme)
-        for i in range(len(studenti)):
-            print(studenti[i])
-            # print(teme[i])
-            tema = Tema.objects.get(id=lista_teme[i])
-            print(tema)
-            studenti[i].teme.add(tema)
+        print(round(len(lista_teme) / 2))
+        if len(lista_teme) >= len(studenti):
+            if proiect.nr_persoane == 1:
+                for i in range(len(studenti)):
+                    print(studenti[i])
+                    tema = Tema.objects.get(id=lista_teme[i])
+                    print(tema)
+                    studenti[i].teme.add(tema)
+            else:
+                print('se afla aici')
+                j = 0
+                lista_teme = lista_teme[:round(len(lista_teme)/proiect.nr_persoane)]
+                print(lista_teme)
+                for i in range(len(studenti)):
+                    tema = Tema.objects.get(id=lista_teme[j])
+                    print(tema)
+                    print(studenti[i])
+                    studenti[i].teme.add(tema)
+                    print(j)
+                    j = j + 1
+                    if j >= len(lista_teme):
+                        j = 0
+        else:
+            j = 0
+            if len(lista_teme) > 5 * proiect.nr_persoane:
+                lista_teme = lista_teme[:round(len(lista_teme) / proiect.nr_persoane)]
+            for i in range(len(studenti)):
+                tema = Tema.objects.get(id=lista_teme[j])
+                print(tema)
+                print(studenti[i])
+                studenti[i].teme.add(tema)
+                print(j)
+                j = j + 1
+                if j >= len(lista_teme):
+                    j = 0
+
         return redirect('vizualizareDisciplina', pk)
     context = create_context(request)
     context['disciplina'] = disciplina
@@ -455,12 +485,10 @@ def vizualizareTema(request, pk):
     tema = Tema.objects.all().filter(id=pk).get(id=pk)
     # tema = Tema.objects.get(pk=pk)
     studenti = Student.objects.all().filter(teme=tema)
-    tasks = Task.objects.all().filter(tema=tema)
     incarcari = Incarcare.objects.all().filter(tema=tema)
     print(incarcari)
     context['tema'] = tema
     context['studenti'] = studenti
-    context['tasks'] = tasks
     context['incarcari'] = incarcari
     return render(request, 'application/profesor/vizualizareTema.html', context)
 
@@ -525,6 +553,9 @@ def modificareDiscipline(request, pk):
     context['discipline_student'] = discipline_student
     context['discipline'] = Disciplina.objects.all().filter(an_universitar=4)
     if request.method == 'POST':
+        materii = DisciplinaProfesorStudent.objects.all().filter(student=student)
+        print(materii)
+        materii.delete()
         for select in request.POST.getlist('select2'):
             print(select)
             document = DisciplinaProfesorStudent()
@@ -533,13 +564,23 @@ def modificareDiscipline(request, pk):
             print(profesor)
             disciplina = Disciplina.objects.get(pk=dictionary['disciplina'])
             print(disciplina)
-            materii = DisciplinaProfesorStudent.objects.all().filter(disciplina=disciplina).filter(profesor=profesor).filter(student=student)
-            print(materii)
-            materii.delete()
-            print(materii)
+
             document.disciplina = disciplina
             document.student = student
             document.profesor = profesor
             document.save()
         return redirect('vizualizareStudenti', grupa.id)
     return render(request, 'application/secretariat/modificare_discipline.html', context)
+
+
+@allowed_users(allowed_roles=['profesori'])
+@login_required(login_url='login')
+def adaugareTema(request, pk):
+    proiect = Proiect.objects.get(pk=pk)
+    if request.method == 'POST':
+        tema = Tema()
+        tema.nume = request.POST.get('nume')
+        tema.descriere = request.POST.get('descriere')
+        tema.proiect = proiect
+        tema.save()
+        return redirect('proiect', pk)
