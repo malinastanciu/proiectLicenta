@@ -75,3 +75,12 @@ class DisciplinaProfesorStudent(models.Model):
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
     profesor = models.ForeignKey(Profesor, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
+
+class Echipa(models.Model):
+    id = models.AutoField(primary_key=True)
+    nume = models.CharField(max_length=100, null=True)
+    tema = models.ForeignKey(Tema, on_delete=models.CASCADE)
+    proiect = models.ForeignKey(Proiect, on_delete=models.CASCADE, null=True)
+    grupa = models.ForeignKey(Grupa, on_delete=models.CASCADE, null=True)
+    studenti = models.ManyToManyField(Student)
+

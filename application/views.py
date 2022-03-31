@@ -18,7 +18,7 @@ from application.decorators import allowed_users
 from application.functions import create_context
 from django.core.files.storage import FileSystemStorage
 from application.models import Proiect, Disciplina, Student, Grupa, Tema, Task, Incarcare, Profesor, \
-    DisciplinaProfesorStudent
+    DisciplinaProfesorStudent, Echipa
 
 
 @login_required(login_url='login')
@@ -267,14 +267,13 @@ def vizualizareDiscipline(request):
     return render(request, 'application/administrator/vizualizareDiscipline.html', context)
 
 
-@allowed_users(allowed_roles=['secretariat'])
+@allowed_users(allowed_roles=['secretariat', 'profesori'])
 @login_required(login_url='login')
 def vizulalizareGrupe(request):
     context = create_context(request)
     grupe = Grupa.objects.all()
     context['grupe'] = grupe
     return render(request, 'application/secretariat/vizualizare_grupe.html', context)
-
 
 @allowed_users(allowed_roles=['secretariat'])
 @login_required(login_url='login')
@@ -346,55 +345,46 @@ def distribuireTeme(request, pk):
     lista_teme = list()
     if request.method == 'POST':
         proiect = Proiect.objects.get(id=request.POST.get('proiect'))
-        print(proiect)
         teme = Tema.objects.all().filter(proiect=request.POST.get('proiect'))
-        print(teme)
         for tema in teme:
             lista_teme.append(tema.id)
-        print(lista_teme)
         grupa = Grupa.objects.all().filter(id=request.POST.get('grupa'))[0]
         # print(grupa.nume)
         studenti = Student.objects.all().filter(grupa=grupa)
-        print(studenti)
-        print(len(studenti))
         random.shuffle(lista_teme)
-        print(lista_teme)
-        print(round(len(lista_teme) / 2))
         if len(lista_teme) >= len(studenti):
             if proiect.nr_persoane == 1:
                 for i in range(len(studenti)):
-                    print(studenti[i])
                     tema = Tema.objects.get(id=lista_teme[i])
-                    print(tema)
-                    studenti[i].teme.add(tema)
+                    # studenti[i].teme.add(tema)
             else:
-                print('se afla aici')
                 j = 0
-                lista_teme = lista_teme[:round(len(lista_teme)/proiect.nr_persoane)]
-                print(lista_teme)
+                lista_teme = lista_teme[:round(len(lista_teme) / proiect.nr_persoane)]
                 for i in range(len(studenti)):
                     tema = Tema.objects.get(id=lista_teme[j])
-                    print(tema)
-                    print(studenti[i])
-                    studenti[i].teme.add(tema)
-                    print(j)
+                    # studenti[i].teme.add(tema)
                     j = j + 1
                     if j >= len(lista_teme):
                         j = 0
         else:
-            j = 0
-            if len(lista_teme) > 5 * proiect.nr_persoane:
-                lista_teme = lista_teme[:round(len(lista_teme) / proiect.nr_persoane)]
-            for i in range(len(studenti)):
-                tema = Tema.objects.get(id=lista_teme[j])
-                print(tema)
-                print(studenti[i])
-                studenti[i].teme.add(tema)
-                print(j)
-                j = j + 1
-                if j >= len(lista_teme):
-                    j = 0
-
+            if proiect.nr_persoane == 1:
+                j = 0
+                for i in range(len(studenti)):
+                    tema = Tema.objects.get(id=lista_teme[j])
+                    # studenti[i].teme.add(tema)
+                    j = j + 1
+                    if j >= len(lista_teme):
+                        j = 0
+            else:
+                j = 0
+                if len(lista_teme) > 5 * proiect.nr_persoane:
+                    lista_teme = lista_teme[:round(len(lista_teme) / proiect.nr_persoane)]
+                for i in range(len(studenti)):
+                    tema = Tema.objects.get(id=lista_teme[j])
+                    # studenti[i].teme.add(tema)
+                    j = j + 1
+                    if j >= len(lista_teme):
+                        j = 0
         return redirect('vizualizareDisciplina', pk)
     context = create_context(request)
     context['disciplina'] = disciplina
@@ -584,3 +574,37 @@ def adaugareTema(request, pk):
         tema.proiect = proiect
         tema.save()
         return redirect('proiect', pk)
+
+
+@allowed_users(allowed_roles=['profesori'])
+@login_required(login_url='login')
+def creareEchipe(request, pk):
+    context = create_context(request)
+    tema = Tema.objects.get(pk=pk)
+    studenti = Student.objects.all().filter(teme=tema)
+    context['tema'] = tema
+    context['studenti'] = studenti
+    proiect = Proiect.objects.get(tema=tema)
+    context['proiect'] = proiect
+    echipe = Echipa.objects.all().filter(tema=tema)
+    studenti_cu_echipa = list()
+    for echipa in echipe:
+        for student in echipa.studenti.all():
+            studenti_cu_echipa.append(student)
+    context['studenti_cu_echipa'] = studenti_cu_echipa
+    print(studenti_cu_echipa)
+    if request.method == 'POST':
+        echipa = Echipa()
+        echipa.nume = request.POST.get('nume')
+        echipa.tema = tema
+        echipa.proiect = proiect
+        echipa.save()
+        for select in request.POST.getlist('select2'):
+            student = Student.objects.get(id=select)
+            grupa = student.grupa
+            echipa.studenti.add(student)
+            echipa.save()
+        echipa.grupa = grupa
+        echipa.save()
+        return redirect('vizualizareTema', tema.id)
+    return render(request, 'application/profesor/creare_echipe.html', context)

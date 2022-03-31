@@ -1,0 +1,46 @@
+{% extends 'application/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    {{ tema.nume }}
+{% endblock %}
+{% block article %}
+    <link rel="stylesheet" href="{% static 'application/css/modificare_discipline.css' %}">
+    <h3><b>Adaugare echipe pentru: {{ tema.nume }}, {{ proiect.nr_persoane }} persoane in echipa</b></h3>
+
+    <form action="" method="POST">
+        <div class="container">
+            {% csrf_token %}
+            <div class="container">
+                <label for="nume">Nume echipa:</label>
+                <input type="text" name="nume">
+                <ul class="list1">
+                    <li>
+                        <select id="select1" name="select1" multiple >
+                            {% for student in studenti %}
+                                {% if student not in studenti_cu_echipa %}
+                                    <option value="{{ student.id }}">{{ student.utilizator.first_name }} {{ student.utilizator.last_name }} - grupa {{ student.grupa.nume }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </li>
+                </ul>
+                <ul class="list3">
+                    <li class="relative">
+                        <input type="button" id="add" value="&#8702;" onclick="addOptions( 'select1', 'select2' )"/>
+                        <input type="button" id="remove" value="&#8701;" onclick="addOptions( 'select2', 'select1' )"/>
+                    </li>
+                </ul>
+                <ul class="list2">
+                    <li>
+                        <select id="select2" name="select2" multiple>
+
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <input type="submit" class="btn btn-success btn-sm" id="submit-button" name="Submit" onclick="addOptions2()">
+        </div>
+     </form>
+    <script type="text/javascript" src="{% static 'application/js/modificare_discipline.js' %}"></script>
+{% endblock %}
