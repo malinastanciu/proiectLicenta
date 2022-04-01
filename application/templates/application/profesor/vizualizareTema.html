@@ -7,9 +7,41 @@
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/css/vizualizareTema.css' %}">
     <h3 style="padding: 20px; margin-left: -20px"><b>Nume:</b> {{ tema.nume }}, <b>descriere:</b> {{ tema.descriere }}</h3>
-    <form action="{% url 'creareEchipe' tema.id %}" method="get">
-        <button class="btn btn-sm">Creare echipe</button>
-    </form>
+    {% if proiect.nr_persoane > 1 %}
+        <form action="{% url 'creareEchipe' tema.id %}" method="get">
+            <button class="btn btn-sm">Creare echipe</button>
+        </form>
+    {% endif %}
+    {% if proiect.nr_persoane > 1 %}
+        {% for echipa in echipe %}
+            <h4><b>{{ echipa.nume }}</b></h4>
+            {% for student in echipa.studenti.all %}
+                <b>{{ student.utilizator.last_name }} {{ student.utilizator.first_name }}, grupa {{ student.grupa.nume }}</b>
+                    {% for incarcare in incarcari %}
+                        {% if incarcare.student.id is student.id %}
+                            <b>Document:</b> {{ incarcare.document }}<br>
+                            <b>Data incarcare:</b> {{ incarcare.data_incarcare }}<br>
+                        {% endif %}
+                {% endfor %}
+                <br>
+                <button type="button" class="collapsible"><h4>Adaugare nota si feedback</h4></button>
+                <div class="content" style="margin-top:-2px; display: none; background-color: white; width: 400px; padding: 10px;">
+                    <form action="{% url 'adaugareNota' tema.id %}" method="POST">
+                        {% csrf_token %}
+                        <label for="nota">Nota:</label><br>
+                        <input type="number" name="nota" style="width: 70px; height: 35px"><br>
+                        <label for="feedback">Feedback:</label><br>
+                        <textarea name="feedback" rows="5" cols="45"></textarea><br>
+                        <button type="submit" class="btn" style="background-color: #097969; color: white">Salvare</button>
+                    </form>
+                </div>
+                <br>
+            {% endfor %}
+            <br>
+
+
+        {% endfor %}
+    {% else %}
         {% for student in studenti %}
             <h3><b>{{ student.utilizator.last_name }} {{ student.utilizator.first_name }}, grupa {{ student.grupa.nume }}</b></h3>
             {% for incarcare in incarcari %}
@@ -31,6 +63,7 @@
                 </form>
             </div>
         {% endfor %}
+    {% endif %}
 <script>
     var coll = document.getElementsByClassName("collapsible");
     var i;

@@ -473,13 +473,18 @@ def efectuareTask(request, pk1, pk2):
 def vizualizareTema(request, pk):
     context = create_context(request)
     tema = Tema.objects.all().filter(id=pk).get(id=pk)
+    proiect = Proiect.objects.get(tema=tema)
+    print(proiect.nr_persoane)
     # tema = Tema.objects.get(pk=pk)
+    echipe = Echipa.objects.all().filter(proiect=proiect).filter(tema=tema)
+    print(echipe)
     studenti = Student.objects.all().filter(teme=tema)
     incarcari = Incarcare.objects.all().filter(tema=tema)
-    print(incarcari)
     context['tema'] = tema
     context['studenti'] = studenti
     context['incarcari'] = incarcari
+    context['proiect'] = proiect
+    context['echipe'] = echipe
     return render(request, 'application/profesor/vizualizareTema.html', context)
 
 
