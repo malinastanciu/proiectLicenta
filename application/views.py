@@ -267,13 +267,14 @@ def vizualizareDiscipline(request):
     return render(request, 'application/administrator/vizualizareDiscipline.html', context)
 
 
-@allowed_users(allowed_roles=['secretariat', 'profesori'])
+@allowed_users(allowed_roles=['secretariat'])
 @login_required(login_url='login')
 def vizulalizareGrupe(request):
     context = create_context(request)
     grupe = Grupa.objects.all()
     context['grupe'] = grupe
     return render(request, 'application/secretariat/vizualizare_grupe.html', context)
+
 
 @allowed_users(allowed_roles=['secretariat'])
 @login_required(login_url='login')
@@ -616,3 +617,39 @@ def creareEchipe(request, pk):
         echipa.save()
         return redirect('vizualizareTema', tema.id)
     return render(request, 'application/profesor/creare_echipe.html', context)
+
+
+@allowed_users(allowed_roles=['profesori'])
+@login_required(login_url='login')
+def catalog(request, pk):
+    context = create_context(request)
+
+    profesor = Profesor.objects.get(utilizator=request.user)
+    disciplina = Disciplina.objects.get(pk=pk)
+    studenti = DisciplinaProfesorStudent.objects.all().filter(profesor=profesor)
+    lista_grupe = list()
+    for student in studenti:
+        if student.student.grupa.nume not in lista_grupe:
+            lista_grupe.append(student.student.grupa.nume)
+    print(lista_grupe)
+    grupe = Grupa.objects.all().filter(nume__in=lista_grupe)
+    context['grupe'] = grupe
+    context['disciplina'] = disciplina
+    context['action'] = 'Vizualizare grupe'
+    return render(request, 'application/profesor/catalog.html', context)
+
+
+@allowed_users(allowed_roles=['profesori'])
+@login_required(login_url='login')
+def vizualizareCatalog(request, pk1, pk2):
+    context = create_context(request)
+    profesor = Profesor.objects.get(utilizator=request.user)
+    disciplina = Disciplina.objects.get(pk=pk1)
+    proiecte = Proiect.objects.all().filter(disciplina=disciplina)
+    grupa = Grupa.objects.get(pk=pk2)
+    studenti = Student.objects.all().filter(grupa=grupa)
+    context['action'] = 'Vizualizare catalog grupa'
+    context['grupa'] = grupa
+    for student in studenti:
+        print(student.teme.all().filter(proiect__in=proiecte))
+    return render(request, 'application/profesor/catalog.html', context)

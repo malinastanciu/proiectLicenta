@@ -11,9 +11,11 @@
         <li><a href="{% url 'vizualizareDiscipline' %}">Discipline</a>
     {% endif %}
     {% if user_type == 'student' %}
-        <li><a href="">Note</a>
+        <li><a href="">Catalog</a>
         <li><a href="">Proiecte active</a>
     {% endif %}
+    {% block catalog_profesor %}
+    {% endblock %}
 {% endblock %}
 
 {% block article %}

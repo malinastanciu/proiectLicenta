@@ -45,4 +45,7 @@ urlpatterns = [
          application_views.adaugareNota, name='adaugareNota'),
     path('vizualizare-disciplina/vizualizare-proiecte/proiect/tema/<str:pk>/creare-echipe',
          application_views.creareEchipe, name='creareEchipe'),
+    path('vizualizare-disciplina/<str:pk>/catalog', application_views.catalog, name='catalog'),
+    path('vizualizare-disciplina/<str:pk1>/catalog/grupa/<str:pk2>', application_views.vizualizareCatalog,
+         name='vizualizareCatalog'),
 ]

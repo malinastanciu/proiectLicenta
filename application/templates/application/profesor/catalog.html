@@ -1,0 +1,52 @@
+{% extends 'application/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    Catalog
+{% endblock %}
+{% block article %}
+    {% if action == 'Vizualizare grupe' %}
+        {% for grupa in grupe %}
+            <form action="{% url 'vizualizareCatalog' disciplina.id grupa.id %}" method="get">
+
+                <button>{{ grupa.nume }}</button>
+            </form>
+        {% endfor %}
+    {% endif %}
+     {% if action == 'Vizualizare catalog grupa' %}
+        <h2><b>{{ grupa.nume }}</b></h2>
+         <div class="table-wrapper-scroll-y custom-scrollbar" style="">
+            <table class="table table-bordered" id="myTable" style="border-color: #1b6d85">
+                <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px">
+                <tr  style="border-color: #1b6d85">
+                    <th  style="border-color: #1b6d85">Nume </th>
+                    <th  style="border-color: #1b6d85">Prenume</th>
+                    <th  style="border-color: #1b6d85"></th>
+                    <th  style="border-color: #1b6d85">Nr persoane in grupa</th>
+                    <th  style="border-color: #1b6d85">Cale</th>
+                    <th  style="border-color: #1b6d85">Document</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for proiect in proiecte %}
+                    {% if proiect.disciplina.id is disciplina.id %}
+
+                    <tr class="tr">
+                        <td  style="border-color: #1b6d85"><a href="{% url 'proiect' proiect.id %}"> {{ proiect.nume }}</a></td>
+                        <td  style="border-color: #1b6d85">{{ proiect.data_inregistrare }}</td>
+                        <td  style="border-color: #1b6d85">{{ proiect.data_finalizare }}</td>
+                        <td  style="border-color: #1b6d85">{{ proiect.nr_persoane }}</td>
+                        <td  style="border-color: #1b6d85">{{ proiect.cale }}</td>
+                        <td  style="border-color: #1b6d85">{{ proiect.document }}</td>
+                    </tr>
+                    {% endif %}
+
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}
