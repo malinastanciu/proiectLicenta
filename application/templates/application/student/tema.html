@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="{% static 'application/css/tema.css' %}">
         <h1 style="color: #383838; font-size: 70px; padding: 30px; margin-top: -20px"><b>{{ disciplina.nume }}</b></h1>
         <h3 style="margin-top: -30px"><b>{{ tema.nume }} pentru proiectul {{ tema.proiect.nume }}</b></h3><br>
+        {% if tema.proiect.nr_persoane > 1%}
+            <h4 style="margin-top: -20px"><b>Echipa:</b></h4>
+                {% for student in echipa.studenti.all %}
+                    {{ student.utilizator.first_name }} {{ student.utilizator.last_name }}, grupa {{ student.grupa.nume }} <br>
+                {% endfor %}<br>
+        {% endif %}
+
 
         <div class="row d-flex justify-content-center" style="width: auto; position: center;">
 
@@ -24,7 +31,7 @@
                 </form>
                 </div>
 
-                <div style="margin-top: -450px; margin-left: 600px; padding: 50px">
+                <div style="margin-top: -500px; margin-left: 600px; padding: 50px">
                     {% if data %}
                     <form action="{% url 'incarcareTema' tema.id %}">
                         <input type="submit" id="incarcare-tema" class="btn btn-info" value="Incarcare tema" style="width: 700px;

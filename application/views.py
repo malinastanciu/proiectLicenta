@@ -417,15 +417,18 @@ def temaStudent(request, pk1):
     context = create_context(request)
     tema = Tema.objects.get(pk=pk1)
     proiect = Proiect.objects.get(tema=tema)
-    print(proiect.nume)
-    print(proiect.data_finalizare)
-    print(date.today())
+    student = Student.objects.get(utilizator=request.user)
+    if proiect.nr_persoane > 1:
+        echipa = Echipa.objects.all().filter(tema=tema).filter(studenti=student)[0]
+        context['echipa'] = echipa
     if str(proiect.data_finalizare) > str(date.today()):
         context['data'] = True
     else:
         context['data'] = False
-
-    tasks = Task.objects.all().filter(tema=tema)
+    if proiect.nr_persoane == 1:
+        tasks = Task.objects.all().filter(tema=tema)
+    else:
+        tasks = Task.objects.all().filter(tema=tema).filter(student__in=echipa.studenti.all())
     efectuat = 0
     for task in tasks:
         if task.efectuat == True:
