@@ -35,8 +35,6 @@
 
                 <tbody>
 
-
-
                     {% for student in studenti %}
                         <tr class="tr">
                             <td  style="border-color: #1b6d85"> {{ student.utilizator.last_name }}</td>
@@ -46,7 +44,13 @@
                             <td  style="border-color: #1b6d85">{{ student.an_studiu }}</td>
                             {% for tema in student.teme.all %}
                                 {% if tema.proiect in proiecte %}
-                                    <td  style="border-color: #1b6d85">{{ tema.nume }}</td>
+                                    <td  style="border-color: #1b6d85"> {{ tema.nume }}, nota:
+                                        {% for incarcare in incarcari%}
+                                            {% if incarcare.student == student and incarcare.tema == tema %}
+                                                 {{ incarcare.nota }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
                                 {% endif %}
                             {% endfor %}
                         </tr>

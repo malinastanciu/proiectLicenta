@@ -648,19 +648,21 @@ def vizualizareCatalog(request, pk1, pk2):
     proiecte = Proiect.objects.all().filter(disciplina=disciplina)
     grupa = Grupa.objects.get(pk=pk2)
     studenti = Student.objects.all().filter(grupa=grupa)
+    incarcari = Incarcare.objects.all()
     context['action'] = 'Vizualizare catalog grupa'
     context['grupa'] = grupa
     lista_teme = list()
     for student in studenti:
         lista_teme.append(student.teme.all().filter(proiect__in=proiecte))
         nr_teme = len(student.teme.all().filter(proiect__in=proiecte))
-    context['studenti'] = studenti
-    context['proiecte'] = proiecte
-    context['disciplina'] = disciplina
-    context['lista_teme'] = lista_teme
     lista_nr_teme = list()
     for i in range(nr_teme):
         lista_nr_teme.append(i)
+    context['studenti'] = studenti
+    context['proiecte'] = proiecte
+    context['disciplina'] = disciplina
+    context['incarcari'] = incarcari
+    context['lista_teme'] = lista_teme
     context['lista_nr_teme'] = lista_nr_teme
     context['nr_teme'] = nr_teme
     context['nr_teme2'] = range(nr_teme)
