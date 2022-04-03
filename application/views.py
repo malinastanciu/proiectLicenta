@@ -650,6 +650,18 @@ def vizualizareCatalog(request, pk1, pk2):
     studenti = Student.objects.all().filter(grupa=grupa)
     context['action'] = 'Vizualizare catalog grupa'
     context['grupa'] = grupa
+    lista_teme = list()
     for student in studenti:
-        print(student.teme.all().filter(proiect__in=proiecte))
+        lista_teme.append(student.teme.all().filter(proiect__in=proiecte))
+        nr_teme = len(student.teme.all().filter(proiect__in=proiecte))
+    context['studenti'] = studenti
+    context['proiecte'] = proiecte
+    context['disciplina'] = disciplina
+    context['lista_teme'] = lista_teme
+    lista_nr_teme = list()
+    for i in range(nr_teme):
+        lista_nr_teme.append(i)
+    context['lista_nr_teme'] = lista_nr_teme
+    context['nr_teme'] = nr_teme
+    context['nr_teme2'] = range(nr_teme)
     return render(request, 'application/profesor/catalog.html', context)

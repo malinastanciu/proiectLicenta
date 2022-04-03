@@ -19,31 +19,38 @@
             <table class="table table-bordered" id="myTable" style="border-color: #1b6d85">
                 <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px">
                 <tr  style="border-color: #1b6d85">
-                    <th  style="border-color: #1b6d85">Nume </th>
-                    <th  style="border-color: #1b6d85">Prenume</th>
-                    <th  style="border-color: #1b6d85"></th>
-                    <th  style="border-color: #1b6d85">Nr persoane in grupa</th>
-                    <th  style="border-color: #1b6d85">Cale</th>
-                    <th  style="border-color: #1b6d85">Document</th>
+                    <th  style="border-color: #1b6d85; text-align: center; vertical-align : middle;" rowspan="{{ nr_teme }}">Nume </th>
+                    <th  style="border-color: #1b6d85; text-align: center; vertical-align : middle;" rowspan="{{ nr_teme }}">Prenume</th>
+                    <th  style="border-color: #1b6d85; text-align: center; vertical-align : middle;" rowspan="{{ nr_teme }}">Ciclu de studii</th>
+                    <th  style="border-color: #1b6d85; text-align: center; vertical-align : middle;" rowspan="{{ nr_teme }}">Specializare</th>
+                    <th  style="border-color: #1b6d85; text-align: center; vertical-align : middle;" rowspan="{{ nr_teme }}">An</th>
+                    <th  style="border-color: #1b6d85; text-align: center" colspan="{{ nr_teme }}">Note</th>
+                </tr>
+                <tr  style="border-color: #1b6d85">
+                    {% for i in nr_teme2 %}
+                        <th  style="border-color: #1b6d85; text-align: center">Tema {{ i }}</th>
+                    {% endfor %}
                 </tr>
                 </thead>
 
                 <tbody>
 
-                {% for proiect in proiecte %}
-                    {% if proiect.disciplina.id is disciplina.id %}
 
-                    <tr class="tr">
-                        <td  style="border-color: #1b6d85"><a href="{% url 'proiect' proiect.id %}"> {{ proiect.nume }}</a></td>
-                        <td  style="border-color: #1b6d85">{{ proiect.data_inregistrare }}</td>
-                        <td  style="border-color: #1b6d85">{{ proiect.data_finalizare }}</td>
-                        <td  style="border-color: #1b6d85">{{ proiect.nr_persoane }}</td>
-                        <td  style="border-color: #1b6d85">{{ proiect.cale }}</td>
-                        <td  style="border-color: #1b6d85">{{ proiect.document }}</td>
-                    </tr>
-                    {% endif %}
 
-                {% endfor %}
+                    {% for student in studenti %}
+                        <tr class="tr">
+                            <td  style="border-color: #1b6d85"> {{ student.utilizator.last_name }}</td>
+                            <td  style="border-color: #1b6d85">{{ student.utilizator.first_name }}</td>
+                            <td  style="border-color: #1b6d85">{{ student.ciclu_de_studii }}</td>
+                            <td  style="border-color: #1b6d85">{{ student.specializare }}</td>
+                            <td  style="border-color: #1b6d85">{{ student.an_studiu }}</td>
+                            {% for tema in student.teme.all %}
+                                {% if tema.proiect in proiecte %}
+                                    <td  style="border-color: #1b6d85">{{ tema.nume }}</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
                 </tbody>
 
             </table>
