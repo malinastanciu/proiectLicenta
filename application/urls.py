@@ -50,5 +50,7 @@ urlpatterns = [
     path('vizualizare-disciplina/<str:pk>/catalog', application_views.catalog, name='catalog'),
     path('vizualizare-disciplina/<str:pk1>/catalog/grupa/<str:pk2>', application_views.vizualizareCatalog,
          name='vizualizareCatalog'),
+    path('vizualizare-disciplina/<str:pk1>/catalog/grupa/<str:pk2>/descarcare-catalog',
+         application_views.descarcareCatalog,  name='descarcareCatalog'),
     path('disciplina-student/<str:pk>/note/', application_views.note, name='note'),
 ]

@@ -15,6 +15,12 @@
     {% endif %}
      {% if action == 'Vizualizare catalog grupa' %}
         <h2><b>{{ grupa.nume }}</b></h2>
+
+         <form action="{% url 'descarcareCatalog' disciplina.id grupa.id %}" method="get">
+             <button>Descarcare catalog</button>
+         </form>
+         <br>
+
          <div class="table-wrapper-scroll-y custom-scrollbar" style="">
             <table class="table table-bordered" id="myTable" style="border-color: #1b6d85">
                 <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px">

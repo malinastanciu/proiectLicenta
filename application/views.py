@@ -1,11 +1,13 @@
 import ast
-import datetime
-import json
 import os
+from io import StringIO, BytesIO
+import xlsxwriter
+
 from datetime import date
+from openpyxl import Workbook
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
-from django.core.exceptions import MultipleObjectsReturned
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -645,7 +647,6 @@ def catalog(request, pk):
 @login_required(login_url='login')
 def vizualizareCatalog(request, pk1, pk2):
     context = create_context(request)
-    profesor = Profesor.objects.get(utilizator=request.user)
     disciplina = Disciplina.objects.get(pk=pk1)
     proiecte = Proiect.objects.all().filter(disciplina=disciplina)
     grupa = Grupa.objects.get(pk=pk2)
@@ -704,4 +705,69 @@ def download(request, pk1, pk2):
     mime_type, _ = mimetypes.guess_type(path_of_file)
     response = HttpResponse(path, content_type=mime_type)
     response['Content-Disposition'] = "attachment; filename=%s" % incarcare.document
+    return response
+
+
+@allowed_users(allowed_roles=['profesori'])
+@login_required(login_url='login')
+def descarcareCatalog(request, pk1, pk2):
+    context = create_context(request)
+    disciplina = Disciplina.objects.get(pk=pk1)
+    proiecte = Proiect.objects.all().filter(disciplina=disciplina)
+    grupa = Grupa.objects.get(pk=pk2)
+    studenti = Student.objects.all().filter(grupa=grupa)
+    incarcari = Incarcare.objects.all()
+    context['studenti'] = studenti
+    context['proiecte'] = proiecte
+    context['disciplina'] = disciplina
+    context['incarcari'] = incarcari
+    nr_teme = len(studenti[0].teme.all().filter(proiect__in=proiecte))
+    print(nr_teme)
+    output = BytesIO()
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet()
+    header = workbook.add_format({
+        'color': 'black',
+        'bold': True,
+        'align': 'left',
+        'valign': 'top',
+        'border': 1
+    })
+    worksheet.set_column(0, 8, width=20)
+    worksheet.write(0, 0, 'Surname', header)
+    worksheet.write(0, 1, 'First name', header)
+    worksheet.write(0, 2, 'Email address', header)
+    worksheet.write(0, 3, 'An Universitar', header)
+    worksheet.write(0, 4, 'Facultatea', header)
+    worksheet.write(0, 5, 'Ciclu de studii', header)
+    worksheet.write(0, 6, 'Specializarea', header)
+    worksheet.write(0, 7, 'Anul', header)
+    worksheet.write(0, 8, 'Grupa', header)
+    for i in range(nr_teme):
+        worksheet.write(0, 9 + i, 'Punctaj ' + str(i + 1), header)
+    for idx, student in enumerate(studenti):
+        row = 1 + idx
+        worksheet.write_string(row, 0, student.utilizator.last_name)
+        worksheet.write_string(row, 1, student.utilizator.first_name)
+        worksheet.write_string(row, 2, student.utilizator.email)
+        worksheet.write_string(row, 3, str(date.today().year))
+        worksheet.write_string(row, 4, student.facultate)
+        worksheet.write_string(row, 5, student.ciclu_de_studii)
+        worksheet.write_string(row, 6, student.specializare)
+        worksheet.write_string(row, 7, student.an_studiu)
+        worksheet.write_string(row, 8, student.grupa.nume)
+        for idx2, tema in enumerate(student.teme.all().filter(proiect__in=proiecte)):
+            incarcare = incarcari.filter(tema=tema).filter(student=student).first()
+            try:
+                worksheet.write_number(row, 9 + idx2, incarcare.nota)
+            except AttributeError:
+                worksheet.write_number(row, 9 + idx2, 0)
+    workbook.close()
+    response = HttpResponse(content_type='application/vnd.ms-excel')
+    # tell the browser what the file is named
+    excel_nume = 'Catalog ' + disciplina.nume + ' grupa ' + grupa.nume
+    response['Content-Disposition'] = "attachment;filename=%s" % excel_nume
+    # put the spreadsheet data into the response
+    response.write(output.getvalue())
+    # return the response
     return response
