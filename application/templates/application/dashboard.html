@@ -10,12 +10,17 @@
     {% if user_type == 'admin' %}
         <li><a href="{% url 'vizualizareDiscipline' %}">Discipline</a>
     {% endif %}
+
+    {% block note_student %}
+    {% endblock %}
+
     {% if user_type == 'student' %}
-        <li><a href="">Catalog</a>
         <li><a href="">Proiecte active</a>
     {% endif %}
+
     {% block catalog_profesor %}
     {% endblock %}
+
 {% endblock %}
 
 {% block article %}

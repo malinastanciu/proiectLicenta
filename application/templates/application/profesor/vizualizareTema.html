@@ -19,7 +19,7 @@
                 <b>{{ student.utilizator.last_name }} {{ student.utilizator.first_name }}, grupa {{ student.grupa.nume }}</b>
                     {% for incarcare in incarcari %}
                         {% if incarcare.student.id is student.id %}
-                            <b>Document:</b> {{ incarcare.document }}<br>
+                            <b>Document:</b><a href="{% url 'download' incarcare.id %}">{{ incarcare.document }}</a><br>
                             <b>Data incarcare:</b> {{ incarcare.data_incarcare }}<br>
                         {% endif %}
                 {% endfor %}
@@ -46,7 +46,7 @@
             <h3><b>{{ student.utilizator.last_name }} {{ student.utilizator.first_name }}, grupa {{ student.grupa.nume }}</b></h3>
             {% for incarcare in incarcari %}
                 {% if incarcare.student.id is student.id %}
-                    <b>Document:</b> {{ incarcare.document }}<br>
+                    <b>Document:</b><a href="{% url 'download' tema.id incarcare.id %}">{{ incarcare.document }}</a><br>
                     <b>Data incarcare:</b> {{ incarcare.data_incarcare }}<br>
                 {% endif %}
             {% endfor %}

@@ -6,6 +6,7 @@ from datetime import date
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import MultipleObjectsReturned
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 import pandas
@@ -13,6 +14,7 @@ import numpy as np
 import random
 
 from django.utils.datastructures import MultiValueDictKeyError
+import mimetypes
 
 from application.decorators import allowed_users
 from application.functions import create_context
@@ -667,3 +669,39 @@ def vizualizareCatalog(request, pk1, pk2):
     context['nr_teme'] = nr_teme
     context['nr_teme2'] = range(nr_teme)
     return render(request, 'application/profesor/catalog.html', context)
+
+
+@allowed_users(allowed_roles=['studenti'])
+@login_required(login_url='login')
+def note(request, pk):
+    context = create_context(request)
+    student = Student.objects.get(utilizator=request.user)
+    disciplina = Disciplina.objects.get(pk=pk)
+    proiecte = Proiect.objects.all().filter(disciplina=disciplina)
+    teme = Tema.objects.all().filter(proiect__in=proiecte).filter(id__in=student.teme.all())
+    incarcari = Incarcare.objects.all().filter(student=student)
+    context['student'] = student
+    context['disciplina'] = disciplina
+    context['teme'] = teme
+    context['proiecte'] = proiecte
+    context['incarcari'] = incarcari
+    return render(request, 'application/student/note.html', context)
+
+
+@allowed_users(allowed_roles=['profesori'])
+@login_required(login_url='login')
+def download(request, pk1, pk2):
+    tema = Tema.objects.get(pk=pk1)
+    proiect = Proiect.objects.get(tema=tema)
+    incarcare = Incarcare.objects.get(pk=pk2)
+    path = os.path.abspath(os.getcwd()) + r"\media"
+    path_of_directory = os.path.join(path, proiect.nume)
+    print(path_of_directory)
+    path_of_file = os.path.join(path_of_directory, incarcare.student.utilizator.first_name + '_' +
+                                incarcare.student.utilizator.last_name + '_' + tema.nume)
+    path_of_file = os.path.join(path_of_file, incarcare.document)
+    path = open(path_of_file, 'rb')
+    mime_type, _ = mimetypes.guess_type(path_of_file)
+    response = HttpResponse(path, content_type=mime_type)
+    response['Content-Disposition'] = "attachment; filename=%s" % incarcare.document
+    return response

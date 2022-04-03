@@ -2,10 +2,7 @@
 {% load static %}
 
 {% block title %}
-    {{ disciplina.nume }}
-{% endblock %}
-{% block note_student %}
-    <li><a href="{% url 'note' disciplina.id %}">Note</a>
+    Note
 {% endblock %}
 {% block article %}
         <h1 style="font-size: 70px; padding: 30px"><b>{{ disciplina.nume }}</b></h1><br>
@@ -16,20 +13,24 @@
                 <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px">
                 <tr  style="border-color: #1b6d85">
                     <th  style="border-color: #1b6d85">Nume tema</th>
-                    <th  style="border-color: #1b6d85">Descriere</th>
-                    <th  style="border-color: #1b6d85">Data finalizare</th>
+                    <th  style="border-color: #1b6d85">Nota</th>
+                    <th  style="border-color: #1b6d85">Feedback</th>
                 </tr>
                 </thead>
 
                 <tbody>
 
-                {% for tema in teme_student %}
+                {% for tema in teme %}
                     {% if tema.proiect == proiect %}
-                    <tr class="tr">
-                        <td  style="border-color: #1b6d85"><a href="{% url 'temaStudent' tema.id %}"> {{ tema.nume }}</a></td>
-                        <td  style="border-color: #1b6d85">{{ tema.descriere }}</td>
-                        <td  style="border-color: #1b6d85">{{ proiect.data_finalizare }}</td>
-                    </tr>
+                        <tr class="tr">
+                            <td  style="border-color: #1b6d85">{{ tema.nume }}</td>
+                            {% for incarcare in incarcari %}
+                                {% if incarcare.tema == tema %}
+                                    <td  style="border-color: #1b6d85">{{ incarcare.nota }}</td>
+                                    <td  style="border-color: #1b6d85">{{ incarcare.feedback }}</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
                     {% endif %}
                 {% endfor %}
                 </tbody>
