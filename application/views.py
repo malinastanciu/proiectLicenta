@@ -153,7 +153,9 @@ def vizualizareDisciplina(request, pk):
 @login_required(login_url='login')
 def vizualizareProiecte(request, pk):
     context = create_context(request)
-    proiecte = Proiect.objects.all()
+    profesor = Profesor.objects.get(utilizator=request.user)
+    proiecte = Proiect.objects.all().filter(profesor=profesor)
+    proiecte = Proiect.objects.all().filter(profesor=profesor)
     disciplina = Disciplina.objects.get(pk=pk)
     if request.method == 'POST':
         return redirect('vizualizareDisciplina')
