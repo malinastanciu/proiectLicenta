@@ -767,7 +767,7 @@ def descarcareCatalog(request, pk1, pk2):
     workbook.close()
     response = HttpResponse(content_type='application/vnd.ms-excel')
     # tell the browser what the file is named
-    excel_nume = 'Catalog ' + disciplina.nume + ' grupa ' + grupa.nume
+    excel_nume = 'Catalog ' + disciplina.nume + ' grupa ' + grupa.nume + '.xlsx'
     response['Content-Disposition'] = "attachment;filename=%s" % excel_nume
     # put the spreadsheet data into the response
     response.write(output.getvalue())
