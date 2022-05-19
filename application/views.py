@@ -363,13 +363,13 @@ def distribuireTeme(request, pk):
             if proiect.nr_persoane == 1:
                 for i in range(len(studenti)):
                     tema = Tema.objects.get(id=lista_teme[i])
-                    # studenti[i].teme.add(tema)
+                    studenti[i].teme.add(tema)
             else:
                 j = 0
-                lista_teme = lista_teme[:round(len(lista_teme) / proiect.nr_persoane)]
+                lista_teme = lista_teme[:round(len(studenti) / proiect.nr_persoane)]
                 for i in range(len(studenti)):
                     tema = Tema.objects.get(id=lista_teme[j])
-                    # studenti[i].teme.add(tema)
+                    studenti[i].teme.add(tema)
                     j = j + 1
                     if j >= len(lista_teme):
                         j = 0
@@ -378,17 +378,17 @@ def distribuireTeme(request, pk):
                 j = 0
                 for i in range(len(studenti)):
                     tema = Tema.objects.get(id=lista_teme[j])
-                    # studenti[i].teme.add(tema)
+                    studenti[i].teme.add(tema)
                     j = j + 1
                     if j >= len(lista_teme):
                         j = 0
             else:
                 j = 0
-                if len(lista_teme) > 5 * proiect.nr_persoane:
-                    lista_teme = lista_teme[:round(len(lista_teme) / proiect.nr_persoane)]
+                if len(lista_teme) > round(len(studenti)/ proiect.nr_persoane):
+                    lista_teme = lista_teme[:round(len(studenti) / proiect.nr_persoane)]
                 for i in range(len(studenti)):
                     tema = Tema.objects.get(id=lista_teme[j])
-                    # studenti[i].teme.add(tema)
+                    studenti[i].teme.add(tema)
                     j = j + 1
                     if j >= len(lista_teme):
                         j = 0
