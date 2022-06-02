@@ -170,6 +170,13 @@
         </div>
     {% endif %}
 
+    {% if messages %}
+       <script>
+        {% for message in messages %}
+            alert("{{ message }}");
+        {% endfor %}
+       </script>
+    {% endif %}
     <script type="text/javascript" src="{% static 'application/js/dashboard.js' %}"></script>
 {% endblock %}
 

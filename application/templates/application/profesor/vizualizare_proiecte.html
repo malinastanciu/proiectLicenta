@@ -6,13 +6,14 @@
 {% endblock %}
 {% block article %}
         <h2 style="color: #383838; font-size: 100px; padding: 20px"><b>{{ disciplina.nume }}</b></h2>
-        <h3><b>Vizualizare proiecte</b></h3><br>
+        <h3><b>Proiect</b></h3><br>
         <div class="table-wrapper-scroll-y custom-scrollbar" style="">
             <table class="table table-bordered" id="myTable" style="border-color: #1b6d85">
                 <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px">
                 <tr  style="border-color: #1b6d85">
-                    <th  style="border-color: #1b6d85">Nume proiect</th>
+                    <th  style="border-color: #1b6d85">Tema de proiect</th>
                     <th  style="border-color: #1b6d85">Data inregistare</th>
+                    <th  style="border-color: #1b6d85">Data intermediara</th>
                     <th  style="border-color: #1b6d85">Data finalizare</th>
                     <th  style="border-color: #1b6d85">Nr persoane in grupa</th>
                     <th  style="border-color: #1b6d85">Cale</th>
@@ -28,6 +29,7 @@
                     <tr class="tr">
                         <td  style="border-color: #1b6d85"><a href="{% url 'proiect' proiect.id %}"> {{ proiect.nume }}</a></td>
                         <td  style="border-color: #1b6d85">{{ proiect.data_inregistrare }}</td>
+                        <td  style="border-color: #1b6d85">{{ proiect.data_intermediara }}</td>
                         <td  style="border-color: #1b6d85">{{ proiect.data_finalizare }}</td>
                         <td  style="border-color: #1b6d85">{{ proiect.nr_persoane }}</td>
                         <td  style="border-color: #1b6d85">{{ proiect.cale }}</td>

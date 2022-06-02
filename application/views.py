@@ -4,6 +4,9 @@ from io import StringIO, BytesIO
 import xlsxwriter
 
 from datetime import date
+
+from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 from openpyxl import Workbook
 
 from django.contrib.auth.decorators import login_required
@@ -53,11 +56,22 @@ def adaugareProiect(request, pk):
     context = create_context(request)
     proiect = Proiect()
     disciplina = Disciplina.objects.get(pk=pk)
+    profesor = Profesor.objects.get(utilizator=request.user)
     context['disciplina'] = disciplina
     if request.method == 'POST':
+        proiecte_existente = Proiect.objects.all().filter(profesor=profesor).filter(disciplina=disciplina)
+        if proiecte_existente:
+            messages.info(request, 'Exista deja o tema de proiect pentru disciplina ' + disciplina.nume)
+            return redirect('vizualizareDisciplina', disciplina.id)
+        proiecte_existente = Proiect.objects.all()
+        for pr in proiecte_existente:
+            if pr.nume == request.POST.get('name'):
+                messages.info(request, 'Acest nume de proiect a fost utilizat')
+                return redirect('adaugareProiect', pk)
         proiect.nume = request.POST.get('name')
         proiect.data_inregistrare = date.today()
         proiect.data_finalizare = request.POST.get('final_date')
+        proiect.data_intermediara = request.POST.get('intermediar_date')
         proiect.profesor = Profesor.objects.get(utilizator=request.user)
         proiect.disciplina = Disciplina.objects.get(pk=pk)
         proiect.nr_persoane = request.POST.get('nr_persoane')
@@ -67,7 +81,6 @@ def adaugareProiect(request, pk):
         os.mkdir(path_of_directory)
         try:
             uploaded_file = request.FILES['document']
-
             fs = FileSystemStorage(path_of_directory)
             txt = uploaded_file.name
             x = txt.split('.')
@@ -337,9 +350,11 @@ def asignareDiscipline(request, pk):
 def proiect(request, pk):
     proiect = Proiect.objects.get(pk=pk)
     teme = Tema.objects.all().filter(proiect=pk)
+    studenti = Student.objects.all()
     context = create_context(request)
     context['proiect'] = proiect
     context['teme'] = teme
+    context['studenti'] = studenti
     return render(request, 'application/profesor/proiect.html', context)
 
 
@@ -347,17 +362,22 @@ def proiect(request, pk):
 @login_required(login_url='login')
 def distribuireTeme(request, pk):
     disciplina = Disciplina.objects.get(pk=pk)
-    proiecte = Proiect.objects.all().filter(disciplina=disciplina)
+    profesor = Profesor.objects.get(utilizator=request.user)
+    proiect = Proiect.objects.all().filter(disciplina=disciplina).filter(profesor=profesor)[0]
     grupe = Grupa.objects.all()
     lista_teme = list()
     if request.method == 'POST':
-        proiect = Proiect.objects.get(id=request.POST.get('proiect'))
-        teme = Tema.objects.all().filter(proiect=request.POST.get('proiect'))
+        teme = Tema.objects.all().filter(proiect=proiect)
         for tema in teme:
             lista_teme.append(tema.id)
-        grupa = Grupa.objects.all().filter(id=request.POST.get('grupa'))[0]
-        # print(grupa.nume)
-        studenti = Student.objects.all().filter(grupa=grupa)
+        id_studenti = DisciplinaProfesorStudent.objects.all().filter(disciplina=disciplina).filter(profesor=profesor)
+        studenti = list()
+        for student in id_studenti:
+            studenti.append(student.student)
+
+        for i in range(len(studenti)):
+            print(studenti[i].id)
+
         random.shuffle(lista_teme)
         if len(lista_teme) >= len(studenti):
             if proiect.nr_persoane == 1:
@@ -395,7 +415,7 @@ def distribuireTeme(request, pk):
         return redirect('vizualizareDisciplina', pk)
     context = create_context(request)
     context['disciplina'] = disciplina
-    context['proiecte'] = proiecte
+    context['proiect'] = proiect
     context['grupe'] = grupe
 
     return render(request, 'application/profesor/distribuire_teme.html', context)
@@ -425,9 +445,15 @@ def temaStudent(request, pk1):
     tema = Tema.objects.get(pk=pk1)
     proiect = Proiect.objects.get(tema=tema)
     student = Student.objects.get(utilizator=request.user)
+
     if proiect.nr_persoane > 1:
-        echipa = Echipa.objects.all().filter(tema=tema).filter(studenti=student)[0]
-        context['echipa'] = echipa
+        try:
+            echipa = Echipa.objects.all().filter(tema=tema)
+            echipa = echipa.get(studenti=student)
+            context['echipa'] = echipa
+        except (TypeError, ObjectDoesNotExist):
+            messages.info(request, 'Nu au fost create echipe pentru acest proiect')
+            return redirect('dashboard')
     if str(proiect.data_finalizare) > str(date.today()):
         context['data'] = True
     else:
@@ -435,7 +461,10 @@ def temaStudent(request, pk1):
     if proiect.nr_persoane == 1:
         tasks = Task.objects.all().filter(tema=tema)
     else:
-        tasks = Task.objects.all().filter(tema=tema).filter(student__in=echipa.studenti.all())
+        try:
+            tasks = Task.objects.all().filter(tema=tema).filter(student__in=echipa.studenti.all())
+        except(TypeError, ObjectDoesNotExist, AttributeError):
+            return redirect(dashboard)
     efectuat = 0
     for task in tasks:
         if task.efectuat == True:

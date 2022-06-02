@@ -25,6 +25,7 @@ class Proiect(models.Model):
     id = models.AutoField(primary_key=True)
     nume = models.CharField(max_length=100, unique=False)
     data_inregistrare = models.DateField(auto_now_add=True)
+    data_intermediara = models.DateField(default=None)
     data_finalizare = models.DateField()
     profesor = models.ForeignKey(Profesor, on_delete=models.CASCADE)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE, null=True)
@@ -75,6 +76,7 @@ class DisciplinaProfesorStudent(models.Model):
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
     profesor = models.ForeignKey(Profesor, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
+
 
 class Echipa(models.Model):
     id = models.AutoField(primary_key=True)

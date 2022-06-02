@@ -16,6 +16,8 @@
                     <h3><b>Adaugare proiect nou</b></h3><br>
                     <label for="name">Nume proiect</label>
                     <input type="text" name="name"><br>
+                    <label for="intermediar_date">Data intermediara</label>
+                    <input type="date" name="intermediar_date"><br>
                     <label for="final_date">Data de finalizare</label>
                     <input type="date" name="final_date"><br>
                     <label for="nr_persoane">Numar persoane in echipa</label>
@@ -28,4 +30,11 @@
         </div>
     </div>
     </div>
+    {% if messages %}
+       <script>
+        {% for message in messages %}
+            alert("{{ message }}");
+        {% endfor %}
+       </script>
+    {% endif %}
 {% endblock %}
