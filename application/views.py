@@ -412,6 +412,8 @@ def distribuireTeme(request, pk):
                     j = j + 1
                     if j >= len(lista_teme):
                         j = 0
+        proiect.distribuire_teme = True
+        proiect.save()
         return redirect('vizualizareDisciplina', pk)
     context = create_context(request)
     context['disciplina'] = disciplina
@@ -455,16 +457,20 @@ def temaStudent(request, pk1):
             messages.info(request, 'Nu au fost create echipe pentru acest proiect')
             return redirect('dashboard')
     if str(proiect.data_finalizare) > str(date.today()):
-        context['data'] = True
+        context['data_finala'] = True
     else:
-        context['data'] = False
+        context['data_finala'] = False
+    if str(proiect.data_intermediara) > str(date.today()):
+        context['data_intermediara'] = True
+    else:
+        context['data+intermediara'] = False
     if proiect.nr_persoane == 1:
         tasks = Task.objects.all().filter(tema=tema)
     else:
         try:
             tasks = Task.objects.all().filter(tema=tema).filter(student__in=echipa.studenti.all())
         except(TypeError, ObjectDoesNotExist, AttributeError):
-            return redirect(dashboard)
+            return redirect('dashboard')
     efectuat = 0
     for task in tasks:
         if task.efectuat == True:
@@ -529,7 +535,36 @@ def vizualizareTema(request, pk):
 
 @allowed_users(allowed_roles=['studenti'])
 @login_required(login_url='login')
-def incarcareTema(request, pk):
+def incarcareFinalaTema(request, pk):
+    context = create_context(request)
+    tema = Tema.objects.get(pk=pk)
+    proiect = Proiect.objects.get(pk=tema.proiect.id)
+    context['tema'] = tema
+    context['proiect'] = proiect
+    incarcare = Incarcare()
+    if request.method == 'POST':
+        path = os.path.abspath(os.getcwd()) + r"\media"
+        path_of_directory = os.path.join(path, proiect.nume)
+        path_of_file = os.path.join(path_of_directory, request.user.first_name + '_' + request.user.last_name + '_' +
+                                    tema.nume)
+        uploaded_file = request.FILES['document']
+        fs = FileSystemStorage(path_of_file)
+        txt = uploaded_file.name
+        x = txt.split('.')
+        fs.save(request.user.first_name + '_' + request.user.last_name + '_' + 'Finala_' + tema.nume + '.' + x[1], uploaded_file)
+        incarcare.tema = tema
+        incarcare.data_incarcare = date.today()
+        incarcare.student = Student.objects.get(utilizator=request.user.id)
+        incarcare.document = request.user.first_name + '_' + request.user.last_name + '_' + 'Finala_' + tema.nume + '.' + x[1]
+        incarcare.tip = 'Finala'
+        incarcare.save()
+        return redirect('temaStudent', tema.id)
+    return render(request, 'application/student/incarcareTema.html', context)
+
+
+@allowed_users(allowed_roles=['studenti'])
+@login_required(login_url='login')
+def incarcareIntermediaraTema(request, pk):
     context = create_context(request)
     tema = Tema.objects.get(pk=pk)
     proiect = Proiect.objects.get(pk=tema.proiect.id)
@@ -549,11 +584,12 @@ def incarcareTema(request, pk):
         fs = FileSystemStorage(path_of_file)
         txt = uploaded_file.name
         x = txt.split('.')
-        fs.save(request.user.first_name + '_' + request.user.last_name + '_' + tema.nume + '.' + x[1], uploaded_file)
+        fs.save(request.user.first_name + '_' + request.user.last_name + '_' + 'Intermediara_' + tema.nume + '.' + x[1], uploaded_file)
         incarcare.tema = tema
         incarcare.data_incarcare = date.today()
         incarcare.student = Student.objects.get(utilizator=request.user.id)
-        incarcare.document = request.user.first_name + '_' + request.user.last_name + '_' + tema.nume + '.' + x[1]
+        incarcare.document = request.user.first_name + '_' + request.user.last_name + '_' + 'Intermediara_' + tema.nume + '.' + x[1]
+        incarcare.tip = 'Intermediara'
         incarcare.save()
         return redirect('temaStudent', tema.id)
     return render(request, 'application/student/incarcareTema.html', context)

@@ -14,8 +14,12 @@
               <h2>Distribuirea random a temelor pentru tema de proiect: <b>{{ proiect.nume }}</b></h2>
           </div>
           <div class="card-body">
-            <input type="submit" class="btn" value="Distribuire random a temelor" style="background-color: lightblue; width: 100%;">
-          <br>
+              {% if proiect.distribuire_teme == False %}
+                <input type="submit" class="btn" value="Distribuire random a temelor" style="background-color: lightblue; width: 100%;">
+              {% else %}
+                   <input type="submit" class="btn btn-danger disabled" value="Distribuire random a temelor" style="width: 100%">
+              {% endif %}
+              <br>
           </div>
         </div>
     </form>
