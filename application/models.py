@@ -85,6 +85,5 @@ class Echipa(models.Model):
     nume = models.CharField(max_length=100, null=True)
     tema = models.ForeignKey(Tema, on_delete=models.CASCADE)
     proiect = models.ForeignKey(Proiect, on_delete=models.CASCADE, null=True)
-    grupa = models.ForeignKey(Grupa, on_delete=models.CASCADE, null=True)
     studenti = models.ManyToManyField(Student)
 

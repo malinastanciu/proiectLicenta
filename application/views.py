@@ -364,7 +364,6 @@ def distribuireTeme(request, pk):
     disciplina = Disciplina.objects.get(pk=pk)
     profesor = Profesor.objects.get(utilizator=request.user)
     proiect = Proiect.objects.all().filter(disciplina=disciplina).filter(profesor=profesor)[0]
-    grupe = Grupa.objects.all()
     lista_teme = list()
     if request.method == 'POST':
         teme = Tema.objects.all().filter(proiect=proiect)
@@ -418,7 +417,6 @@ def distribuireTeme(request, pk):
     context = create_context(request)
     context['disciplina'] = disciplina
     context['proiect'] = proiect
-    context['grupe'] = grupe
 
     return render(request, 'application/profesor/distribuire_teme.html', context)
 
@@ -597,14 +595,13 @@ def incarcareIntermediaraTema(request, pk):
 
 @allowed_users(allowed_roles=['profesori'])
 @login_required(login_url='login')
-def adaugareNota(request, pk):
+def adaugareNota(request, pk, pk2):
     context = create_context(request)
     tema = Tema.objects.get(pk=pk)
-    incarcare = Incarcare.objects.get(tema=tema)
-    print(incarcare.document)
+    student = Student.objects.get(pk=pk2)
     if request.method == 'POST':
+        incarcare = Incarcare.objects.all().filter(tema=tema).filter(student=student).filter(tip=request.POST.get('etapa')).get()
         incarcare.nota = request.POST.get('nota')
-        print(request.POST.get('nota'))
         incarcare.feedback = request.POST.get('feedback')
         incarcare.save()
         return redirect('vizualizareTema', pk)
@@ -681,10 +678,8 @@ def creareEchipe(request, pk):
         echipa.save()
         for select in request.POST.getlist('select2'):
             student = Student.objects.get(id=select)
-            grupa = student.grupa
             echipa.studenti.add(student)
             echipa.save()
-        echipa.grupa = grupa
         echipa.save()
         return redirect('vizualizareTema', tema.id)
     return render(request, 'application/profesor/creare_echipe.html', context)
@@ -780,16 +775,16 @@ def download(request, pk1, pk2):
 def descarcareCatalog(request, pk1, pk2):
     context = create_context(request)
     disciplina = Disciplina.objects.get(pk=pk1)
-    proiecte = Proiect.objects.all().filter(disciplina=disciplina)
+    profesor = Profesor.objects.get(utilizator=request.user)
+    proiect = Proiect.objects.all().filter(disciplina=disciplina).filter(profesor=profesor).get()
     grupa = Grupa.objects.get(pk=pk2)
     studenti = Student.objects.all().filter(grupa=grupa)
     incarcari = Incarcare.objects.all()
     context['studenti'] = studenti
-    context['proiecte'] = proiecte
+    context['proiecte'] = proiect
     context['disciplina'] = disciplina
     context['incarcari'] = incarcari
-    nr_teme = len(studenti[0].teme.all().filter(proiect__in=proiecte))
-    print(nr_teme)
+
     output = BytesIO()
     workbook = xlsxwriter.Workbook(output)
     worksheet = workbook.add_worksheet()
@@ -800,6 +795,7 @@ def descarcareCatalog(request, pk1, pk2):
         'valign': 'top',
         'border': 1
     })
+
     worksheet.set_column(0, 8, width=20)
     worksheet.write(0, 0, 'Surname', header)
     worksheet.write(0, 1, 'First name', header)
@@ -810,8 +806,8 @@ def descarcareCatalog(request, pk1, pk2):
     worksheet.write(0, 6, 'Specializarea', header)
     worksheet.write(0, 7, 'Anul', header)
     worksheet.write(0, 8, 'Grupa', header)
-    for i in range(nr_teme):
-        worksheet.write(0, 9 + i, 'Punctaj ' + str(i + 1), header)
+    worksheet.write(0, 9, 'Punctaj 1', header)
+    worksheet.write(0, 10, 'Punctaj 2', header)
     for idx, student in enumerate(studenti):
         row = 1 + idx
         worksheet.write_string(row, 0, student.utilizator.last_name)
@@ -823,12 +819,19 @@ def descarcareCatalog(request, pk1, pk2):
         worksheet.write_string(row, 6, student.specializare)
         worksheet.write_string(row, 7, student.an_studiu)
         worksheet.write_string(row, 8, student.grupa.nume)
-        for idx2, tema in enumerate(student.teme.all().filter(proiect__in=proiecte)):
-            incarcare = incarcari.filter(tema=tema).filter(student=student).first()
-            try:
-                worksheet.write_number(row, 9 + idx2, incarcare.nota)
-            except AttributeError:
-                worksheet.write_number(row, 9 + idx2, 0)
+        tema = student.teme.all().filter(proiect=proiect).get()
+        incarcari = Incarcare.objects.all().filter(tema=tema).filter(student=student)
+        for incarcare in incarcari:
+            if incarcare.tip == 'Intermediara':
+                worksheet.write_number(row, 9, incarcare.nota)
+                worksheet.write_number(row, 9, 0)
+            elif incarcare.tip == 'Finala':
+                worksheet.write_number(row, 10, incarcare.nota)
+                worksheet.write_number(row, 9, 0)
+
+
+
+
     workbook.close()
     response = HttpResponse(content_type='application/vnd.ms-excel')
     # tell the browser what the file is named

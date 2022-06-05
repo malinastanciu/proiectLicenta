@@ -45,7 +45,7 @@ urlpatterns = [
          name='vizualizareTema'),
     path('vizualizare-disciplina/vizualizare-proiecte/proiect/tema/<str:pk1>/download/<str:pk2>',
          application_views.download, name='download'),
-    path('vizualizare-disciplina/vizualizare-proiecte/proiect/tema/<str:pk>/adaugare-nota/',
+    path('vizualizare-disciplina/vizualizare-proiecte/proiect/tema/<str:pk>/adaugare-nota/student/<str:pk2>/',
          application_views.adaugareNota, name='adaugareNota'),
     path('vizualizare-disciplina/vizualizare-proiecte/proiect/tema/<str:pk>/creare-echipe',
          application_views.creareEchipe, name='creareEchipe'),
