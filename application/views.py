@@ -541,6 +541,10 @@ def incarcareFinalaTema(request, pk):
     context['proiect'] = proiect
     incarcare = Incarcare()
     if request.method == 'POST':
+        incarcare_existenta = Incarcare.objects.all().filter(student__utilizator=request.user).filter(tema=tema).filter(tip='Finala')
+        if incarcare_existenta:
+            messages.info(request, 'Etapa finala a fost deja incarcata')
+            return redirect('temaStudent', tema.id)
         path = os.path.abspath(os.getcwd()) + r"\media"
         path_of_directory = os.path.join(path, proiect.nume)
         path_of_file = os.path.join(path_of_directory, request.user.first_name + '_' + request.user.last_name + '_' +
@@ -577,18 +581,21 @@ def incarcareIntermediaraTema(request, pk):
         path_of_directory = os.path.join(path, proiect.nume)
         path_of_file = os.path.join(path_of_directory, request.user.first_name + '_' + request.user.last_name + '_' +
                                     tema.nume)
-        os.mkdir(path_of_file)
-        uploaded_file = request.FILES['document']
-        fs = FileSystemStorage(path_of_file)
-        txt = uploaded_file.name
-        x = txt.split('.')
-        fs.save(request.user.first_name + '_' + request.user.last_name + '_' + 'Intermediara_' + tema.nume + '.' + x[1], uploaded_file)
-        incarcare.tema = tema
-        incarcare.data_incarcare = date.today()
-        incarcare.student = Student.objects.get(utilizator=request.user.id)
-        incarcare.document = request.user.first_name + '_' + request.user.last_name + '_' + 'Intermediara_' + tema.nume + '.' + x[1]
-        incarcare.tip = 'Intermediara'
-        incarcare.save()
+        try:
+            os.mkdir(path_of_file)
+            uploaded_file = request.FILES['document']
+            fs = FileSystemStorage(path_of_file)
+            txt = uploaded_file.name
+            x = txt.split('.')
+            fs.save(request.user.first_name + '_' + request.user.last_name + '_' + 'Intermediara_' + tema.nume + '.' + x[1], uploaded_file)
+            incarcare.tema = tema
+            incarcare.data_incarcare = date.today()
+            incarcare.student = Student.objects.get(utilizator=request.user.id)
+            incarcare.document = request.user.first_name + '_' + request.user.last_name + '_' + 'Intermediara_' + tema.nume + '.' + x[1]
+            incarcare.tip = 'Intermediara'
+            incarcare.save()
+        except FileExistsError:
+            messages.info(request, 'Etapa intermediara a fost deja incarcata')
         return redirect('temaStudent', tema.id)
     return render(request, 'application/student/incarcareTema.html', context)
 
