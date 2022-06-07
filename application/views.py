@@ -363,7 +363,11 @@ def proiect(request, pk):
 def distribuireTeme(request, pk):
     disciplina = Disciplina.objects.get(pk=pk)
     profesor = Profesor.objects.get(utilizator=request.user)
-    proiect = Proiect.objects.all().filter(disciplina=disciplina).filter(profesor=profesor)[0]
+    try:
+        proiect = Proiect.objects.all().filter(disciplina=disciplina).filter(profesor=profesor)[0]
+    except IndexError:
+        messages.info(request, 'Nu exista proiect pentru disciplina ' + disciplina.nume)
+        return redirect('vizualizareDisciplina', disciplina.id)
     lista_teme = list()
     if request.method == 'POST':
         teme = Tema.objects.all().filter(proiect=proiect)
