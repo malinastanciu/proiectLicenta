@@ -12,9 +12,15 @@
                 <h3><b>{{ proiect.nume }}</b></h3>
                 <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px">
                 <tr  style="border-color: #1b6d85">
-                    <th  style="border-color: #1b6d85">Nume tema</th>
-                    <th  style="border-color: #1b6d85">Nota</th>
-                    <th  style="border-color: #1b6d85">Feedback</th>
+                    <th  style="border-color: #1b6d85" rowspan="2">Nume tema</th>
+                    <th  style="border-color: #1b6d85" colspan="2">Etapa intermediara</th>
+                    <th  style="border-color: #1b6d85" colspan="2">Etapa finala</th>
+                </tr>
+                <tr>
+                    <th style="border-color: #1b6d85">Nota</th>
+                    <th style="border-color: #1b6d85">Feedback</th>
+                    <th style="border-color: #1b6d85">Nota</th>
+                    <th style="border-color: #1b6d85">Feedback</th>
                 </tr>
                 </thead>
 
@@ -24,12 +30,10 @@
                     {% if tema.proiect == proiect %}
                         <tr class="tr">
                             <td  style="border-color: #1b6d85">{{ tema.nume }}</td>
-                            {% for incarcare in incarcari %}
-                                {% if incarcare.tema == tema %}
-                                    <td  style="border-color: #1b6d85">{{ incarcare.nota }}</td>
-                                    <td  style="border-color: #1b6d85">{{ incarcare.feedback }}</td>
-                                {% endif %}
-                            {% endfor %}
+                            <td style="border-color: #1b6d85"></td>
+                            <td style="border-color: #1b6d85"></td>
+                            <td style="border-color: #1b6d85"></td>
+                            <td style="border-color: #1b6d85"></td>
                         </tr>
                     {% endif %}
                 {% endfor %}

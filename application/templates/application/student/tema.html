@@ -7,7 +7,8 @@
 {% block article %}
     <link rel="stylesheet" href="{% static 'application/css/tema.css' %}">
         <h1 style="color: #383838; font-size: 70px; padding: 30px; margin-top: -20px"><b>{{ disciplina.nume }}</b></h1>
-        <h3 style="margin-top: -30px"><b>{{ tema.nume }} pentru proiectul {{ tema.proiect.nume }}</b></h3><br>
+    <h3 style="margin-top: -30px"><b>Tema de proiect: <i>{{ tema.nume }}</i> pentru proiectul <i>{{ tema.proiect.nume }}</i></b></h3><br>
+    <p style="margin-top: -25px; margin-bottom: 25px"><b>Descriere tema:</b> {{ tema.descriere }}</p>
         {% if tema.proiect.nr_persoane > 1%}
             <h4 style="margin-top: -20px"><b>Echipa:</b></h4>
                 {% for student in echipa.studenti.all %}
