@@ -385,7 +385,10 @@ def distribuireTeme(request, pk):
                     studenti[i].teme.add(tema)
             else:
                 j = 0
-                lista_teme = lista_teme[:round(len(studenti) / proiect.nr_persoane)]
+                if len(studenti) > proiect.nr_persoane:
+                    lista_teme = lista_teme[:round(len(studenti) / proiect.nr_persoane)]
+                else:
+                    lista_teme = lista_teme[:len(studenti)]
                 for i in range(len(studenti)):
                     tema = Tema.objects.get(id=lista_teme[j])
                     studenti[i].teme.add(tema)
@@ -403,7 +406,7 @@ def distribuireTeme(request, pk):
                         j = 0
             else:
                 j = 0
-                if len(lista_teme) > round(len(studenti)/ proiect.nr_persoane):
+                if len(lista_teme) > round(len(studenti)/ proiect.nr_persoane) and len(studenti) > proiect.nr_persoane:
                     lista_teme = lista_teme[:round(len(studenti) / proiect.nr_persoane)]
                 for i in range(len(studenti)):
                     tema = Tema.objects.get(id=lista_teme[j])
