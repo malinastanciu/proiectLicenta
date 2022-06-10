@@ -11,13 +11,13 @@
         {% csrf_token %}
         <div class="card text-center d-flex justify-content-center" style="background-color: #1b6d85; width: 500px; border-radius: 20px; margin-left: 35%; padding: 10px 10px 20px 10px">
           <div class="card-header" style="color: white; padding: 5px">
-              <h2>Distribuirea automata a temelor de proiect pentru proiect: <b>{{ proiect.nume }}</b></h2>
+              <h2>Distribuirea automata a temelor de proiect pentru proiectul: <b>{{ proiect.nume }}</b></h2>
           </div>
           <div class="card-body">
               {% if proiect.distribuire_teme == False %}
-                <input type="submit" class="btn" value="Distribuire random a temelor" style="background-color: lightblue; width: 100%;">
+                  <input type="submit" class="btn" value="Distribuire automata a temelor" style="background-color: lightblue; width: 100%;">
               {% else %}
-                   <input type="submit" class="btn btn-danger disabled" value="Distribuire random a temelor" style="width: 100%">
+                  <input type="submit" class="btn btn-danger disabled" value="Distribuire automata a temelor" style="width: 100%">
               {% endif %}
               <br>
           </div>
