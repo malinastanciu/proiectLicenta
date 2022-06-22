@@ -17,7 +17,8 @@
                 <tr  style="border-color: #1b6d85">
                     <th  style="border-color: #1b6d85">Tema de proiect</th>
                     <th  style="border-color: #1b6d85">Descriere</th>
-                    <th  style="border-color: #1b6d85">Data finalizare</th>
+                    <th  style="border-color: #1b6d85">Etapa intermediara</th>
+                    <th  style="border-color: #1b6d85">Etapa finala</th>
                 </tr>
                 </thead>
 
@@ -28,6 +29,7 @@
                     <tr class="tr">
                         <td  style="border-color: #1b6d85"><a href="{% url 'temaStudent' tema.id %}"> {{ tema.nume }}</a></td>
                         <td  style="border-color: #1b6d85">{{ tema.descriere }}</td>
+                        <td  style="border-color: #1b6d85">{{ proiect.data_intermediara }}</td>
                         <td  style="border-color: #1b6d85">{{ proiect.data_finalizare }}</td>
                     </tr>
                     {% endif %}

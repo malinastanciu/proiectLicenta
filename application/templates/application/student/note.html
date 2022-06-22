@@ -7,7 +7,7 @@
 {% block article %}
         <h1 style="font-size: 70px; padding: 30px"><b>{{ disciplina.nume }}</b></h1><br>
         <div class="table-wrapper-scroll-y custom-scrollbar" style="margin-top:-20px;">
-        {% for proiect in proiecte %}
+
             <table class="table table-bordered" id="myTable" style="border-color: #1b6d85">
                 <h3><b>{{ proiect.nume }}</b></h3>
                 <thead style="background-color: whitesmoke; border-color: #1b6d85; font-size: 15px">
@@ -26,21 +26,16 @@
 
                 <tbody>
 
-                {% for tema in teme %}
-                    {% if tema.proiect == proiect %}
-                        <tr class="tr">
-                            <td  style="border-color: #1b6d85">{{ tema.nume }}</td>
-                            <td style="border-color: #1b6d85"></td>
-                            <td style="border-color: #1b6d85"></td>
-                            <td style="border-color: #1b6d85"></td>
-                            <td style="border-color: #1b6d85"></td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
+                    <tr class="tr">
+                        <td  style="border-color: #1b6d85">{{ teme.nume }}</td>
+                        <td style="border-color: #1b6d85">{{ incarcare_intermediara.nota }}</td>
+                        <td style="border-color: #1b6d85">{{ incarcare_intermediara.feedback }}</td>
+                        <td style="border-color: #1b6d85">{{ incarcare_finala.nota }}</td>
+                        <td style="border-color: #1b6d85">{{ incarcare_finala.feedback }}</td>
+                    </tr>
                 </tbody>
 
             </table>
-        {% endfor %}
         </div>
 
 {% endblock %}

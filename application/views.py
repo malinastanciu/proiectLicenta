@@ -754,14 +754,21 @@ def note(request, pk):
     context = create_context(request)
     student = Student.objects.get(utilizator=request.user)
     disciplina = Disciplina.objects.get(pk=pk)
-    proiecte = Proiect.objects.all().filter(disciplina=disciplina)
-    teme = Tema.objects.all().filter(proiect__in=proiecte).filter(id__in=student.teme.all())
-    incarcari = Incarcare.objects.all().filter(student=student)
+    proiecte = Proiect.objects.get(disciplina=disciplina)
+    teme = Tema.objects.all().filter(proiect=proiecte).filter(id__in=student.teme.all()).get()
+    incarcari = Incarcare.objects.all().filter(student=student).filter(tema=teme)
+    for incarcare in incarcari:
+        if incarcare.tip == 'Intermediara':
+            incarcare_intermediara = incarcare
+        elif incarcare.tip == 'Finala':
+            incarcare_finala = incarcare
     context['student'] = student
     context['disciplina'] = disciplina
     context['teme'] = teme
     context['proiecte'] = proiecte
     context['incarcari'] = incarcari
+    context['incarcare_intermediara'] = incarcare_intermediara
+    context['incarcare_finala'] = incarcare_finala
     return render(request, 'application/student/note.html', context)
 
 
