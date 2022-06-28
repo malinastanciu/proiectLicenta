@@ -7,6 +7,7 @@ from datetime import date
 
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 from openpyxl import Workbook
 
 from django.contrib.auth.decorators import login_required
@@ -200,19 +201,24 @@ def adaugareStudenti(request):
                 email = str(student['Email address'])
                 if i == 0:
                     grupa = Grupa.objects.filter(nume=student['Grupa'])[0]
-                user = User.objects.create_user(username=email.split('@')[0], email=email, password='student123456',
+                try:
+                    user = User.objects.create_user(username=email.split('@')[0], email=email, password='student123456',
                                                 first_name=student['First name'], last_name=student['Surname'])
 
-                group.user_set.add(user)
-                utilizator = User.objects.get(email=email)
-                stud = Student()
-                stud.utilizator = utilizator
-                stud.facultate = student['Facultatea']
-                stud.ciclu_de_studii = student['Ciclu de studii']
-                stud.specializare = student['Specializarea']
-                stud.an_studiu = student['Anul']
-                stud.grupa = grupa
-                stud.save()
+                    group.user_set.add(user)
+                    utilizator = User.objects.get(email=email)
+                    stud = Student()
+                    stud.utilizator = utilizator
+                    stud.facultate = student['Facultatea']
+                    stud.ciclu_de_studii = student['Ciclu de studii']
+                    stud.specializare = student['Specializarea']
+                    stud.an_studiu = student['Anul']
+                    stud.grupa = grupa
+                    stud.save()
+                except IntegrityError:
+                    messages.info(request, 'Studentii din acest fisier exista deja in baza de date')
+                    return redirect('dashboard')
+
 
         return redirect('dashboard')
     return render(request, 'application/secretariat/adaugare_studenti.html', context)
@@ -312,8 +318,12 @@ def adaugareGrupa(request):
     grupa = Grupa()
     if request.method == 'POST':
         grupa.nume = request.POST.get('nume')
-        grupa.save()
-        return redirect('adaugareGrupa')
+        try:
+            grupa.save()
+            return redirect('adaugareGrupa')
+        except IntegrityError:
+            messages.info(request, 'Aceasta grupa exista deja in baza de date')
+            return redirect('dashboard')
     context['grupe'] = grupe
     return render(request, 'application/secretariat/adaugare_grupa.html', context)
 
@@ -323,25 +333,30 @@ def adaugareGrupa(request):
 def asignareDiscipline(request, pk):
     context = create_context(request)
     grupa = Grupa.objects.get(pk=pk)
-    discipline = Disciplina.objects.all().filter(an_universitar=int(grupa.nume[1]))
-    grupa = Grupa.objects.get(pk=pk)
-    studenti = Student.objects.all().filter(grupa=grupa)
-    profesori = Profesor.objects.all()
-    if request.method == 'POST':
-        for disciplina in request.POST.getlist('disciplina'):
-            dictionary = ast.literal_eval(disciplina)
-            d = Disciplina.objects.get(pk=dictionary['disciplina'])
-            p = Profesor.objects.get(pk=dictionary['profesor'])
-            for student in studenti:
-                disciplina_profesor_student = DisciplinaProfesorStudent()
-                disciplina_profesor_student.disciplina = d
-                disciplina_profesor_student.profesor = p
-                disciplina_profesor_student.student = student
-                disciplina_profesor_student.save()
-        return redirect('vizualizareGrupe')
-    context['grupa'] = grupa
-    context['discipline'] = discipline
-    context['profesori'] = profesori
+    if grupa.asignare_discipline == True:
+        messages.info(request, f'Pentru grupa {grupa.nume} au fost asignate disciplinele')
+        return redirect('dashboard')
+    else:
+        discipline = Disciplina.objects.all().filter(an_universitar=int(grupa.nume[1]))
+        studenti = Student.objects.all().filter(grupa=grupa)
+        profesori = Profesor.objects.all()
+        if request.method == 'POST':
+            for disciplina in request.POST.getlist('disciplina'):
+                dictionary = ast.literal_eval(disciplina)
+                d = Disciplina.objects.get(pk=dictionary['disciplina'])
+                p = Profesor.objects.get(pk=dictionary['profesor'])
+                for student in studenti:
+                    disciplina_profesor_student = DisciplinaProfesorStudent()
+                    disciplina_profesor_student.disciplina = d
+                    disciplina_profesor_student.profesor = p
+                    disciplina_profesor_student.student = student
+                    disciplina_profesor_student.save()
+            grupa.asignare_discipline = True
+            grupa.save()
+            return redirect('vizualizareGrupe')
+        context['grupa'] = grupa
+        context['discipline'] = discipline
+        context['profesori'] = profesori
     return render(request, 'application/secretariat/asignare_discipline.html', context)
 
 
@@ -795,12 +810,16 @@ def download(request, pk1, pk2):
 @login_required(login_url='login')
 def descarcareCatalog(request, pk1, pk2):
     context = create_context(request)
-    disciplina = Disciplina.objects.get(pk=pk1)
-    profesor = Profesor.objects.get(utilizator=request.user)
-    proiect = Proiect.objects.all().filter(disciplina=disciplina).filter(profesor=profesor).get()
-    grupa = Grupa.objects.get(pk=pk2)
-    studenti = Student.objects.all().filter(grupa=grupa)
-    incarcari = Incarcare.objects.all()
+    try:
+        disciplina = Disciplina.objects.get(pk=pk1)
+        profesor = Profesor.objects.get(utilizator=request.user)
+        proiect = Proiect.objects.all().filter(disciplina=disciplina).filter(profesor=profesor).get()
+        grupa = Grupa.objects.get(pk=pk2)
+        studenti = Student.objects.all().filter(grupa=grupa)
+        incarcari = Incarcare.objects.all()
+    except ObjectDoesNotExist:
+        messages.info(request, 'Catalogul nu este complet')
+        return redirect('vizualizareDisciplina', pk1)
     context['studenti'] = studenti
     context['proiecte'] = proiect
     context['disciplina'] = disciplina

@@ -5,7 +5,8 @@ from django.contrib.auth.models import Group, User
 # Create your models here.
 class Grupa(models.Model):
     id = models.AutoField(primary_key=True)
-    nume = models.CharField(max_length=10, null=True)
+    nume = models.CharField(max_length=10, null=True, unique=True)
+    asignare_discipline = models.BooleanField(default=False)
 
 
 class Profesor(models.Model):
