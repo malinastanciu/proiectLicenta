@@ -646,6 +646,10 @@ def modificareDiscipline(request, pk):
     context['student'] = student
     grupa = Grupa.objects.get(pk=student.grupa.id)
     discipline_student = DisciplinaProfesorStudent.objects.all().filter(student=student)
+    lista_de_id_disciplina = list()
+    for disci in discipline_student:
+        lista_de_id_disciplina.append(disci.disciplina)
+    # discipline_student = Disciplina.objects.all().filter(=lista_de_id_disciplina)
     context['discipline_student'] = discipline_student
     context['discipline'] = Disciplina.objects.all().filter(an_universitar=4)
     if request.method == 'POST':

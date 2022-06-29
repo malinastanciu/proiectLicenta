@@ -33,7 +33,7 @@
                     <td>
                         {% for profesor in disciplina.profesori.all %}
 
-                            {{ profesor.last_name }} {{ profesor.first_name }}<br>
+                            {{ profesor.utilizator.last_name }} {{ profesor.utilizator.first_name }}<br>
                         {% endfor %}
                     </td>
                         <td>{{ disciplina.an_universitar }}</td>
