@@ -200,7 +200,11 @@ def adaugareStudenti(request):
                     student[key] = value
                 email = str(student['Email address'])
                 if i == 0:
-                    grupa = Grupa.objects.filter(nume=student['Grupa'])[0]
+                    try:
+                        grupa = Grupa.objects.filter(nume=student['Grupa'])[0]
+                    except:
+                        messages.info(request, 'Grupa nu exista in baza de date.')
+                        return redirect('dashboard')
                 try:
                     user = User.objects.create_user(username=email.split('@')[0], email=email, password='student123456',
                                                 first_name=student['First name'], last_name=student['Surname'])
@@ -651,7 +655,7 @@ def modificareDiscipline(request, pk):
         lista_de_id_disciplina.append(disci.disciplina)
     # discipline_student = Disciplina.objects.all().filter(=lista_de_id_disciplina)
     context['discipline_student'] = discipline_student
-    context['discipline'] = Disciplina.objects.all().filter(an_universitar=4)
+    context['discipline'] = Disciplina.objects.all().filter(an_universitar=int(grupa.nume[1]))
     if request.method == 'POST':
         materii = DisciplinaProfesorStudent.objects.all().filter(student=student)
         print(materii)
@@ -725,7 +729,7 @@ def catalog(request, pk):
 
     profesor = Profesor.objects.get(utilizator=request.user)
     disciplina = Disciplina.objects.get(pk=pk)
-    studenti = DisciplinaProfesorStudent.objects.all().filter(profesor=profesor)
+    studenti = DisciplinaProfesorStudent.objects.all().filter(profesor=profesor).filter(disciplina=disciplina)
     lista_grupe = list()
     for student in studenti:
         if student.student.grupa.nume not in lista_grupe:
@@ -771,23 +775,27 @@ def vizualizareCatalog(request, pk1, pk2):
 @login_required(login_url='login')
 def note(request, pk):
     context = create_context(request)
-    student = Student.objects.get(utilizator=request.user)
-    disciplina = Disciplina.objects.get(pk=pk)
-    proiecte = Proiect.objects.get(disciplina=disciplina)
-    teme = Tema.objects.all().filter(proiect=proiecte).filter(id__in=student.teme.all()).get()
-    incarcari = Incarcare.objects.all().filter(student=student).filter(tema=teme)
-    for incarcare in incarcari:
-        if incarcare.tip == 'Intermediara':
-            incarcare_intermediara = incarcare
-        elif incarcare.tip == 'Finala':
-            incarcare_finala = incarcare
-    context['student'] = student
-    context['disciplina'] = disciplina
-    context['teme'] = teme
-    context['proiecte'] = proiecte
-    context['incarcari'] = incarcari
-    context['incarcare_intermediara'] = incarcare_intermediara
-    context['incarcare_finala'] = incarcare_finala
+    try:
+        student = Student.objects.get(utilizator=request.user)
+        disciplina = Disciplina.objects.get(pk=pk)
+        proiecte = Proiect.objects.get(disciplina=disciplina)
+        teme = Tema.objects.all().filter(proiect=proiecte).filter(id__in=student.teme.all()).get()
+        incarcari = Incarcare.objects.all().filter(student=student).filter(tema=teme)
+        for incarcare in incarcari:
+            if incarcare.tip == 'Intermediara':
+                incarcare_intermediara = incarcare
+            elif incarcare.tip == 'Finala':
+                incarcare_finala = incarcare
+        context['student'] = student
+        context['disciplina'] = disciplina
+        context['teme'] = teme
+        context['proiecte'] = proiecte
+        context['incarcari'] = incarcari
+        context['incarcare_intermediara'] = incarcare_intermediara
+        context['incarcare_finala'] = incarcare_finala
+    except ObjectDoesNotExist:
+        messages.info(request, 'Situatia nu este completa, incercati mai tarziu.')
+        return redirect('dashboard')
     return render(request, 'application/student/note.html', context)
 
 
