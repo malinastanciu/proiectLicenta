@@ -78,10 +78,10 @@
             <div class="content" style="margin-top:-2px; display: none; background-color: white; width: 400px; padding: 10px;">
                 <form action="{% url 'adaugareNota' tema.id student.id %}" method="POST">
                     {% csrf_token %}
-                    <label for="nota">Etapa:</label><br>
-                    <select name="etapa">
-                        <option value="intermediara">Intermediara</option>
-                        <option value="finala">Finala</option>
+                    <label for="etapa">Etapa:</label><br>
+                    <select name="etapa" id="etapa">
+                        <option value="Intermediara">Intermediara</option>
+                        <option value="Finala">Finala</option>
                     </select>
                     <br>
                     <label for="nota">Nota:</label><br>
