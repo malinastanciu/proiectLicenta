@@ -79,7 +79,11 @@ def adaugareProiect(request, pk):
 
         path = os.path.abspath(os.getcwd()) + r"\media"
         path_of_directory = os.path.join(path, proiect.nume)
-        os.mkdir(path_of_directory)
+        try:
+            os.mkdir(path_of_directory)
+        except FileExistsError:
+            messages.info(request, 'Introduceti datele corect.')
+            return redirect('adaugareProiect', pk)
         try:
             uploaded_file = request.FILES['document']
             fs = FileSystemStorage(path_of_directory)
@@ -876,10 +880,10 @@ def descarcareCatalog(request, pk1, pk2):
         for incarcare in incarcari:
             if incarcare.tip == 'Intermediara':
                 worksheet.write_number(row, 9, incarcare.nota)
-                worksheet.write_number(row, 9, 0)
+                # worksheet.write_number(row, 9, 0)
             elif incarcare.tip == 'Finala':
                 worksheet.write_number(row, 10, incarcare.nota)
-                worksheet.write_number(row, 9, 0)
+                # worksheet.write_number(row, 10, 0)
 
 
 
