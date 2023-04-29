@@ -160,6 +160,7 @@ def stergereDisciplina(request):
 @login_required(login_url='login')
 def vizualizareDisciplina(request, pk):
     context = create_context(request)
+    context = create_context(request)
     disciplina = Disciplina.objects.get(pk=pk)
     if request.method == 'POST':
         return redirect('dashboard')
